@@ -16,7 +16,7 @@ import javax.persistence.Version;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "users")
-public class UserEntity {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,12 +34,12 @@ public class UserEntity {
 	@Version
 	private Integer version;
 
-	public UserEntity() {
+	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserEntity(Long id, String username, String password, EUserRole role, Integer version) {
+	public User(Long id, String username, String password, EUserRole role, Integer version) {
 		super();
 		this.id = id;
 		this.username = username;

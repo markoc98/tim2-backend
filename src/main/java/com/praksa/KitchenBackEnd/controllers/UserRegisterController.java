@@ -12,9 +12,9 @@ import com.praksa.KitchenBackEnd.controllers.factory.UserFactory;
 import com.praksa.KitchenBackEnd.models.dto.AdminRegisterDTO;
 import com.praksa.KitchenBackEnd.models.dto.CookRegisterDTO;
 import com.praksa.KitchenBackEnd.models.dto.RegularUserRegisterDTO;
-import com.praksa.KitchenBackEnd.models.entities.AdministratorEntity;
-import com.praksa.KitchenBackEnd.models.entities.CookEntity;
-import com.praksa.KitchenBackEnd.models.entities.RegularUserEntity;
+import com.praksa.KitchenBackEnd.models.entities.Administrator;
+import com.praksa.KitchenBackEnd.models.entities.Cook;
+import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.repositories.AdministratorRepository;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
@@ -45,7 +45,7 @@ public class UserRegisterController {
 	@RequestMapping(method = RequestMethod.POST, value = "/admin")
 	public ResponseEntity<?> registerAdmin(@RequestBody AdminRegisterDTO adminDTO) {
 		
-		AdministratorEntity admin = (AdministratorEntity) UserFactory.createUser(adminDTO);
+		Administrator admin = (Administrator) UserFactory.createUser(adminDTO);
 		userRepo.save(admin);
 		
 		return new ResponseEntity<>(admin, HttpStatus.CREATED);
@@ -55,7 +55,7 @@ public class UserRegisterController {
 	@RequestMapping(method = RequestMethod.POST, value="/regUser")
 	public ResponseEntity<?> registerRegUser(@RequestBody RegularUserRegisterDTO regUserDTO) {
 		
-		RegularUserEntity regUser = (RegularUserEntity) UserFactory.createUser(regUserDTO);
+		RegularUser regUser = (RegularUser) UserFactory.createUser(regUserDTO);
 		userRepo.save(regUser);
 		
 		return new ResponseEntity<>(regUser, HttpStatus.CREATED);
@@ -65,7 +65,7 @@ public class UserRegisterController {
 	@RequestMapping(method = RequestMethod.POST, value ="/cook")
 	public ResponseEntity<?> registerCook(@RequestBody CookRegisterDTO cookDTO) {
 		
-		CookEntity cook = (CookEntity) UserFactory.createUser(cookDTO);
+		Cook cook = (Cook) UserFactory.createUser(cookDTO);
 		userRepo.save(cook);
 		
 		return new ResponseEntity<>(cook, HttpStatus.CREATED);

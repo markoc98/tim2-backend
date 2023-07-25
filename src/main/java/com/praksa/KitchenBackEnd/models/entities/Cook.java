@@ -5,28 +5,30 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "regular_users")
-public class RegularUserEntity extends UserEntity {
+@Table(name = "cooks")
+public class Cook extends User {
 	
 	@Column
 	private String firstName;
 	
 	@Column
 	private String lastName;
-	
-	//TODO: napraviti veze kada ostali entiteti dodju
 
-	public RegularUserEntity() {
+	
+	//TODO: Vezati ostale entitete kada budu napravljeni
+
+	
+	public Cook() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegularUserEntity(Long id, String username, String password, EUserRole role, Integer version) {
+	public Cook(Long id, String username, String password, EUserRole role, Integer version) {
 		super(id, username, password, role, version);
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegularUserEntity(String firstName, String lastName) {
+	public Cook(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -47,11 +49,7 @@ public class RegularUserEntity extends UserEntity {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	
-	
-	
-	
+		
 	
 	
 	

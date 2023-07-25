@@ -2,8 +2,8 @@ package com.praksa.KitchenBackEnd.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.praksa.KitchenBackEnd.models.entities.UserEntity;
+import com.praksa.KitchenBackEnd.models.entities.User;
 
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
 }

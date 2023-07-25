@@ -3,21 +3,21 @@ package com.praksa.KitchenBackEnd.controllers.factory;
 import com.praksa.KitchenBackEnd.models.dto.CookRegisterDTO;
 import com.praksa.KitchenBackEnd.models.dto.RegularUserRegisterDTO;
 import com.praksa.KitchenBackEnd.models.dto.UserRegisterDTO;
-import com.praksa.KitchenBackEnd.models.entities.AdministratorEntity;
-import com.praksa.KitchenBackEnd.models.entities.CookEntity;
+import com.praksa.KitchenBackEnd.models.entities.Administrator;
+import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.EUserRole;
-import com.praksa.KitchenBackEnd.models.entities.RegularUserEntity;
-import com.praksa.KitchenBackEnd.models.entities.UserEntity;
+import com.praksa.KitchenBackEnd.models.entities.RegularUser;
+import com.praksa.KitchenBackEnd.models.entities.User;
 
 
 
 public class UserFactory {
 	
-	public static UserEntity createUser(UserRegisterDTO userDTO) {
+	public static User createUser(UserRegisterDTO userDTO) {
 		
 		if (userDTO.getRole() == EUserRole.ADMINISTRATOR) {
 			
-			AdministratorEntity admin = new AdministratorEntity();
+			Administrator admin = new Administrator();
 			
 			admin.setUsername(userDTO.getUsername());
 			admin.setPassword(userDTO.getPassword());
@@ -28,7 +28,7 @@ public class UserFactory {
 		} else if (userDTO.getRole() == EUserRole.REGULARUSER) {
 			
 			RegularUserRegisterDTO regUserDTO = (RegularUserRegisterDTO) userDTO;
-			RegularUserEntity regUser = new RegularUserEntity();
+			RegularUser regUser = new RegularUser();
 			
 			regUser.setFirstName(regUserDTO.getFirstName());
 			regUser.setLastName(regUserDTO.getLastName());
@@ -41,7 +41,7 @@ public class UserFactory {
 		} else {
 			
 			CookRegisterDTO cookDTO = (CookRegisterDTO) userDTO;
-			CookEntity cook = new CookEntity();
+			Cook cook = new Cook();
 			
 			cook.setFirstName(cookDTO.getFirstName());
 			cook.setLastName(cookDTO.getLastName());

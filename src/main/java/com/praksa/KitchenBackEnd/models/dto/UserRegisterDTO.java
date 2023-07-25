@@ -1,6 +1,6 @@
-package com.praksa.KitchenBackEnd.controllers.dto;
+package com.praksa.KitchenBackEnd.models.dto;
 
-import com.praksa.KitchenBackEnd.entities.EUserRole;
+import com.praksa.KitchenBackEnd.models.entities.EUserRole;
 
 public class UserRegisterDTO {
 	

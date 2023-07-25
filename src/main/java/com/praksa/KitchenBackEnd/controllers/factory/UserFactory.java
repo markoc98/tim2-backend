@@ -1,13 +1,13 @@
 package com.praksa.KitchenBackEnd.controllers.factory;
 
-import com.praksa.KitchenBackEnd.controllers.dto.CookRegisterDTO;
-import com.praksa.KitchenBackEnd.controllers.dto.RegularUserRegisterDTO;
-import com.praksa.KitchenBackEnd.controllers.dto.UserRegisterDTO;
-import com.praksa.KitchenBackEnd.entities.AdministratorEntity;
-import com.praksa.KitchenBackEnd.entities.CookEntity;
-import com.praksa.KitchenBackEnd.entities.EUserRole;
-import com.praksa.KitchenBackEnd.entities.RegularUserEntity;
-import com.praksa.KitchenBackEnd.entities.UserEntity;
+import com.praksa.KitchenBackEnd.models.dto.CookRegisterDTO;
+import com.praksa.KitchenBackEnd.models.dto.RegularUserRegisterDTO;
+import com.praksa.KitchenBackEnd.models.dto.UserRegisterDTO;
+import com.praksa.KitchenBackEnd.models.entities.AdministratorEntity;
+import com.praksa.KitchenBackEnd.models.entities.CookEntity;
+import com.praksa.KitchenBackEnd.models.entities.EUserRole;
+import com.praksa.KitchenBackEnd.models.entities.RegularUserEntity;
+import com.praksa.KitchenBackEnd.models.entities.UserEntity;
 
 
 

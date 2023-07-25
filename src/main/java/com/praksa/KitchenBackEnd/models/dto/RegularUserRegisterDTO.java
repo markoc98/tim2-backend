@@ -1,25 +1,24 @@
-package com.praksa.KitchenBackEnd.controllers.dto;
+package com.praksa.KitchenBackEnd.models.dto;
 
-import com.praksa.KitchenBackEnd.entities.EUserRole;
+import com.praksa.KitchenBackEnd.models.entities.EUserRole;
 
-public class CookRegisterDTO extends UserRegisterDTO {
-	
+public class RegularUserRegisterDTO extends UserRegisterDTO {
 	
 	private String firstName;
 	
 	private String lastName;
 
-	public CookRegisterDTO() {
+	public RegularUserRegisterDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public CookRegisterDTO(String username, String password, EUserRole role) {
+	public RegularUserRegisterDTO(String username, String password, EUserRole role) {
 		super(username, password, role);
 		// TODO Auto-generated constructor stub
 	}
 
-	public CookRegisterDTO(String firstName, String lastName) {
+	public RegularUserRegisterDTO(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -1,4 +1,4 @@
-package com.praksa.KitchenBackEnd.entities;
+package com.praksa.KitchenBackEnd.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;

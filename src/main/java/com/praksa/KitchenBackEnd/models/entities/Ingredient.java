@@ -2,12 +2,20 @@ package com.praksa.KitchenBackEnd.models.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
 public class Ingredient {
 	
 	@Id
@@ -26,13 +34,22 @@ public class Ingredient {
 	private Integer proteins;
 	
 	@Column(name = "limiting_factors")
+	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JsonBackReference
 	private List<LimitingFactor> limitingFactors;
 	
-	
+	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<RecipeIngredient> recipes;
+
+	public Ingredient() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Ingredient(Long id, Integer version, String name, String unit, Integer calories, Integer carbs,
-			Integer sugars, Integer fats, Integer saturatedFats, Integer proteins,
-			List<LimitingFactor> limitingFactors) {
+			Integer sugars, Integer fats, Integer saturatedFats, Integer proteins, List<LimitingFactor> limitingFactors,
+			List<RecipeIngredient> recipes) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -45,11 +62,7 @@ public class Ingredient {
 		this.saturatedFats = saturatedFats;
 		this.proteins = proteins;
 		this.limitingFactors = limitingFactors;
-	}
-
-	public Ingredient() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.recipes = recipes;
 	}
 
 	public Long getId() {
@@ -139,4 +152,15 @@ public class Ingredient {
 	public void setLimitingFactors(List<LimitingFactor> limitingFactors) {
 		this.limitingFactors = limitingFactors;
 	}
+
+	public List<RecipeIngredient> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<RecipeIngredient> recipes) {
+		this.recipes = recipes;
+	}
+	
+	
+
 }

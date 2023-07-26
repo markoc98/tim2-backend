@@ -1,7 +1,14 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +21,20 @@ public class RegularUser extends User {
 	@Column
 	private String lastName;
 	
-	//TODO: napraviti veze kada ostali entiteti dodju
+	
+	@ManyToMany
+	@JoinTable(
+		name= "affected_users",
+		joinColumns = @JoinColumn(name = "regular_users_id"),
+		inverseJoinColumns = @JoinColumn(name = "limiting_factor_id"))
+	private Set<LimitingFactor> limitingFactor = new HashSet<>();
+	
+	@ManyToMany
+	@JoinTable(
+			name = "liked_recipes",
+			joinColumns = @JoinColumn(name = "regular_users_id"),
+			inverseJoinColumns = @JoinColumn(name = "recipes_id"))
+	private Set<Recipe> likedRecipes = new HashSet<>();
 
 	public RegularUser() {
 		super();
@@ -26,10 +46,13 @@ public class RegularUser extends User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegularUser(String firstName, String lastName) {
+	public RegularUser(String firstName, String lastName, Set<LimitingFactor> limitingFactor,
+			Set<Recipe> likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.limitingFactor = limitingFactor;
+		this.likedRecipes = likedRecipes;
 	}
 
 	public String getFirstName() {
@@ -47,7 +70,23 @@ public class RegularUser extends User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+
+	public Set<LimitingFactor> getLimitingFactor() {
+		return limitingFactor;
+	}
+
+	public void setLimitingFactor(Set<LimitingFactor> limitingFactor) {
+		this.limitingFactor = limitingFactor;
+	}
+
+	public Set<Recipe> getLikedRecipes() {
+		return likedRecipes;
+	}
+
+	public void setLikedRecipes(Set<Recipe> likedRecipes) {
+		this.likedRecipes = likedRecipes;
+	}
+
 	
 	
 	

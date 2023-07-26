@@ -19,25 +19,17 @@ import com.praksa.KitchenBackEnd.repositories.AdministratorRepository;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
 import com.praksa.KitchenBackEnd.repositories.UserRepository;
+import com.praksa.KitchenBackEnd.services.UserService;
+import com.praksa.KitchenBackEnd.services.UserServiceImpl;
 
 @RestController
 @RequestMapping(path = "api/v1/project/register")
 public class UserRegisterController {
 	
 	//TODO: Validacije, hvatanje gresaka, loggovanje?
-
-	@Autowired
-	AdministratorRepository adminRepo;
 	
 	@Autowired
-	CookRepository cookRepository;
-	
-	@Autowired
-	RegularUserRepository regUserRepo;
-	
-	@Autowired
-	UserRepository userRepo;
-	
+	UserService userService;
 	
 	
 	//Proste metode za testiranje, razgranacemo ih blagovremeno
@@ -45,29 +37,18 @@ public class UserRegisterController {
 	@RequestMapping(method = RequestMethod.POST, value = "/admin")
 	public ResponseEntity<?> registerAdmin(@RequestBody AdminRegisterDTO adminDTO) {
 		
-		Administrator admin = (Administrator) UserFactory.createUser(adminDTO);
-		userRepo.save(admin);
-		
-		return new ResponseEntity<>(admin, HttpStatus.CREATED);
+		return new ResponseEntity<>(userService.addAdmin(adminDTO), HttpStatus.CREATED);
 	}
-	
 	
 	@RequestMapping(method = RequestMethod.POST, value="/regUser")
 	public ResponseEntity<?> registerRegUser(@RequestBody RegularUserRegisterDTO regUserDTO) {
 		
-		RegularUser regUser = (RegularUser) UserFactory.createUser(regUserDTO);
-		userRepo.save(regUser);
-		
-		return new ResponseEntity<>(regUser, HttpStatus.CREATED);
-		
+		return new ResponseEntity<>(userService.addUser(regUserDTO), HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value ="/cook")
 	public ResponseEntity<?> registerCook(@RequestBody CookRegisterDTO cookDTO) {
 		
-		Cook cook = (Cook) UserFactory.createUser(cookDTO);
-		userRepo.save(cook);
-		
-		return new ResponseEntity<>(cook, HttpStatus.CREATED);
+		return new ResponseEntity<>(userService.addCook(cookDTO), HttpStatus.CREATED);
 	}
 }

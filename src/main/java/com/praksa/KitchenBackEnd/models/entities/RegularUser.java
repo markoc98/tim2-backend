@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -22,18 +24,18 @@ public class RegularUser extends User {
 	private String lastName;
 	
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(
 		name= "affected_users",
 		joinColumns = @JoinColumn(name = "regular_users_id"),
 		inverseJoinColumns = @JoinColumn(name = "limiting_factor_id"))
 	private Set<LimitingFactor> limitingFactor = new HashSet<>();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(
-			name = "liked_recipes",
-			joinColumns = @JoinColumn(name = "regular_users_id"),
-			inverseJoinColumns = @JoinColumn(name = "recipes_id"))
+		name = "liked_recipes",
+		joinColumns = @JoinColumn(name = "regular_users_id"),
+		inverseJoinColumns = @JoinColumn(name = "recipes_id"))
 	private Set<Recipe> likedRecipes = new HashSet<>();
 
 	public RegularUser() {

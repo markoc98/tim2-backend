@@ -15,9 +15,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LimitingFactor {
 	
 	@Id
@@ -33,7 +36,8 @@ public class LimitingFactor {
 	@JoinColumn(name = "ingredient")
 	private Ingredient ingredient;
 	
-	@ManyToMany(mappedBy = "limitingFactor")
+	@JsonBackReference
+	@ManyToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Set<RegularUser> affectedUser = new HashSet<>();
 
 	public LimitingFactor() {

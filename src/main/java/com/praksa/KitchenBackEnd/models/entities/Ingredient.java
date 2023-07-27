@@ -1,5 +1,6 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,8 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ingredient {
 	
 	@Id
@@ -33,14 +36,14 @@ public class Ingredient {
 	private Integer saturatedFats;
 	private Integer proteins;
 	
+	@JsonBackReference
 	@Column(name = "limiting_factors")
 	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JsonBackReference
-	private List<LimitingFactor> limitingFactors;
+	private List<LimitingFactor> limitingFactors = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JsonBackReference
-	private List<RecipeIngredient> recipes;
+	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<RecipeIngredient> recipes = new ArrayList<>();
 
 	public Ingredient() {
 		super();

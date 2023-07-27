@@ -11,9 +11,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cooks")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Cook extends User {
 	
 	@Column
@@ -22,10 +24,9 @@ public class Cook extends User {
 	@Column
 	private String lastName;
 
-	//TODO: Vezati ostale entitete kada budu napravljeni
 	
-	@Column
 	@JsonBackReference
+	@Column
 	@OneToMany(mappedBy = "cook", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();
 

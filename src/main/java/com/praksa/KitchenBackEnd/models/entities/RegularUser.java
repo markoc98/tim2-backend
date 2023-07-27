@@ -13,8 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "regular_users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RegularUser extends User {
 	
 	@Column
@@ -23,7 +27,7 @@ public class RegularUser extends User {
 	@Column
 	private String lastName;
 	
-	
+	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(
 		name= "affected_users",
@@ -31,6 +35,8 @@ public class RegularUser extends User {
 		inverseJoinColumns = @JoinColumn(name = "limiting_factor_id"))
 	private Set<LimitingFactor> limitingFactor = new HashSet<>();
 	
+	
+	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "liked_recipes",

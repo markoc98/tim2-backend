@@ -39,7 +39,7 @@ public class Recipe {
 	private Integer timeToPrepare;
 	private Integer amount;
 	
-	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy = "recipeId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> ingredients = new ArrayList<>();
 	

@@ -13,7 +13,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -27,11 +32,18 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column
+	@Column(nullable = false, unique = true)
+	@NotBlank(message = "Username must be provided")
+	@Size(min = 5, max = 20, message = "Username must be between {min} and {max} characters long.")
 	private String username;
 	
+	@JsonIgnore
 	@Column
+	@NotBlank(message = "Password must be provided.")
+	@Size(min = 4, max = 50, message = "Password must be between {min} and {max} characters long.")
 	private String password;
+	
+	
 	
 	@Column
 	@Enumerated(EnumType.STRING)

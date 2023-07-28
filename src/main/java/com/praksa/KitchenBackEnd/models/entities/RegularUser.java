@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,11 +25,19 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RegularUser extends User {
 	
-	@Column
+	@Column(nullable = false)
+	@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long")
 	private String firstName;
 	
-	@Column
+	@Column(nullable = false)
+	@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long")
 	private String lastName;
+	
+	@Column(nullable = false, unique = true)
+	@NotNull(message = "Email must be provided")
+	@Email(message = "Email is not valid")
+	private String email;
+	
 	
 	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

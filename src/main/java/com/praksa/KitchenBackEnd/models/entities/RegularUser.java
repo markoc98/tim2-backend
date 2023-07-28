@@ -38,9 +38,7 @@ public class RegularUser extends User {
 	@Email(message = "Email is not valid")
 	private String email;
 	
-	@JsonIgnore
-	@Version
-	private Integer version;
+	
 	
 	
 	@JsonManagedReference

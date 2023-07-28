@@ -42,9 +42,7 @@ public class Cook extends User {
 	@Column(columnDefinition = "TEXT")
 	private String aboutMe;
 	
-	@Version
-	@JsonIgnore
-	private Integer version;
+	
 	
 	@JsonBackReference
 	@Column

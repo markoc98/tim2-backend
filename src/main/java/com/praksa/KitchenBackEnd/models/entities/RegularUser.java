@@ -58,52 +58,77 @@ public class RegularUser extends User {
 		inverseJoinColumns = @JoinColumn(name = "recipes_id"))
 	private Set<Recipe> likedRecipes = new HashSet<>();
 
+
 	public RegularUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 
 	public RegularUser(Long id, String username, String password, EUserRole role, Integer version) {
 		super(id, username, password, role, version);
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegularUser(String firstName, String lastName, Set<LimitingFactor> limitingFactor,
-			Set<Recipe> likedRecipes) {
+
+	public RegularUser(
+			@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long") String firstName,
+			@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long") String lastName,
+			@NotNull(message = "Email must be provided") @Email(message = "Email is not valid") String email,
+			Set<LimitingFactor> limitingFactor, Set<Recipe> likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
 		this.limitingFactor = limitingFactor;
 		this.likedRecipes = likedRecipes;
 	}
+
 
 	public String getFirstName() {
 		return firstName;
 	}
 
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 
 	public String getLastName() {
 		return lastName;
 	}
 
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 
 	public Set<LimitingFactor> getLimitingFactor() {
 		return limitingFactor;
 	}
 
+
 	public void setLimitingFactor(Set<LimitingFactor> limitingFactor) {
 		this.limitingFactor = limitingFactor;
 	}
 
+
 	public Set<Recipe> getLikedRecipes() {
 		return likedRecipes;
 	}
+
 
 	public void setLikedRecipes(Set<Recipe> likedRecipes) {
 		this.likedRecipes = likedRecipes;

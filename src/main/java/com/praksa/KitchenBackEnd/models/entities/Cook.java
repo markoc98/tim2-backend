@@ -49,42 +49,90 @@ public class Cook extends User {
 	@OneToMany(mappedBy = "cook", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();
 
+
+
 	public Cook() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+
 
 	public Cook(Long id, String username, String password, EUserRole role, Integer version) {
 		super(id, username, password, role, version);
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cook(String firstName, String lastName, List<Recipe> recipes) {
+
+
+	public Cook(
+			@NotBlank(message = "First name must be provided.") @Size(min = 2, max = 30, message = "First name must be bewtween {min} and {max} characters long.") String firstName,
+			@NotBlank(message = "Last name must be provided") @Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long.") String lastName,
+			@NotNull(message = "Email must be provided") @Email(message = "Email is not valid") String email,
+			String aboutMe, List<Recipe> recipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
+		this.aboutMe = aboutMe;
 		this.recipes = recipes;
 	}
+
+
 
 	public String getFirstName() {
 		return firstName;
 	}
 
+
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
+
 
 	public String getLastName() {
 		return lastName;
 	}
 
+
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+	public String getAboutMe() {
+		return aboutMe;
+	}
+
+
+
+	public void setAboutMe(String aboutMe) {
+		this.aboutMe = aboutMe;
+	}
+
+
+
 	public List<Recipe> getRecipes() {
 		return recipes;
 	}
+
+
 
 	public void setRecipes(List<Recipe> recipes) {
 		this.recipes = recipes;

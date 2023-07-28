@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,11 +35,23 @@ public class Recipe {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
+	
+	@Column(nullable = false)
+	@NotBlank(message = "Recipe must have a title")
+	@Size(min = 50, max = 100, message = "The title has to be between {min} and {max} characters long.")
 	private String title;
-	private String description;   
+	
+	@Column(columnDefinition = "TEXT")
+	@NotBlank(message = "Recipe has to have a description.")
+	private String description;
+	
+	@Column(columnDefinition = "TEXT")
+	@NotBlank(message = "You need to provide steps on how to prepare the meal.")
 	private String steps;		
+	
 	@Column(name = "time_to_prepare")
 	private Integer timeToPrepare;
+	
 	private Integer amount;
 	
 	@JsonManagedReference

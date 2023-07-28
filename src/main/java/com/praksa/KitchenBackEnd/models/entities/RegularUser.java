@@ -1,7 +1,6 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,11 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -37,6 +37,10 @@ public class RegularUser extends User {
 	@NotNull(message = "Email must be provided")
 	@Email(message = "Email is not valid")
 	private String email;
+	
+	@JsonIgnore
+	@Version
+	private Integer version;
 	
 	
 	@JsonManagedReference

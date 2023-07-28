@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -33,6 +34,7 @@ public class RecipeIngredient {
 	@JoinColumn(name = "ingredientId")
 	private Ingredient ingredientId;
 	
+	@JsonPropertyOrder({"id", "amount"})
 	private Integer amount;
 
 	public RecipeIngredient() {

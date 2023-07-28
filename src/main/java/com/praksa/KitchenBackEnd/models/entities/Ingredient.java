@@ -10,12 +10,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -25,6 +29,7 @@ public class Ingredient {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Version
+	@JsonIgnore
 	private Integer version;
 	private String name;
 	private String unit;
@@ -36,10 +41,9 @@ public class Ingredient {
 	private Integer saturatedFats;
 	private Integer proteins;
 	
-	@JsonBackReference
-	@Column(name = "limiting_factors")
-	@OneToMany(mappedBy = "ingredient", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<LimitingFactor> limitingFactors = new ArrayList<>();
+	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JsonManagedReference
+	private List<LimitingIngredient> limitingFactor = new ArrayList<>();
 	
 	@JsonBackReference
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -51,8 +55,8 @@ public class Ingredient {
 	}
 
 	public Ingredient(Long id, Integer version, String name, String unit, Integer calories, Integer carbs,
-			Integer sugars, Integer fats, Integer saturatedFats, Integer proteins, List<LimitingFactor> limitingFactors,
-			List<RecipeIngredient> recipes) {
+			Integer sugars, Integer fats, Integer saturatedFats, Integer proteins,
+			List<LimitingIngredient> limitingFactor, List<RecipeIngredient> recipes) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -64,7 +68,7 @@ public class Ingredient {
 		this.fats = fats;
 		this.saturatedFats = saturatedFats;
 		this.proteins = proteins;
-		this.limitingFactors = limitingFactors;
+		this.limitingFactor = limitingFactor;
 		this.recipes = recipes;
 	}
 
@@ -148,12 +152,12 @@ public class Ingredient {
 		this.proteins = proteins;
 	}
 
-	public List<LimitingFactor> getLimitingFactors() {
-		return limitingFactors;
+	public List<LimitingIngredient> getLimitingFactor() {
+		return limitingFactor;
 	}
 
-	public void setLimitingFactors(List<LimitingFactor> limitingFactors) {
-		this.limitingFactors = limitingFactors;
+	public void setLimitingFactor(List<LimitingIngredient> limitingFactor) {
+		this.limitingFactor = limitingFactor;
 	}
 
 	public List<RecipeIngredient> getRecipes() {
@@ -163,7 +167,7 @@ public class Ingredient {
 	public void setRecipes(List<RecipeIngredient> recipes) {
 		this.recipes = recipes;
 	}
-	
+
 	
 
 }

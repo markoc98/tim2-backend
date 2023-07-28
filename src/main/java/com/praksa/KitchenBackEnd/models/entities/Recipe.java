@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -53,6 +54,7 @@ public class Recipe {
 	private Set<RegularUser> recipes = new HashSet<>();
 	
 	@Version
+	@JsonIgnore
 	private Integer version;
 
 	public Recipe() {

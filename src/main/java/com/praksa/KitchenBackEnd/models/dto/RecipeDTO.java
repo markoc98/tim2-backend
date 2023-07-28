@@ -9,6 +9,7 @@ public class RecipeDTO {
 	private String steps;
 	private Integer amount;
 	private Integer timeToPrepare;
+	
 
 	
 	public RecipeDTO() {

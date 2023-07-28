@@ -1,21 +1,27 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -27,72 +33,100 @@ public class LimitingFactor {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Version
+	@JsonIgnore
 	private Integer version;
 	private String name;
 	
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JsonManagedReference
-	@JoinColumn(name = "ingredient")
-	private Ingredient ingredient;
+	@JsonBackReference
+	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<LimitingIngredient> ingredients = new ArrayList<>(); 
+	
+	
 	
 	@JsonBackReference
 	@ManyToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Set<RegularUser> affectedUser = new HashSet<>();
+
+
 
 	public LimitingFactor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public LimitingFactor(Long id, Integer version, String name, Ingredient ingredient, Set<RegularUser> affectedUser) {
+
+
+	public LimitingFactor(Long id, Integer version, String name, List<LimitingIngredient> ingredients,
+			Set<RegularUser> affectedUser) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.name = name;
-		this.ingredient = ingredient;
+		this.ingredients = ingredients;
 		this.affectedUser = affectedUser;
 	}
+
+
 
 	public Long getId() {
 		return id;
 	}
 
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
 
 	public Integer getVersion() {
 		return version;
 	}
 
+
+
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
+
+
 
 	public String getName() {
 		return name;
 	}
 
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public Ingredient getIngredient() {
-		return ingredient;
+
+
+	public List<LimitingIngredient> getIngredients() {
+		return ingredients;
 	}
 
-	public void setIngredient(Ingredient ingredient) {
-		this.ingredient = ingredient;
+
+
+	public void setIngredients(List<LimitingIngredient> ingredients) {
+		this.ingredients = ingredients;
 	}
+
+
 
 	public Set<RegularUser> getAffectedUser() {
 		return affectedUser;
 	}
 
+
+
 	public void setAffectedUser(Set<RegularUser> affectedUser) {
 		this.affectedUser = affectedUser;
 	}
+
 	
 	
 	

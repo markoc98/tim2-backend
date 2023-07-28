@@ -51,15 +51,7 @@ public class DummyController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.POST, path = "/addLimFactor/{ingId}")
-	public ResponseEntity<?> addLimitingFactor(@RequestBody String name, @PathVariable Long ingId) {
-		Ingredient ing = ingredientRepo.findById(ingId).get();
-		LimitingFactor lf = new LimitingFactor();
-		lf.setName(name);
-		lf.setIngredient(ing);
-		limiFactorRepository.save(lf);
-		return new ResponseEntity<>(lf, HttpStatus.CREATED);
-	}
+	
 	
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/affectedBy/{lfId}")

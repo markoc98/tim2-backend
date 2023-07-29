@@ -31,9 +31,17 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
+	@Override
+	public RegularUser getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	
+
+
+
 	/*------------------POST-----------------*/
 	@Override
 	public RegularUser addUser(RegularUserRegisterDTO dto) {
@@ -56,6 +64,20 @@ public class UserServiceImpl implements UserService {
 		return cook;
 	}
 	
+	//----------------PUT------------------//
 	
+
+	@Override
+	public RegularUser changeUser(RegularUserRegisterDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+	//------------------DELETE------------------//
+
+	@Override
+	public RegularUser deleteUser(RegularUserRegisterDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.praksa.KitchenBackEnd.controllers.util.RESTError;
+import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.services.IngredientService;
 import com.praksa.KitchenBackEnd.services.IngredientServiceImpl;
 
 @RestController
@@ -18,14 +20,13 @@ import com.praksa.KitchenBackEnd.services.IngredientServiceImpl;
 public class IngredientController {
 
 	@Autowired
-	private IngredientServiceImpl ingredientServiceImpl;
+	private IngredientService ingredientService;
 
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/newIngredient")
-	public ResponseEntity<?> addNewIngredient(@RequestBody Ingredient ingredients) {
-		try { 
-			ingredientServiceImpl.addIngredient(ingredients);
-			return new ResponseEntity<>(ingredients, HttpStatus.OK);
+	public ResponseEntity<?> addNewIngredient(@RequestBody IngredientDTO ingredients) {		
+		try { 	
+			return new ResponseEntity<>(ingredientService.addIngredient(ingredients), HttpStatus.OK);
 		}catch (Exception e) {
 			return new ResponseEntity<RESTError>(
 					new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(),"BAD Request"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -35,9 +36,9 @@ public class IngredientController {
 	
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/updateIngredient/{id}")
-	public ResponseEntity<?> updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredientForUpdate) {
+	public ResponseEntity<?> updateIngredient(@PathVariable Long id, @RequestBody IngredientDTO ingredientForUpdate) {
 	    try {
-	        Ingredient updatedIngredient = ingredientServiceImpl.updateIngredient(ingredientForUpdate, id);
+	        Ingredient updatedIngredient = ingredientService.updateIngredient(ingredientForUpdate, id);
 	        if (updatedIngredient != null) {
 	            return new ResponseEntity<>(updatedIngredient, HttpStatus.OK);
 	        } else {
@@ -54,7 +55,7 @@ public class IngredientController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> getIngredientById(@PathVariable Long id) {
 	    try {
-	        Ingredient getIngredientById = ingredientServiceImpl.getIngredientById(id);
+	        Ingredient getIngredientById = ingredientService.getIngredientById(id);
 	        if (getIngredientById != null) {
 	            return new ResponseEntity<>(getIngredientById, HttpStatus.OK);
 	        } else {
@@ -68,7 +69,7 @@ public class IngredientController {
 	@RequestMapping(method = RequestMethod.GET, value = "/allIngredients")
 	public ResponseEntity<?> getAllIngredients() {
 	    try {
-	        Iterable<Ingredient> getAllIngredients = ingredientServiceImpl.getAllIngredients();
+	        Iterable<Ingredient> getAllIngredients = ingredientService.getAllIngredients();
 	        if (getAllIngredients != null) {
 	            return new ResponseEntity<>(getAllIngredients, HttpStatus.OK);
 	        } else {
@@ -82,12 +83,11 @@ public class IngredientController {
 	
 	@RequestMapping(method = RequestMethod.DELETE, value = "/deleteIngredient/{id}")
 	public ResponseEntity<?> deleteIngredient(@PathVariable Long id) {
-	    Ingredient deletedIngredient = ingredientServiceImpl.deleteIngredient(id);
-	    if (deletedIngredient != null) {
+	    Ingredient deletedIngredient = ingredientService.deleteIngredient(id);
+	    
 	        return new ResponseEntity<>(deletedIngredient, HttpStatus.OK);
-	    } else {
-	        return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Ingredient not found"), HttpStatus.NOT_FOUND);
-	    }
+	    
+	    
 }	
 	
 }

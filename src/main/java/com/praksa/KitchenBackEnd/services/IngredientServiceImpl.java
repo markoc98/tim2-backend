@@ -1,21 +1,27 @@
 package com.praksa.KitchenBackEnd.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 
 @Service
 public class IngredientServiceImpl implements IngredientService{
 
 	@Autowired
 	private IngredientRepository ingredientRepository;
+	@Autowired
+	private LimitingIngredientRepository limitingIngredientRepo;
 	
 	@Override
-	public Ingredient addIngredient(Ingredient ingredient) {
+	public Ingredient addIngredient(IngredientDTO ingredient) {
 		Ingredient ingredients = new Ingredient();
 		ingredients.setCalories(ingredient.getCalories());
 		ingredients.setCarbs(ingredient.getCarbs());
@@ -25,13 +31,13 @@ public class IngredientServiceImpl implements IngredientService{
 		ingredients.setSaturatedFats(ingredient.getSaturatedFats());
 		ingredients.setSugars(ingredient.getSugars());
 		ingredients.setUnit(ingredient.getUnit());
-		ingredientRepository.save(ingredients);
-		return ingredients;
+		return ingredientRepository.save(ingredients);
+		 
 		
 	}
 
 	@Override
-	public Ingredient updateIngredient(Ingredient ingredientForUpdate, Long id) {
+	public Ingredient updateIngredient(IngredientDTO ingredientForUpdate, Long id) {
 	    Optional<Ingredient> ingredient = ingredientRepository.findById(id);
 	    if (ingredient.isPresent()) {
 	        Ingredient updateIngredient = ingredient.get();
@@ -68,15 +74,22 @@ public class IngredientServiceImpl implements IngredientService{
 		return null;
 	}
 
+//	@Override
+//	public Ingredient deleteIngredient(Long id) {
+//        Ingredient deleteIngredient = ingredientRepository.findById(id).get();
+//		if(deleteIngredient != null) {
+//			  ingredientRepository.delete(deleteIngredient);
+//			  return deleteIngredient; 
+//		}
+//		return null;
+//	}
+
 	@Override
 	public Ingredient deleteIngredient(Long id) {
-        Optional<Ingredient> deleteIngredient = ingredientRepository.findById(id);
-		if(deleteIngredient.isPresent()) {
-			 Ingredient deletedIngredient = deleteIngredient.get();
-			  ingredientRepository.delete(deletedIngredient);
-			  return deletedIngredient; 
-		}
-		return null;
+		Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
+		List<LimitingIngredient> limits = ingredient.getLimitingFactor();
+		limitingIngredientRepo.deleteAll(limits);
+		ingredientRepository.delete(ingredient);
+		return ingredient;
 	}
-
 }

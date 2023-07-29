@@ -31,15 +31,19 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
-	@Override
+
 	public User getUserByUsername(String username) {
 		User user = userRepository.findByUsername(username);
 		return user;
 	}
 	
+
 	
 	
 	
+
+
+
 	/*------------------POST-----------------*/
 	@Override
 	public RegularUser addUser(RegularUserRegisterDTO dto) {
@@ -64,6 +68,20 @@ public class UserServiceImpl implements UserService {
 
 	
 	
+	//----------------PUT------------------//
 	
+
+	@Override
+	public RegularUser changeUser(RegularUserRegisterDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+	//------------------DELETE------------------//
+
+	@Override
+	public RegularUser deleteUser(RegularUserRegisterDTO dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

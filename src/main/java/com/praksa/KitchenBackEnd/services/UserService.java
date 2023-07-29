@@ -14,7 +14,9 @@ public interface UserService {
 	
 	public Iterable<User> getAll();
 	public RegularUser getUserById(Long id);
+
 	public User getUserByUsername(String username);
+
 	
 	/*------------POST-------------*/
 	
@@ -24,7 +26,10 @@ public interface UserService {
 	
 	/*-----------DELETE-------------*/
 	
+	public RegularUser deleteUser(RegularUserRegisterDTO dto);
+	
 	/*------------PUT--------------*/
 	
+	public RegularUser changeUser(RegularUserRegisterDTO dto);
 	
 }

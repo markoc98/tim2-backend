@@ -7,6 +7,8 @@ public class RegularUserRegisterDTO extends UserRegisterDTO {
 	private String firstName;
 	
 	private String lastName;
+	
+	private String email;
 
 	public RegularUserRegisterDTO() {
 		super();
@@ -18,10 +20,11 @@ public class RegularUserRegisterDTO extends UserRegisterDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RegularUserRegisterDTO(String firstName, String lastName) {
+	public RegularUserRegisterDTO(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
 	}
 
 	public String getFirstName() {
@@ -40,6 +43,15 @@ public class RegularUserRegisterDTO extends UserRegisterDTO {
 		this.lastName = lastName;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
 	
 	
 	

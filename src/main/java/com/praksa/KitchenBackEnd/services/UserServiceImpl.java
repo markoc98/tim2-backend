@@ -31,6 +31,12 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
+	@Override
+	public User getUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		return user;
+	}
+	
 	
 	
 	
@@ -55,6 +61,8 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(cook);
 		return cook;
 	}
+
+	
 	
 	
 	

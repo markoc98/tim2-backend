@@ -34,6 +34,7 @@ public class UserFactory {
 			regUser.setLastName(regUserDTO.getLastName());
 			regUser.setUsername(regUserDTO.getUsername());
 			regUser.setPassword(regUserDTO.getPassword());
+			regUser.setEmail(regUserDTO.getEmail());
 			regUser.setRole(regUserDTO.getRole());
 			
 			return regUser;
@@ -47,6 +48,7 @@ public class UserFactory {
 			cook.setLastName(cookDTO.getLastName());
 			cook.setUsername(cookDTO.getUsername());
 			cook.setPassword(cookDTO.getPassword());
+			cook.setEmail(cookDTO.getEmail());
 			cook.setRole(cookDTO.getRole());
 			
 			return cook;

@@ -38,9 +38,9 @@ public class User {
 	private String username;
 	
 	@JsonIgnore
-	@Column
 	@NotBlank(message = "Password must be provided.")
-	@Size(min = 4, max = 50, message = "Password must be between {min} and {max} characters long.")
+	@Size(min = 4, max = 100, message = "Password must be between {min} and {max} characters long.")
+	@Column(nullable = false, length = 100)
 	private String password;
 	
 	

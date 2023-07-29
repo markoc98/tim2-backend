@@ -3,14 +3,18 @@ package com.praksa.KitchenBackEnd.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
+import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
 
 @Service
 public class IngredientServiceImpl implements IngredientService{
@@ -19,6 +23,10 @@ public class IngredientServiceImpl implements IngredientService{
 	private IngredientRepository ingredientRepository;
 	@Autowired
 	private LimitingIngredientRepository limitingIngredientRepo;
+	@Autowired
+	private RecipeIngredientRepository recipeIngredientRepository;
+	
+	
 	
 	@Override
 	public Ingredient addIngredient(IngredientDTO ingredient) {
@@ -85,9 +93,12 @@ public class IngredientServiceImpl implements IngredientService{
 //	}
 
 	@Override
+	@Transactional
 	public Ingredient deleteIngredient(Long id) {
 		Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
 		List<LimitingIngredient> limits = ingredient.getLimitingFactor();
+		List<RecipeIngredient> recipes = recipeIngredientRepository.findByIngredientId(ingredient);
+		recipeIngredientRepository.deleteAll(recipes);
 		limitingIngredientRepo.deleteAll(limits);
 		ingredientRepository.delete(ingredient);
 		return ingredient;

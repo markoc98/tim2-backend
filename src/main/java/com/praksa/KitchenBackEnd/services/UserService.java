@@ -14,7 +14,9 @@ public interface UserService {
 	
 	public Iterable<User> getAll();
 	public RegularUser getUserById(Long id);
-	public RegularUser getUserByUsername(String username);
+
+	public User getUserByUsername(String username);
+
 	
 	/*------------POST-------------*/
 	

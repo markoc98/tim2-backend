@@ -31,11 +31,13 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
-	@Override
-	public RegularUser getUserByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
+
+	public User getUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		return user;
 	}
+	
+
 	
 	
 	
@@ -63,6 +65,8 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(cook);
 		return cook;
 	}
+
+	
 	
 	//----------------PUT------------------//
 	

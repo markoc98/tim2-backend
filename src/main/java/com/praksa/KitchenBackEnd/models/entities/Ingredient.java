@@ -41,11 +41,11 @@ public class Ingredient {
 	@Column(name = "saturated_fats")
 	private Integer saturatedFats;
 	private Integer proteins;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<LimitingIngredient> limitingFactor = new ArrayList<>();
-	
+	@JsonIgnore
 	@JsonBackReference
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> recipes = new ArrayList<>();

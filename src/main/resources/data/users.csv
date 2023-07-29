@@ -1,0 +1,13 @@
+First Name,Last Name,Password,Email,Role,About Me
+John,Doe,pass,john.doe@example.com,ADMINISTRATOR,
+Alice,Smith,pass,alice.smith@example.com,COOK,"Hello! I'm Alice, a passionate cook who loves experimenting with different flavors and cuisines. Cooking is my way of expressing creativity and bringing joy to others through delicious meals."
+Michael,Johnson,pass,michael.johnson@example.com,REGULARUSER,
+Emily,Brown,pass,emily.brown@example.com,COOK,"Hi there! I'm Emily, and cooking is not just a hobby for me, it's a way to connect with people and create memories. I enjoy preparing comforting and healthy dishes for my loved ones."
+William,Anderson,pass,william.anderson@example.com,REGULARUSER,
+Sophia,Williams,pass,sophia.williams@example.com,COOK,"Hey, I'm Sophia! Cooking is my passion, and I believe that a good meal has the power to bring people closer together. Join me on this culinary journey!"
+James,Jones,pass,james.jones@example.com,REGULARUSER,
+Olivia,Lee,pass,olivia.lee@example.com,COOK,"Hi, I'm Olivia! I find joy in experimenting with fresh ingredients and creating delightful dishes. Cooking for others is my way of sharing happiness and warmth."
+Benjamin,Taylor,pass,benjamin.taylor@example.com,REGULARUSER,
+Ava,Miller,pass,ava.miller@example.com,COOK,"Hello, I'm Ava! Cooking is my creative outlet, and I love exploring diverse cuisines. Food brings people together, and I'm excited to share my culinary experiences with you."
+Mason,Johnson,pass,mason.johnson@example.com,REGULARUSER,
+Isabella,Martin,pass,isabella.martin@example.com,COOK,"Hey there! I'm Isabella, and cooking is my passion and a form of self-expression. I enjoy crafting delicious and visually appealing dishes that ignite the taste buds."

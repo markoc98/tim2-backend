@@ -99,10 +99,14 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Set<LimitingFactor> getLFfromRecipe(Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
-		List<Ingredient> ingredients = new ArrayList<>();
-		for(RecipeIngredient ri : recipe.getIngredients()) {
-			ingredients.add(ri.getIngredientId());
-		}
+//		List<Ingredient> ingredients = new ArrayList<>();
+//		for(RecipeIngredient ri : recipe.getIngredients()) {
+//			ingredients.add(ri.getIngredientId());
+//		}
+		
+		List<Ingredient> ingredients = recipe.
+				getIngredients().stream().map(e -> 
+				e.getIngredientId()).toList();
 		Set<LimitingFactor> limits = new HashSet<>();
 		for(Ingredient ing : ingredients) {
 			for(LimitingIngredient limIng : ing.getLimitingFactor()) {

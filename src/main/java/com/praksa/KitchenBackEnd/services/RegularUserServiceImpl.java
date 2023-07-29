@@ -40,13 +40,17 @@ public class RegularUserServiceImpl implements RegularUserService {
 		RegularUser user = (RegularUser) userRepository.findById(userId).get();
 		LimitingFactor lf = limFactorRepo.findById(lfId).get();
 		user.getLimitingFactor().add(lf);
-		return null;
+		userRepository.save(user);
+		return lf;
 	}
 
 	@Override
 	public LimitingFactor removeLimitingFactor(Long userId, Long lfId) {
-		// TODO Auto-generated method stub
-		return null;
+		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+		LimitingFactor lf = limFactorRepo.findById(lfId).get();
+		user.getLimitingFactor().remove(lf);
+		userRepository.save(user);
+		return lf;
 	}
 
 	@Override

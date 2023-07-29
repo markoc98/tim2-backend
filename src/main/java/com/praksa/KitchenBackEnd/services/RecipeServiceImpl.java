@@ -103,12 +103,12 @@ public class RecipeServiceImpl implements RecipeService {
 //		for(RecipeIngredient ri : recipe.getIngredients()) {
 //			ingredients.add(ri.getIngredientId());
 //		}
-		
 		List<Ingredient> ingredients = recipe.
 				getIngredients().stream().map(e -> 
 				e.getIngredientId()).toList();
+		
 		Set<LimitingFactor> limits = new HashSet<>();
-		for(Ingredient ing : ingredients) {
+		for(Ingredient ing : ingredients) { 
 			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
 				limits.add(limIng.getLimitingFactor());
 			}

@@ -32,7 +32,7 @@ public interface UserService {
 	/*-----------GET COOK-------------*/
 	public Cook getCookById(Long id);
 	public Iterable<Cook> getAllCooks();
-
+	public User getUserByUsername(String username);
 	
 	
 	

@@ -36,7 +36,5 @@ public interface UserService {
 	
 	
 	
-	
-	public RegularUser changeUser(RegularUserRegisterDTO dto);
-	
+		
 }

@@ -28,9 +28,16 @@ public class RecipeController {
 	@Autowired
 	private RecipeService recipeService;
 	
+	
+	// Test endpoint za "/home", za neulogovanog korisnika
+	@RequestMapping(method = RequestMethod.GET, path = "/")
+	public ResponseEntity<?> getAllRecipes() {
+		return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, path = "/recipes")
 	public ResponseEntity<?> getRecipes() {
-		return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.CREATED);
+		return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/recipes/{id}")

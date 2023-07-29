@@ -36,8 +36,10 @@ public class WebSecurityConfig {
 		http.cors().and().csrf().disable()
 //		http.csrf().disable()
 				.addFilterAfter(new JWTAuthorizationFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/project/users/login").permitAll().anyRequest()
-				.authenticated();
+				.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/api/v1/project/users/login", "/api/v1/project/register/regUser").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/v1/project/").anonymous()
+				.anyRequest().authenticated();
 		return http.build();
 	}
 }

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.praksa.KitchenBackEnd.models.dto.LoginDTO;
 import com.praksa.KitchenBackEnd.models.entities.User;
 import com.praksa.KitchenBackEnd.repositories.UserRepository;
+import com.praksa.KitchenBackEnd.services.UserService;
 import com.praksa.KitchenBackEnd.util.Encryption;
 
 import io.jsonwebtoken.Jwts;
@@ -38,6 +39,8 @@ public class LoginController {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private SecretKey secretKey;
 
@@ -62,7 +65,7 @@ public class LoginController {
 	@ResponseBody
 	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<?> login(@RequestParam("user") String username, @RequestParam("password") String pwd) {
-		User user = userRepository.findByUsername(username);
+		User user = userService.getUserByUsername(username);
 		if (user != null && Encryption.validatePassword(pwd, user.getPassword())) {
 			String token = getJWTToken(user);
 			LoginDTO login = new LoginDTO();

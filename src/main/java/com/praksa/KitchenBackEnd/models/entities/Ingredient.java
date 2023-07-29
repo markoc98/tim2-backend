@@ -35,12 +35,12 @@ public class Ingredient {
 	private String name;
 	private String unit;
 	private Integer calories;
-	private Integer carbs;
-	private Integer sugars;
-	private Integer fats;
+	private Float carbs;
+	private Float sugars;
+	private Float fats;
 	@Column(name = "saturated_fats")
-	private Integer saturatedFats;
-	private Integer proteins;
+	private Float saturatedFats;
+	private Float proteins;
 	
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JsonManagedReference
@@ -55,9 +55,9 @@ public class Ingredient {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Ingredient(Long id, Integer version, String name, String unit, Integer calories, Integer carbs,
-			Integer sugars, Integer fats, Integer saturatedFats, Integer proteins,
-			List<LimitingIngredient> limitingFactor, List<RecipeIngredient> recipes) {
+	public Ingredient(Long id, Integer version, String name, String unit, Integer calories, Float carbs, Float sugars,
+			Float fats, Float saturatedFats, Float proteins, List<LimitingIngredient> limitingFactor,
+			List<RecipeIngredient> recipes) {
 		super();
 		this.id = id;
 		this.version = version;
@@ -113,43 +113,43 @@ public class Ingredient {
 		this.calories = calories;
 	}
 
-	public Integer getCarbs() {
+	public Float getCarbs() {
 		return carbs;
 	}
 
-	public void setCarbs(Integer carbs) {
+	public void setCarbs(Float carbs) {
 		this.carbs = carbs;
 	}
 
-	public Integer getSugars() {
+	public Float getSugars() {
 		return sugars;
 	}
 
-	public void setSugars(Integer sugars) {
+	public void setSugars(Float sugars) {
 		this.sugars = sugars;
 	}
 
-	public Integer getFats() {
+	public Float getFats() {
 		return fats;
 	}
 
-	public void setFats(Integer fats) {
+	public void setFats(Float fats) {
 		this.fats = fats;
 	}
 
-	public Integer getSaturatedFats() {
+	public Float getSaturatedFats() {
 		return saturatedFats;
 	}
 
-	public void setSaturatedFats(Integer saturatedFats) {
+	public void setSaturatedFats(Float saturatedFats) {
 		this.saturatedFats = saturatedFats;
 	}
 
-	public Integer getProteins() {
+	public Float getProteins() {
 		return proteins;
 	}
 
-	public void setProteins(Integer proteins) {
+	public void setProteins(Float proteins) {
 		this.proteins = proteins;
 	}
 

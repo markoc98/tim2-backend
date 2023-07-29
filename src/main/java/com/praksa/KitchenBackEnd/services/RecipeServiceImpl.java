@@ -1,6 +1,8 @@
 package com.praksa.KitchenBackEnd.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
+import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
@@ -29,7 +32,7 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	
 
-	@Autowired
+	@Autowired 
 	private CookService cookService;
 
 	// recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
@@ -43,7 +46,6 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setTimeToPrepare(newRecipe.getTimeToPrepare());
 		recipe.setTitle(newRecipe.getTitle());
 		recipe.setDescription(newRecipe.getDescription());
-		recipeRepository.save(recipe);
 		return recipe;
 	}
 

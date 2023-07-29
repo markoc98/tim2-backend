@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 
 @Component
 public class StartupDatasetWrite implements ApplicationListener<ApplicationReadyEvent>{
@@ -35,18 +38,19 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 		logger.info("DDL Status: "  + ddlStatus);
 		if(ddlStatus.equals("update")) {
 			logger.info("Populating database");
-			InputStream resource;
-			CSVReader reader;
+//			InputStream resource;
+//			CSVReader reader;
 		
 				try {
-					resource = new ClassPathResource("data/ingredients.csv").getInputStream();
-					reader = new CSVReaderBuilder(new InputStreamReader(resource)).build();	
+					InputStream resource = new ClassPathResource("data/ingredients.csv").getInputStream();
+					CSVReader reader = new CSVReaderBuilder(new InputStreamReader(resource)).build();	
 					@SuppressWarnings({ "rawtypes", "unchecked" })
 					List<Ingredient> ingredients = new CsvToBeanBuilder(reader)
 							.withType(Ingredient.class)
 							.build().parse();
+					Set<LimitingFactor> limitingFactors = new HashSet<>();
 					for(Ingredient ingredient: ingredients) {
-						logger.info(ingredient.getName() + " " + ingredient.getCalories());
+						
 					}
 					logger.info("Number of ingredients " + ingredients.size());
 				} catch (IOException e) {

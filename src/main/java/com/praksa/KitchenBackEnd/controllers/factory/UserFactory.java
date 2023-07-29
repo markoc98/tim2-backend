@@ -8,6 +8,7 @@ import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.EUserRole;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.models.entities.User;
+import com.praksa.KitchenBackEnd.util.Encryption;
 
 
 
@@ -20,7 +21,7 @@ public class UserFactory {
 			Administrator admin = new Administrator();
 			
 			admin.setUsername(userDTO.getUsername());
-			admin.setPassword(userDTO.getPassword());
+			admin.setPassword(Encryption.getPassEncoded(userDTO.getPassword()));
 			admin.setRole(userDTO.getRole());
 			
 			return admin;
@@ -33,7 +34,7 @@ public class UserFactory {
 			regUser.setFirstName(regUserDTO.getFirstName());
 			regUser.setLastName(regUserDTO.getLastName());
 			regUser.setUsername(regUserDTO.getUsername());
-			regUser.setPassword(regUserDTO.getPassword());
+			regUser.setPassword(Encryption.getPassEncoded(regUserDTO.getPassword()));
 			regUser.setEmail(regUserDTO.getEmail());
 			regUser.setRole(regUserDTO.getRole());
 			
@@ -47,7 +48,7 @@ public class UserFactory {
 			cook.setFirstName(cookDTO.getFirstName());
 			cook.setLastName(cookDTO.getLastName());
 			cook.setUsername(cookDTO.getUsername());
-			cook.setPassword(cookDTO.getPassword());
+			cook.setPassword(Encryption.getPassEncoded(cookDTO.getPassword()));
 			cook.setEmail(cookDTO.getEmail());
 			cook.setRole(cookDTO.getRole());
 			

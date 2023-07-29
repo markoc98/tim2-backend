@@ -84,7 +84,7 @@ public class IngredientController {
 	public ResponseEntity<?> deleteIngredient(@PathVariable Long id) {
 	    Ingredient deletedIngredient = ingredientServiceImpl.deleteIngredient(id);
 	    if (deletedIngredient != null) {
-	        return new ResponseEntity<>("Ingredient is deleted", HttpStatus.OK);
+	        return new ResponseEntity<>(deletedIngredient, HttpStatus.OK);
 	    } else {
 	        return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Ingredient not found"), HttpStatus.NOT_FOUND);
 	    }

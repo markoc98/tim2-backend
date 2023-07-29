@@ -17,9 +17,6 @@ public class RegularUserController {
 	UserService userService;
 	
 	
-	@RequestMapping( method = RequestMethod.POST, path = "/userRegister")
-	public ResponseEntity<?> userRegister(UserRegisterDTO dto) {
-		return null;
-	}
+	
 	
 }

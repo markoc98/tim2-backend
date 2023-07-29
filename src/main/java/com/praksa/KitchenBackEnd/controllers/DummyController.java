@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
@@ -78,6 +79,20 @@ public class DummyController {
 		return new ResponseEntity<>(regUser, HttpStatus.OK);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, path = "/addIngredient")
+	public ResponseEntity<?> addIngredient(@RequestBody IngredientDTO ingredient) {
+		Ingredient ingredients = new Ingredient();
+		ingredients.setCalories(ingredient.getCalories());
+		ingredients.setCarbs(ingredient.getCarbs());
+		ingredients.setFats(ingredient.getFats());
+		ingredients.setName(ingredient.getName());
+		ingredients.setProteins(ingredient.getProteins());
+		ingredients.setSaturatedFats(ingredient.getSaturatedFats());
+		ingredients.setSugars(ingredient.getSugars());
+		ingredients.setUnit(ingredient.getUnit());
+		ingredientRepo.save(ingredients);
+		return new ResponseEntity<>(ingredients, HttpStatus.ACCEPTED);
+	}
 	
 	
 	

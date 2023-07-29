@@ -1,5 +1,9 @@
 package com.praksa.KitchenBackEnd.services;
 
-public interface RegularUserService {
+import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 
+public interface RegularUserService {
+	
+	
+	public LimitingFactor addLimitingFactor(Integer id);
 }

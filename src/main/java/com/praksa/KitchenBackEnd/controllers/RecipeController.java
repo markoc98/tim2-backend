@@ -46,6 +46,11 @@ public class RecipeController {
 	}
 	
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/getLfFrom/{id}")
+	public ResponseEntity<?> getLfFromRecipe(@PathVariable Long id) {
+		return new ResponseEntity<>(recipeService.getLFfromRecipe(id), HttpStatus.OK);
+	}
+	
 	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
 	@PostMapping(path = "/recipes")
 	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {

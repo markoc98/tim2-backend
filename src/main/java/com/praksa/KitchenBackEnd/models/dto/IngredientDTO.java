@@ -1,6 +1,10 @@
 package com.praksa.KitchenBackEnd.models.dto;
 
+import java.util.List;
+
 import javax.persistence.Column;
+
+import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 
 public class IngredientDTO {
 	
@@ -12,6 +16,8 @@ public class IngredientDTO {
 	private Float fats;
 	private Float saturatedFats;
 	private Float proteins;
+	private List<LimitingFactor> limFactors;
+	
 	public IngredientDTO() {
 		super();
 		// TODO Auto-generated constructor stub

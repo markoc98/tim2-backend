@@ -3,7 +3,10 @@ package com.praksa.KitchenBackEnd.services;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
+import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
+import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 
 @Service
@@ -30,7 +37,8 @@ public class RecipeServiceImpl implements RecipeService {
 	@Autowired
 	IngredientRepository ingredientRepository;
 	
-	
+	@Autowired
+	LimitingIngredientRepository limIngredientRepo;
 
 	@Autowired 
 	private CookService cookService;
@@ -87,5 +95,25 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeRepository.save(recipe);
 		return recipe;
 	}
+
+	@Override
+	public Set<LimitingFactor> getLFfromRecipe(Long id) {
+		Recipe recipe = recipeRepository.findById(id).get();
+		List<Ingredient> ingredients = new ArrayList<>();
+		for(RecipeIngredient ri : recipe.getIngredients()) {
+			ingredients.add(ri.getIngredientId());
+		}
+		Set<LimitingFactor> limits = new HashSet<>();
+		for(Ingredient ing : ingredients) {
+			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
+				limits.add(limIng.getLimitingFactor());
+			}
+		}
+	
+		return limits;
+	}
+	
+	
+	
 
 }

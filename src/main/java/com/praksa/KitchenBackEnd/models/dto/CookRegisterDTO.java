@@ -8,6 +8,10 @@ public class CookRegisterDTO extends UserRegisterDTO {
 	private String firstName;
 	
 	private String lastName;
+	
+	private String email;
+	
+	private String aboutMe;
 
 	public CookRegisterDTO() {
 		super();
@@ -19,10 +23,12 @@ public class CookRegisterDTO extends UserRegisterDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CookRegisterDTO(String firstName, String lastName) {
+	public CookRegisterDTO(String firstName, String lastName, String email, String aboutMe) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
+		this.aboutMe = aboutMe;
 	}
 
 	public String getFirstName() {
@@ -40,6 +46,24 @@ public class CookRegisterDTO extends UserRegisterDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getAboutMe() {
+		return aboutMe;
+	}
+
+	public void setAboutMe(String aboutMe) {
+		this.aboutMe = aboutMe;
+	}
+	
+	
 
 	
 	

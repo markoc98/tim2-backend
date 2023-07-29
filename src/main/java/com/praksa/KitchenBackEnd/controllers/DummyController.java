@@ -51,7 +51,11 @@ public class DummyController {
 	}
 	
 	
-	
+	@RequestMapping(method = RequestMethod.GET, path ="/findIng/{name}")
+	public ResponseEntity<?> findIng(@PathVariable String name) {
+		Ingredient ing = ingredientRepo.findByNameStartingWith(name);
+		return new ResponseEntity<>(ing, HttpStatus.OK);
+	}
 	
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/affectedBy/{lfId}")

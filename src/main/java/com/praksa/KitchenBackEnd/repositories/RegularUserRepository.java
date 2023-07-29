@@ -6,4 +6,6 @@ import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 
 public interface RegularUserRepository extends CrudRepository<RegularUser, Long> {
 
+	
+	
 }

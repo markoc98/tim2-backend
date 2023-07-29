@@ -41,15 +41,19 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 	
-	@Override
+
 	public User getUserByUsername(String username) {
 		User user = userRepository.findByUsername(username);
 		return user;
 	}
 	
+
 	
 	
 	
+
+
+
 	/*------------------POST-----------------*/
 	@Override
 	public RegularUser addUser(RegularUserRegisterDTO dto) {

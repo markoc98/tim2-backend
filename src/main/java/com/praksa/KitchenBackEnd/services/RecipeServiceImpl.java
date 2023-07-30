@@ -89,6 +89,7 @@ public class RecipeServiceImpl implements RecipeService {
 		nutrition.put("fats", 0.00f);
 		nutrition.put("saturatedFats", 0.00f); 
 		nutrition.put("sugars", 0.00f);
+		nutrition.put("calories", 0.00f);
 		
 		for (Ingredient ingredient : ingredients) {
 			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
@@ -102,11 +103,12 @@ public class RecipeServiceImpl implements RecipeService {
 				entry.setValue(entry.getValue() + ingredient.getSaturatedFats());
 				} else if(entry.getKey() == "sugars") {
 				entry.setValue(entry.getValue() + ingredient.getSugars());
+				} else if(entry.getKey() == "calories") {
+				entry.setValue(entry.getValue() + ingredient.getCalories());
 				}
 			}
 		}
 			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
-				
 				entry.setValue(entry.getValue() * amount/100);
 			}
 		
@@ -204,6 +206,7 @@ public class RecipeServiceImpl implements RecipeService {
 		retVal.setTitle(recipe.getTitle());
 		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
 		retVal.setLimitingFactors(limits);
+		retVal.setIngredients(recipe.getIngredients());
 		retVal.setNutrition(nutrition);
 		// vrati recept i njegove alergene
 		return retVal;

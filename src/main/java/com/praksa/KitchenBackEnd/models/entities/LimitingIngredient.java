@@ -42,7 +42,7 @@ public class LimitingIngredient {
 		this.limitingFactor = limitingFactor;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

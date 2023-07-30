@@ -6,8 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -60,10 +63,10 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 				@SuppressWarnings({ "rawtypes", "unchecked" })
 				Set<LimitingFactor> limits = new HashSet<>(
 						new CsvToBeanBuilder(readerLimitingFactors).withType(LimitingFactor.class).build().parse());
-				logger.info("Writin Limiting Factors...");
+				logger.info("Writing Limiting Factors...");
 				lfRepo.saveAll(limits);
 				readerLimitingFactors.close();
-				logger.info("Done writin Limiting Factors");
+				logger.info("Done writing Limiting Factors");
 
 				// Citanje i pisanje sastojaka
 				InputStream resourceIngredients = new ClassPathResource("data/ingredients.csv").getInputStream();
@@ -71,7 +74,7 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 				@SuppressWarnings({ "rawtypes", "unchecked" })
 				List<IngredientStartupDTO> ingredients = new CsvToBeanBuilder(readerIngredients)
 						.withType(IngredientStartupDTO.class).build().parse();
-				logger.info("Writin Ingredients...");
+				logger.info("Writing Ingredients...");
 				for (IngredientStartupDTO ingredient : ingredients) {
 					Ingredient in = new Ingredient();
 					in.setName(ingredient.getName());
@@ -83,24 +86,37 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 					in.setSugars(ingredient.getSugars());
 					in.setProteins(ingredient.getProteins());
 					in = ingredientRepository.save(in);
-
-//					for (String i : ingredient.getLimitingFactors()) {
-//						
-//						
-//							if (lfRepo.existsByName(i)) {
-//								LimitingIngredient li = new LimitingIngredient();
-//								LimitingFactor lf = lfRepo.findByName(i);
-//
-//								li.setIngredients(in);
-//								li.setLimitingFactor(lf);
-//								logger.info("LI write" + li.toString());
-//								limitingIngredientRepo.save(li);
-//							}
-//						
-//					}
 				}
-				logger.info("Done writin Ingredients");
+				logger.info("Done writing Ingredients");
 				readerIngredients.close();
+
+				// Povezivanje sastojka i ogranicenja
+
+				List<Ingredient> ingredientsDB = (List<Ingredient>) ingredientRepository.findAll();
+				Map<String, IngredientStartupDTO> ingredientsStartupDTOMap = new HashMap<>();
+				for (IngredientStartupDTO in : ingredients) {
+					ingredientsStartupDTOMap.put(in.getName(), in);
+				}
+				logger.info("Writing Ingredient -> LimitingFactor connections...");
+				for (Ingredient in : ingredientsDB) {
+					List<String> templateLimitingFactors = (ingredientsStartupDTOMap.get(in.getName()))
+							.getLimitingFactors().stream().map(e -> e.trim()).toList();
+					List<LimitingIngredient> limitsForIn = templateLimitingFactors.stream().map(e -> {
+						LimitingIngredient li = new LimitingIngredient();
+						LimitingFactor lf = lfRepo.findByName(e);
+						li.setLimitingFactor(lf);
+						li.setIngredients(in);
+
+						return li;
+					}).filter(e -> e.getLimitingFactor() != null).toList();
+					in.setLimitingFactor(limitsForIn);
+//					ingredientRepository.save(in);
+					limitingIngredientRepo.saveAll(in.getLimitingFactor());
+				}
+
+//				ingredientRepository.saveAll(ingredientsDB);
+				logger.info("Done writing connections");
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

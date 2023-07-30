@@ -34,7 +34,7 @@ public class LimitingFactor {
 	private Integer version;
 	@Column(nullable = false)
 	@NotBlank(message = "Limiting/prohibiting factor in ingredients must have a name.")
-	@CsvBindByName(column = "Limiting Factors", capture = "[0-9]* *([a-zA-Z]+)")
+	@CsvBindByName(column = "Limiting Factors")
 	private String name;
 	
 	

@@ -3,6 +3,7 @@ package com.praksa.KitchenBackEnd.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +16,12 @@ import com.praksa.KitchenBackEnd.models.dto.RegularUserRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Administrator;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
+import com.praksa.KitchenBackEnd.models.entities.User;
 import com.praksa.KitchenBackEnd.repositories.AdministratorRepository;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
 import com.praksa.KitchenBackEnd.repositories.UserRepository;
+import com.praksa.KitchenBackEnd.runtimeException.UserNotFoundException;
 import com.praksa.KitchenBackEnd.services.UserService;
 import com.praksa.KitchenBackEnd.services.UserServiceImpl;
 
@@ -51,4 +54,122 @@ public class UserRegisterController {
 		
 		return new ResponseEntity<>(userService.addCook(cookDTO), HttpStatus.CREATED);
 	}
+	// ------------------------Update za Regular Usera --------------------------------//
+	@RequestMapping(method = RequestMethod.PUT, value="/regUserUpdate/{id}")
+	public ResponseEntity<?> updateRegularUser(@RequestBody RegularUserRegisterDTO updateRegularUser,@PathVariable Long id){
+		try {
+			RegularUser regUser = userService.updateRegularUser(updateRegularUser, id);
+			return new ResponseEntity<>(regUser , HttpStatus.OK);
+	    } catch (UserNotFoundException e) {
+	        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	
+	}
+	//----------------------Delete za Regular Usera------------------------------------//
+	@RequestMapping(method = RequestMethod.DELETE, value="/deleteRegUserFromDB/{id}")
+	public ResponseEntity<?> deleteRegluarUser(@PathVariable Long id){
+		try {	
+			RegularUser regUser = userService.deleteRegularUser(id);
+			return new ResponseEntity<>("User was deleted", HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	
+	
+	//----------------------GET za Regular Usera po Id-ju-------------------------------------//
+	@RequestMapping(method = RequestMethod.GET, value="/getRegUser/{id}")
+	public ResponseEntity<?> getRegUserById(@PathVariable Long id){
+		try {
+			RegularUser regUser = userService.getRegularUserById(id);
+			return new ResponseEntity<>(regUser , HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	//----------------------GET za sve Regluar Usere-------------------------------------//
+	@RequestMapping(method = RequestMethod.GET, value="/getRegUsers")
+	public ResponseEntity<?> getAllRegUses(){
+		try {
+			Iterable<RegularUser> regUsers = userService.getAllRegluarUsers();
+			return new ResponseEntity<>(regUsers , HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("Users not found", HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	//----------------------GET za COOK po id-ju-------------------------------------//
+
+	@RequestMapping(method = RequestMethod.GET, value="/getCook/{id}")
+	public ResponseEntity<?> getCookById(@PathVariable Long id){
+		try {
+			Cook getCookbyId = userService.getCookById(id);
+			return new ResponseEntity<>(getCookbyId , HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("Cook not found with id: " + id, HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	//----------------------GET za sve Cooks-------------------------------------//
+	@RequestMapping(method = RequestMethod.GET, value="/getCooks")
+	public ResponseEntity<?> getAllCooks(){
+		try {
+			Iterable<Cook> getAllCooks = userService.getAllCooks();
+			return new ResponseEntity<>(getAllCooks , HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("Users not found", HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	
+	//----------------------Delete za COOK------------------------------------//
+	@RequestMapping(method = RequestMethod.DELETE, value="/deleteCook/{id}")
+	public ResponseEntity<?> deleteCook(@PathVariable Long id){
+		try {	
+			userService.deleteCook(id);
+			return new ResponseEntity<>("Cook was deleted", HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
+	//----------------------Update za COOK------------------------------------//
+	@RequestMapping(method = RequestMethod.PUT, value="/updateCook/{id}")
+	public ResponseEntity<?> updateCook(@RequestBody CookRegisterDTO updateCook,@PathVariable Long id){
+		try {
+			Cook cook = userService.updateCook(updateCook, id);
+			return new ResponseEntity<>(cook , HttpStatus.OK);
+	    } catch (UserNotFoundException e) {
+	        return new ResponseEntity<>("Cook not found with id: " + id, HttpStatus.NOT_FOUND);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	
+	}
+	
+	
+	// GET UPDATE I DELETE ZA REGLUAR USERA 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

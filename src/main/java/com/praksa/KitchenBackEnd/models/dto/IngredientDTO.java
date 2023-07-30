@@ -12,10 +12,6 @@ public class IngredientDTO {
 	private Float fats;
 	private Float saturatedFats;
 	private Float proteins;
-	public IngredientDTO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	public IngredientDTO(String name, String unit, Integer calories, Float carbs, Float sugars, Float fats,
 			Float saturatedFats, Float proteins) {
 		super();
@@ -27,6 +23,9 @@ public class IngredientDTO {
 		this.fats = fats;
 		this.saturatedFats = saturatedFats;
 		this.proteins = proteins;
+	}
+	public IngredientDTO() {
+		super();
 	}
 	public String getName() {
 		return name;
@@ -76,6 +75,9 @@ public class IngredientDTO {
 	public void setProteins(Float proteins) {
 		this.proteins = proteins;
 	}
+	
+	
+
 	
 	
 	

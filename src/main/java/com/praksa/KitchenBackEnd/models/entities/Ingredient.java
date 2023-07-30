@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.opencsv.bean.CsvBindByName;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -31,15 +32,22 @@ public class Ingredient {
 	@JsonIgnore
 	private Integer version;
 	
-	
+//	@CsvBindByName(column = "Name")
 	private String name;
+//	@CsvBindByName(column = "Unit")
 	private String unit;
+//	@CsvBindByName(column = "Calories (kcal)")
 	private Integer calories;
+//	@CsvBindByName(column = "Carbohydrates")
 	private Float carbs;
+//	@CsvBindByName(column = "Sugars")
 	private Float sugars;
+//	@CsvBindByName(column = "Fats")
 	private Float fats;
 	@Column(name = "saturated_fats")
+//	@CsvBindByName(column = "Saturated Fats")
 	private Float saturatedFats;
+//	@CsvBindByName(column = "Proteins")
 	private Float proteins;
 	
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -171,7 +179,9 @@ public class Ingredient {
 
 	@Override
 	public String toString() {
+
 		return "carbs proteins sugars fats saturatedFats ";
+
 	}
 
 	

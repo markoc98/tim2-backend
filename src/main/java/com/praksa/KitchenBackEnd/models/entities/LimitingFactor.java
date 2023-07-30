@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.opencsv.bean.CsvBindByName;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -33,6 +34,7 @@ public class LimitingFactor {
 	private Integer version;
 	@Column(nullable = false)
 	@NotBlank(message = "Limiting/prohibiting factor in ingredients must have a name.")
+	@CsvBindByName(column = "Limiting Factors")
 	private String name;
 	
 	
@@ -123,6 +125,13 @@ public class LimitingFactor {
 
 	public void setAffectedUser(Set<RegularUser> affectedUser) {
 		this.affectedUser = affectedUser;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "LimitingFactor [id=" + id + ", name=" + name + ", ingredients=" + ingredients + "]";
 	}
 
 	

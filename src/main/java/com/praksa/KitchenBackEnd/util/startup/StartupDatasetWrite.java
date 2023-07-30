@@ -110,12 +110,13 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 						return li;
 					}).filter(e -> e.getLimitingFactor() != null).toList();
 					in.setLimitingFactor(limitsForIn);
-//					ingredientRepository.save(in);
+
 					limitingIngredientRepo.saveAll(in.getLimitingFactor());
 				}
 
-//				ingredientRepository.saveAll(ingredientsDB);
 				logger.info("Done writing connections");
+				logger.info("Writing users...");
+				
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

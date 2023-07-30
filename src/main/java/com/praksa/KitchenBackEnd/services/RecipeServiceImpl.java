@@ -28,6 +28,7 @@ import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 
 @Service
@@ -41,6 +42,9 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	@Autowired
 	private LimitingIngredientRepository limIngredientRepo;
+	
+	@Autowired
+	private RecipeIngredientRepository recipeIngreRepo;
 
 	@Autowired 
 	private CookService cookService;
@@ -112,25 +116,24 @@ public class RecipeServiceImpl implements RecipeService {
 				entry.setValue(entry.getValue() * amount/100);
 			}
 		
-		
-		
-		
 		return nutrition;
 	}
 	
 
-	// recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
-	// Morao dodati cookId, zbog prosledjivanja servisu
-	public Recipe createRecipe(RecipeDTO newRecipe, Long cookId) {
+	
+	@Override
+	public RecipeDTO createRecipe(RecipeDTO newRecipe, Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = cookService.getCook(cookId);
+		Ingredient ingredient = new Ingredient();
 		recipe.setAmount(newRecipe.getAmount());
 		recipe.setCook(cook);
 		recipe.setSteps(newRecipe.getSteps());
 		recipe.setTimeToPrepare(newRecipe.getTimeToPrepare());
 		recipe.setTitle(newRecipe.getTitle());
 		recipe.setDescription(newRecipe.getDescription());
-		return recipe;
+		
+		return newRecipe;
 	}
 
 	@Override
@@ -175,10 +178,6 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Set<LimitingFactor> getLFfromRecipe(Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
-//		List<Ingredient> ingredients = new ArrayList<>();
-//		for(RecipeIngredient ri : recipe.getIngredients()) {
-//			ingredients.add(ri.getIngredientId());
-//		}
 		List<Ingredient> ingredients = recipe.
 				getIngredients().stream().map(e -> 
 				e.getIngredientId()).toList();

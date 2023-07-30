@@ -32,7 +32,6 @@ public class RecipeIngredient {
 	@JoinColumn(name = "ingredientId")
 	private Ingredient ingredientId;
 	
-	@JsonPropertyOrder({"id", "amount"})
 	private Integer amount;
 
 	public RecipeIngredient() {

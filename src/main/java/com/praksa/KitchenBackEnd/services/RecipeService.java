@@ -11,7 +11,7 @@ import com.praksa.KitchenBackEnd.models.entities.Recipe;
 public interface RecipeService {
 	
 	
-	public Recipe createRecipe(RecipeDTO dto, Long id);
+	public RecipeDTO createRecipe(RecipeDTO dto, Long id);
 	public Iterable<Recipe> getRecipes();
 	public Recipe getRecipe(Long id);
 	public Recipe deleteRecipe(Long id);

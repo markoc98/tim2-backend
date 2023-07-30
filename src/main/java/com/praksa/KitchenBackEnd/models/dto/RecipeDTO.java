@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
+
 
 public class RecipeDTO {
 	
@@ -20,6 +22,7 @@ public class RecipeDTO {
 	private Set<LimitingFactor> limitingFactors;
 	private List<RecipeIngredient> ingredients;
 	private Map<String, Float> nutrition;
+	private RecipeIngredient[] ingredientAmount;
 	
 	public RecipeDTO() {
 		super();
@@ -27,7 +30,8 @@ public class RecipeDTO {
 	}
 
 	public RecipeDTO(Long id, String title, String description, String steps, Integer amount, Integer timeToPrepare,
-			Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients, Map<String, Float> nutrition) {
+			Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients, Map<String, Float> nutrition,
+			RecipeIngredient[] ingredientAmount) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -38,6 +42,7 @@ public class RecipeDTO {
 		this.limitingFactors = limitingFactors;
 		this.ingredients = ingredients;
 		this.nutrition = nutrition;
+		this.ingredientAmount = ingredientAmount;
 	}
 
 	public Long getId() {
@@ -112,6 +117,15 @@ public class RecipeDTO {
 		this.nutrition = nutrition;
 	}
 
+	public RecipeIngredient[] getIngredientAmount() {
+		return ingredientAmount;
+	}
+
+	public void setIngredientAmount(RecipeIngredient[] ingredientAmount) {
+		this.ingredientAmount = ingredientAmount;
+	}
+	
+	
 
 	
 	

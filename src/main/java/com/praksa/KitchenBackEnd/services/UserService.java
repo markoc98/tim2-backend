@@ -31,10 +31,12 @@ public interface UserService {
 	public Iterable<RegularUser> getAllRegluarUsers();
 	/*-----------GET COOK-------------*/
 	public Cook getCookById(Long id);
+	
 	public Iterable<Cook> getAllCooks();
-//	public User getUserByUsername(String username);
+	
+	public User getUserByUsername(String username);
 	
 	
-	
+}
 	
 

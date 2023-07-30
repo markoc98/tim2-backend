@@ -6,8 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 
-public interface LimitingIngredientRepository extends CrudRepository<LimitingIngredient, Long> {
-	
-	
-	public List<LimitingIngredient> findAllByIngredients(Long id);
+public interface LimitingIngredientRepository extends CrudRepository<LimitingIngredient, Long>{
+
+	List<LimitingIngredient> findByIngredients(Long id);
 }

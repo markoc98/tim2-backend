@@ -46,11 +46,6 @@ public class RecipeController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/getLfFrom/{id}")
-	public ResponseEntity<?> getLfFromRecipe(@PathVariable Long id) {
-		return new ResponseEntity<>(recipeService.getLFfromRecipe(id), HttpStatus.OK);
-	}
-	
 	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
 	@PostMapping(path = "/recipes")
 	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
@@ -66,5 +61,15 @@ public class RecipeController {
 	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
 		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
 	}
+	
+	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//
+	
+	
+	@GetMapping(path = "/recipeLF/{recId}")
+	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
+		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLf(recId), HttpStatus.OK);
+	}
+	
+	
 }
 

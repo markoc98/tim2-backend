@@ -17,6 +17,8 @@ public interface RecipeService {
 	public Recipe deleteRecipe(Long id);
 	public Recipe updateRecipe(RecipeDTO recipe, Long id);
 	
+	public RecipeDTO getRecipeLf(Long id);
+	
 	public Set<LimitingFactor> getLFfromRecipe(Long id);
 	
 }

@@ -117,6 +117,36 @@ public class RecipeServiceImpl implements RecipeService {
 		return limits;
 	}
 	
+	@Override
+	public RecipeDTO getRecipeLf(Long id) {
+		
+		//Instanciraj recept
+		Recipe recipe =  recipeRepository.findById(id).get();
+		
+		// Izvuci sastojke iz recepta
+		List<Ingredient> ingredients = recipe.
+				getIngredients().stream().map(e ->
+				e.getIngredientId()).toList();
+		
+		// Izvicu alergene iz sastojaka
+		Set<LimitingFactor> limits = new HashSet<>();
+		for(Ingredient ing : ingredients) { 
+			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
+				limits.add(limIng.getLimitingFactor());
+			}
+		}
+		// uvuci sve to u dto
+		RecipeDTO retVal = new RecipeDTO();
+		retVal.setId(id);
+		retVal.setAmount(recipe.getAmount());
+		retVal.setDescription(recipe.getDescription());
+		retVal.setSteps(recipe.getSteps());
+		retVal.setTitle(recipe.getTitle());
+		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
+		retVal.setLimitingFactors(limits);
+		// vrati recept i njegove alergene
+		return retVal;
+	}
 	
 	
 

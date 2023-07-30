@@ -42,7 +42,7 @@ public class LimitingIngredient {
 		this.limitingFactor = limitingFactor;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -64,6 +64,12 @@ public class LimitingIngredient {
 
 	public void setLimitingFactor(LimitingFactor limitingFactor) {
 		this.limitingFactor = limitingFactor;
+	}
+
+	@Override
+	public String toString() {
+		return "LimitingIngredient [id=" + id +  ", limitingFactor=" + limitingFactor
+				+ "]";
 	}
 	
 	

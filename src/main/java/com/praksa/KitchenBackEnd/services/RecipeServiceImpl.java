@@ -74,13 +74,15 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	//RACUNANJE HRANLJIVOSTI SASTOJAKA
 	private Map<String, Float> calculateNutrition(Recipe recipe) {
-		Integer amount = 0;
 		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
+		Integer amount = 0;
+		
 		for (RecipeIngredient recIng : recipe.getIngredients()) {
 			if(ingredients.contains(recIng.getIngredientId())) {
-				amount += recIng.getAmount();
+					amount += recIng.getAmount();
+				}
 			}
-		}
+		
 		Map<String, Float> nutrition = new HashMap<>();
 		nutrition.put("proteins", 0.00f);
 		nutrition.put("carbs", 0.00f);
@@ -101,9 +103,14 @@ public class RecipeServiceImpl implements RecipeService {
 				} else if(entry.getKey() == "sugars") {
 				entry.setValue(entry.getValue() + ingredient.getSugars());
 				}
-				}
-			
+			}
 		}
+			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
+				
+				entry.setValue(entry.getValue() * amount/100);
+			}
+		
+		
 		
 		
 		return nutrition;

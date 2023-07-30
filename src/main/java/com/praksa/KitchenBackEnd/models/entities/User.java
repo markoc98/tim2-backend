@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.opencsv.bean.CsvBindByName;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -35,18 +36,21 @@ public class User {
 	@Column(nullable = false, unique = true)
 	@NotBlank(message = "Username must be provided")
 	@Size(min = 5, max = 20, message = "Username must be between {min} and {max} characters long.")
+	@CsvBindByName(column = "Username")
 	private String username;
 	
 	@JsonIgnore
 	@NotBlank(message = "Password must be provided.")
 	@Size(min = 4, max = 100, message = "Password must be between {min} and {max} characters long.")
 	@Column(nullable = false, length = 100)
+	@CsvBindByName(column = "Password")
 	private String password;
 	
 	
 	
 	@Column
 	@Enumerated(EnumType.STRING)
+	@CsvBindByName(column = "Role")
 	private EUserRole role;
 
 	@Version

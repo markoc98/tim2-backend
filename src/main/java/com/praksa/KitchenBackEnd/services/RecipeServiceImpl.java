@@ -3,9 +3,11 @@ package com.praksa.KitchenBackEnd.services;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +34,81 @@ import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 public class RecipeServiceImpl implements RecipeService {
 	
 	@Autowired
-	RecipeRepository recipeRepository;
+	private RecipeRepository recipeRepository;
 	
 	@Autowired
-	IngredientRepository ingredientRepository;
+	private IngredientRepository ingredientRepository;
 	
 	@Autowired
-	LimitingIngredientRepository limIngredientRepo;
+	private LimitingIngredientRepository limIngredientRepo;
 
 	@Autowired 
 	private CookService cookService;
+	
+	//IZLVACENJE ALERGENA
+	private Set<LimitingFactor> extractLF(Recipe recipe) {
+		
+		List<Ingredient> ingredients = recipe.
+				getIngredients().stream().map(e -> 
+				e.getIngredientId()).toList();
+		
+		Set<LimitingFactor> limits = new HashSet<>();
+		for(Ingredient ing : ingredients) { 
+			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
+				limits.add(limIng.getLimitingFactor());
+			}
+		}
+	
+		return limits;
+	}
+	
+	//IZVLACENJE SASTOJAKA
+	private List<Ingredient> extractIng(Recipe recipe) {
+
+		List<Ingredient> ingredients = recipe.
+				getIngredients().stream().map(e -> 
+				e.getIngredientId()).toList();
+		
+		return ingredients;
+	}
+	
+	//RACUNANJE HRANLJIVOSTI SASTOJAKA
+	private Map<String, Float> calculateNutrition(Recipe recipe) {
+		Integer amount = 0;
+		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
+		for (RecipeIngredient recIng : recipe.getIngredients()) {
+			if(ingredients.contains(recIng.getIngredientId())) {
+				amount += recIng.getAmount();
+			}
+		}
+		Map<String, Float> nutrition = new HashMap<>();
+		nutrition.put("proteins", 0.00f);
+		nutrition.put("carbs", 0.00f);
+		nutrition.put("fats", 0.00f);
+		nutrition.put("saturatedFats", 0.00f); 
+		nutrition.put("sugars", 0.00f);
+		
+		for (Ingredient ingredient : ingredients) {
+			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
+				if(entry.getKey() == "proteins") {
+				entry.setValue(entry.getValue() + ingredient.getProteins());
+				} else if(entry.getKey() == "carbs") {
+				entry.setValue(entry.getValue() + ingredient.getCarbs());
+				} else if(entry.getKey() == "fats") {
+				entry.setValue(entry.getValue() + ingredient.getFats());
+				}else if(entry.getKey() == "saturatedFats") {
+				entry.setValue(entry.getValue() + ingredient.getSaturatedFats());
+				} else if(entry.getKey() == "sugars") {
+				entry.setValue(entry.getValue() + ingredient.getSugars());
+				}
+				}
+			
+		}
+		
+		
+		return nutrition;
+	}
+	
 
 	// recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
 	// Morao dodati cookId, zbog prosledjivanja servisu
@@ -119,23 +186,9 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	@Override
 	public RecipeDTO getRecipeLf(Long id) {
-		
-		//Instanciraj recept
-		Recipe recipe =  recipeRepository.findById(id).get();
-		
-		// Izvuci sastojke iz recepta
-		List<Ingredient> ingredients = recipe.
-				getIngredients().stream().map(e ->
-				e.getIngredientId()).toList();
-		
-		// Izvicu alergene iz sastojaka
-		Set<LimitingFactor> limits = new HashSet<>();
-		for(Ingredient ing : ingredients) { 
-			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
-				limits.add(limIng.getLimitingFactor());
-			}
-		}
-		// uvuci sve to u dto
+		Recipe recipe = recipeRepository.findById(id).get();
+		Set<LimitingFactor> limits = new HashSet<>(extractLF(recipe));
+		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
 		RecipeDTO retVal = new RecipeDTO();
 		retVal.setId(id);
 		retVal.setAmount(recipe.getAmount());
@@ -144,9 +197,11 @@ public class RecipeServiceImpl implements RecipeService {
 		retVal.setTitle(recipe.getTitle());
 		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
 		retVal.setLimitingFactors(limits);
+		retVal.setNutrition(nutrition);
 		// vrati recept i njegove alergene
 		return retVal;
 	}
+	
 	
 	
 

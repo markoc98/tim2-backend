@@ -169,6 +169,11 @@ public class Ingredient {
 		this.recipes = recipes;
 	}
 
+	@Override
+	public String toString() {
+		return "carbs proteins sugars fats saturatedFats ";
+	}
+
 	
 
 }

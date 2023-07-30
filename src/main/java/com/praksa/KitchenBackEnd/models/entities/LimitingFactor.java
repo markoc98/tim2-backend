@@ -127,6 +127,13 @@ public class LimitingFactor {
 		this.affectedUser = affectedUser;
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "LimitingFactor [id=" + id + ", name=" + name + ", ingredients=" + ingredients + "]";
+	}
+
 	
 	
 	

@@ -24,62 +24,88 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
+import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
+import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingFactorRepository;
+import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 
 @Component
-public class StartupDatasetWrite implements ApplicationListener<ApplicationReadyEvent>{
+public class StartupDatasetWrite implements ApplicationListener<ApplicationReadyEvent> {
 
-	
 	private static final Logger logger = Logger.getLogger(StartupDatasetWrite.class.getName());
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	String ddlStatus;
-	
+
 	@Autowired
 	private LimitingFactorRepository lfRepo;
+	@Autowired
+	private LimitingIngredientRepository limitingIngredientRepo;
+	@Autowired
+	private IngredientRepository ingredientRepository;
 
 	@Override
-	public void onApplicationEvent(ApplicationReadyEvent event){
-		logger.info("DDL Status: "  + ddlStatus);
-		if(ddlStatus.equals("update")) {
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		logger.info("DDL Status: " + ddlStatus);
+		if (ddlStatus.equals("create")) {
 			logger.info("Populating database");
 //			InputStream resource;
 //			CSVReader reader;
-		
-				try {
-					
-					// Citanje i pisanje ogranicavajucih faktora
-					InputStream resourceLimitingFactors = new ClassPathResource("data/factors.csv").getInputStream();
-					CSVReader readerLimitingFactors = new CSVReaderBuilder(new InputStreamReader(resourceLimitingFactors)).build();
-					@SuppressWarnings({ "rawtypes", "unchecked" })
-					Set<LimitingFactor> limits = new HashSet<>(new CsvToBeanBuilder(readerLimitingFactors)
-							.withType(LimitingFactor.class)
-							.build().parse());
-					logger.info("Writin Limiting Factors...");
-					lfRepo.saveAll(limits);
-					readerLimitingFactors.close();
-					logger.info("Done writin Limiting Factors");
-					
-					// Citanje i pisanje sastojaka
-					InputStream resourceIngredients = new ClassPathResource("data/ingredients.csv").getInputStream();
-					CSVReader readerIngredients = new CSVReaderBuilder(new InputStreamReader(resourceIngredients)).build();	
-					@SuppressWarnings({ "rawtypes", "unchecked" })
-					List<IngredientStartupDTO> ingredients = new CsvToBeanBuilder(readerIngredients)
-							.withType(IngredientStartupDTO.class)
-							.build().parse();
-					logger.info("Writin Ingredients...");
-					for(IngredientStartupDTO ingredient: ingredients) {
-						
-					}
-					logger.info("Done writin Ingredients");
-					readerIngredients.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
+			try {
+
+				// Citanje i pisanje ogranicavajucih faktora
+				InputStream resourceLimitingFactors = new ClassPathResource("data/factors.csv").getInputStream();
+				CSVReader readerLimitingFactors = new CSVReaderBuilder(new InputStreamReader(resourceLimitingFactors))
+						.build();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				Set<LimitingFactor> limits = new HashSet<>(
+						new CsvToBeanBuilder(readerLimitingFactors).withType(LimitingFactor.class).build().parse());
+				logger.info("Writin Limiting Factors...");
+				lfRepo.saveAll(limits);
+				readerLimitingFactors.close();
+				logger.info("Done writin Limiting Factors");
+
+				// Citanje i pisanje sastojaka
+				InputStream resourceIngredients = new ClassPathResource("data/ingredients.csv").getInputStream();
+				CSVReader readerIngredients = new CSVReaderBuilder(new InputStreamReader(resourceIngredients)).build();
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				List<IngredientStartupDTO> ingredients = new CsvToBeanBuilder(readerIngredients)
+						.withType(IngredientStartupDTO.class).build().parse();
+				logger.info("Writin Ingredients...");
+				for (IngredientStartupDTO ingredient : ingredients) {
+					Ingredient in = new Ingredient();
+					in.setName(ingredient.getName());
+					in.setUnit(ingredient.getUnit());
+					in.setCalories(ingredient.getCalories());
+					in.setCarbs(ingredient.getCarbs());
+					in.setFats(ingredient.getFats());
+					in.setSaturatedFats(ingredient.getSaturatedFats());
+					in.setSugars(ingredient.getSugars());
+					in.setProteins(ingredient.getProteins());
+					in = ingredientRepository.save(in);
+
+//					for (String i : ingredient.getLimitingFactors()) {
+//						
+//						
+//							if (lfRepo.existsByName(i)) {
+//								LimitingIngredient li = new LimitingIngredient();
+//								LimitingFactor lf = lfRepo.findByName(i);
+//
+//								li.setIngredients(in);
+//								li.setLimitingFactor(lf);
+//								logger.info("LI write" + li.toString());
+//								limitingIngredientRepo.save(li);
+//							}
+//						
+//					}
 				}
-			
-			
-			
-			
+				logger.info("Done writin Ingredients");
+				readerIngredients.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		} else
 			logger.info("Skipping DB write");
 	}
@@ -103,4 +129,3 @@ public class StartupDatasetWrite implements ApplicationListener<ApplicationReady
 //	// TODO Auto-generated catch block
 //	e.printStackTrace();
 //}
-

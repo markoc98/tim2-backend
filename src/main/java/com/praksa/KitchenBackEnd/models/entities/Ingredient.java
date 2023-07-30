@@ -32,22 +32,22 @@ public class Ingredient {
 	@JsonIgnore
 	private Integer version;
 	
-	@CsvBindByName(column = "Name")
+//	@CsvBindByName(column = "Name")
 	private String name;
-	@CsvBindByName(column = "Unit")
+//	@CsvBindByName(column = "Unit")
 	private String unit;
-	@CsvBindByName(column = "Calories (kcal)")
+//	@CsvBindByName(column = "Calories (kcal)")
 	private Integer calories;
-	@CsvBindByName(column = "Carbohydrates")
+//	@CsvBindByName(column = "Carbohydrates")
 	private Float carbs;
-	@CsvBindByName(column = "Sugars")
+//	@CsvBindByName(column = "Sugars")
 	private Float sugars;
-	@CsvBindByName(column = "Fats")
+//	@CsvBindByName(column = "Fats")
 	private Float fats;
 	@Column(name = "saturated_fats")
-	@CsvBindByName(column = "Saturated Fats")
+//	@CsvBindByName(column = "Saturated Fats")
 	private Float saturatedFats;
-	@CsvBindByName(column = "Proteins")
+//	@CsvBindByName(column = "Proteins")
 	private Float proteins;
 	
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -175,6 +175,11 @@ public class Ingredient {
 
 	public void setRecipes(List<RecipeIngredient> recipes) {
 		this.recipes = recipes;
+	}
+
+	@Override
+	public String toString() {
+		return "Ingredient [id=" + id + ", name=" + name + ", limitingFactor=" + limitingFactor + "]";
 	}
 
 	

@@ -12,5 +12,7 @@ public interface LimitingFactorRepository extends CrudRepository<LimitingFactor,
 
 	
 	public List<LimitingIngredient> findByIngredients(Ingredient ingredient);
+	public LimitingFactor findByName(String name);
+	public Boolean existsByName(String name);
 
 }

@@ -27,7 +27,7 @@ public class LimitingIngredient {
 	@JoinColumn(name = "ingredientId")
 	private Ingredient ingredients;
 	
-	@JsonBackReference(value = "ingredient-LimitingFactor")
+	@JsonBackReference(value = "limitingIngredient-limitingFactor")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "limitingFactorId")
 	private LimitingFactor limitingFactor;

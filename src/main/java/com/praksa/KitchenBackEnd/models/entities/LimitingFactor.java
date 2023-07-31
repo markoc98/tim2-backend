@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.opencsv.bean.CsvBindByName;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LimitingFactor {
 	
 	@Id
@@ -36,12 +37,13 @@ public class LimitingFactor {
 	@NotBlank(message = "Limiting/prohibiting factor in ingredients must have a name.")
 	@CsvBindByName(column = "Limiting Factors")
 	private String name;
+
 	
-	
-	@JsonManagedReference(value = "ingredient-LimitingFactor")
+	@JsonManagedReference(value = "limitingIngredient-limitingFactor")
 	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<LimitingIngredient> ingredients = new ArrayList<>(); 
 	
+	@JsonIgnore
 	@JsonManagedReference(value = "affectedUser-limitingFactor")
 	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<AffectedUsers> limitingFactors = new ArrayList<>();

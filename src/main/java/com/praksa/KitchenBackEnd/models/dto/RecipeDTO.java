@@ -22,7 +22,6 @@ public class RecipeDTO {
 	private Set<LimitingFactor> limitingFactors;
 	private List<RecipeIngredient> ingredients;
 	private Map<String, Float> nutrition;
-	private RecipeIngredient[] ingredientAmount;
 	
 	public RecipeDTO() {
 		super();
@@ -30,8 +29,7 @@ public class RecipeDTO {
 	}
 
 	public RecipeDTO(Long id, String title, String description, String steps, Integer amount, Integer timeToPrepare,
-			Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients, Map<String, Float> nutrition,
-			RecipeIngredient[] ingredientAmount) {
+			Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients, Map<String, Float> nutrition) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -42,7 +40,6 @@ public class RecipeDTO {
 		this.limitingFactors = limitingFactors;
 		this.ingredients = ingredients;
 		this.nutrition = nutrition;
-		this.ingredientAmount = ingredientAmount;
 	}
 
 	public Long getId() {
@@ -117,14 +114,6 @@ public class RecipeDTO {
 		this.nutrition = nutrition;
 	}
 
-	public RecipeIngredient[] getIngredientAmount() {
-		return ingredientAmount;
-	}
-
-	public void setIngredientAmount(RecipeIngredient[] ingredientAmount) {
-		this.ingredientAmount = ingredientAmount;
-	}
-	
 	
 
 	

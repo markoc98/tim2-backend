@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LimitingFactor {
 	
 	@Id
@@ -38,13 +37,12 @@ public class LimitingFactor {
 	private String name;
 	
 	
-	@JsonBackReference
+	@JsonBackReference(value = "ingredient-LimitingFactor")
 	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<LimitingIngredient> ingredients = new ArrayList<>(); 
 	
-	
-	
-	@JsonBackReference
+	@JsonIgnoreProperties
+	@JsonBackReference(value = "user-limitingFactor")
 	@ManyToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Set<RegularUser> affectedUser = new HashSet<>();
 
@@ -129,10 +127,7 @@ public class LimitingFactor {
 
 
 
-	@Override
-	public String toString() {
-		return "LimitingFactor [id=" + id + ", name=" + name + ", ingredients=" + ingredients + "]";
-	}
+	
 
 	
 	

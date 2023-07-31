@@ -38,18 +38,22 @@ public class DummyController {
 	
 	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
 	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
-	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
+	public ResponseEntity<?> createRecipe(@RequestBody Recipe recDTO, @PathVariable Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = cookRepository.findById(cookId).get();
 		recipe.setAmount(recDTO.getAmount());
-		recipe.setCook(cook);
+		recipe.setCook(recDTO.getCook());
 		recipe.setSteps(recDTO.getSteps());
 		recipe.setTimeToPrepare(recDTO.getTimeToPrepare());
 		recipe.setTitle(recDTO.getTitle());
 		recipe.setDescription(recDTO.getDescription());
+		recipe.setIngredients(recDTO.getIngredients());
 		recipeRepository.save(recipe);
 		return new ResponseEntity<>(recipe, HttpStatus.CREATED);
 	}
+	
+	
+	
 	
 	
 	@RequestMapping(method = RequestMethod.GET, path ="/findIng/{name}")

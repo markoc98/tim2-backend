@@ -16,9 +16,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "regular_users")
@@ -40,9 +42,8 @@ public class RegularUser extends User {
 	
 	
 	
-	
-	@JsonManagedReference
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "user-limitingFactor")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
 		name= "affected_users",
 		joinColumns = @JoinColumn(name = "regular_users_id"),
@@ -50,8 +51,7 @@ public class RegularUser extends User {
 	private Set<LimitingFactor> limitingFactor = new HashSet<>();
 	
 	
-	@JsonManagedReference
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(
 		name = "liked_recipes",
 		joinColumns = @JoinColumn(name = "regular_users_id"),

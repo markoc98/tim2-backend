@@ -50,11 +50,11 @@ public class Ingredient {
 //	@CsvBindByName(column = "Proteins")
 	private Float proteins;
 	
+	@JsonManagedReference(value = "ingredient-limitingFactor")
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JsonManagedReference
 	private List<LimitingIngredient> limitingFactor = new ArrayList<>();
 	
-	@JsonBackReference
+	@JsonBackReference(value ="recipeIngredient-ingredient")
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> recipes = new ArrayList<>();
 
@@ -177,13 +177,7 @@ public class Ingredient {
 		this.recipes = recipes;
 	}
 
-	@Override
-	public String toString() {
-
-		return "carbs proteins sugars fats saturatedFats ";
-
-	}
-
+	
 	
 
 }

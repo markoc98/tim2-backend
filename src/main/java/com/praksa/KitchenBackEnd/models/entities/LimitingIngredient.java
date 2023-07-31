@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LimitingIngredient {
 	
 	@Id
@@ -66,11 +68,6 @@ public class LimitingIngredient {
 		this.limitingFactor = limitingFactor;
 	}
 
-	@Override
-	public String toString() {
-		return "LimitingIngredient [id=" + id +  ", limitingFactor=" + limitingFactor
-				+ "]";
-	}
 	
 	
 }

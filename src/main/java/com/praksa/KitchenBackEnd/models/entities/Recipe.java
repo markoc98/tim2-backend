@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "recipes")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Recipe {
 	
 	@Id
@@ -38,7 +37,7 @@ public class Recipe {
 	
 	@Column(nullable = false)
 	@NotBlank(message = "Recipe must have a title")
-	@Size(min = 50, max = 100, message = "The title has to be between {min} and {max} characters long.")
+	@Size(min = 5, max = 100, message = "The title has to be between {min} and {max} characters long.")
 	private String title;
 	
 	@Column(columnDefinition = "TEXT")
@@ -54,16 +53,16 @@ public class Recipe {
 	
 	private Integer amount;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value = "recipe-recipeIngredients")
 	@OneToMany(mappedBy = "recipeId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> ingredients = new ArrayList<>();
 	
-	@JsonManagedReference
+	@JsonManagedReference(value = "recipe-cook")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "cook")
 	private Cook cook;
 	
-	@JsonBackReference
+	@JsonIgnoreProperties
 	@ManyToMany(mappedBy = "likedRecipes", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Set<RegularUser> recipes = new HashSet<>();
 	

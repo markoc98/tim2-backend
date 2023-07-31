@@ -1,6 +1,8 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
@@ -42,21 +45,14 @@ public class RegularUser extends User {
 	
 	
 	
-	@JsonManagedReference(value = "user-limitingFactor")
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-		name= "affected_users",
-		joinColumns = @JoinColumn(name = "regular_users_id"),
-		inverseJoinColumns = @JoinColumn(name = "limiting_factor_id"))
-	private Set<LimitingFactor> limitingFactor = new HashSet<>();
+	@JsonManagedReference(value = "user-affectedUser")
+	@OneToMany(mappedBy = "regularUser", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<AffectedUsers> limitingFactor = new ArrayList<>();
 	
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(
-		name = "liked_recipes",
-		joinColumns = @JoinColumn(name = "regular_users_id"),
-		inverseJoinColumns = @JoinColumn(name = "recipes_id"))
-	private Set<Recipe> likedRecipes = new HashSet<>();
+	@JsonManagedReference(value = "regularUser-likedRecipes")
+	@OneToMany(mappedBy= "regularUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<LikedRecipes> likedRecipes = new HashSet<>();
 
 
 	public RegularUser() {
@@ -75,7 +71,7 @@ public class RegularUser extends User {
 			@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long") String firstName,
 			@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long") String lastName,
 			@NotNull(message = "Email must be provided") @Email(message = "Email is not valid") String email,
-			Set<LimitingFactor> limitingFactor, Set<Recipe> likedRecipes) {
+			List<AffectedUsers> limitingFactor, Set<LikedRecipes> likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -115,27 +111,28 @@ public class RegularUser extends User {
 	}
 
 
-	public Set<LimitingFactor> getLimitingFactor() {
+	public List<AffectedUsers> getLimitingFactor() {
 		return limitingFactor;
 	}
 
 
-	public void setLimitingFactor(Set<LimitingFactor> limitingFactor) {
+	public void setLimitingFactor(List<AffectedUsers> limitingFactor) {
 		this.limitingFactor = limitingFactor;
 	}
 
 
-	public Set<Recipe> getLikedRecipes() {
+	public Set<LikedRecipes> getLikedRecipes() {
 		return likedRecipes;
 	}
 
 
-	public void setLikedRecipes(Set<Recipe> likedRecipes) {
+	public void setLikedRecipes(Set<LikedRecipes> likedRecipes) {
 		this.likedRecipes = likedRecipes;
 	}
 
-	
-	
+
+
+
 	
 	
 	

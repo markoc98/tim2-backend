@@ -54,7 +54,7 @@ public class Ingredient {
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<LimitingIngredient> limitingFactor = new ArrayList<>();
 	
-	@JsonBackReference(value ="recipeIngredient-ingredient")
+	@JsonManagedReference(value ="recipeIngredient-ingredient")
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> recipes = new ArrayList<>();
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
@@ -13,7 +14,10 @@ import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 
 public class RecipeDTO {
 	
+	@JsonIgnore
 	private Long id;
+	
+	
 	private String title;
 	private String description;
 	private String steps;

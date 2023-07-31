@@ -45,7 +45,7 @@ public class Cook extends User {
 	
 	
 	
-	@JsonBackReference(value = "recipe-cook")
+	@JsonManagedReference(value = "recipe-cook")
 	@Column
 	@OneToMany(mappedBy = "cook", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();

@@ -57,14 +57,16 @@ public class Recipe {
 	@OneToMany(mappedBy = "recipeId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> ingredients = new ArrayList<>();
 	
-	@JsonManagedReference(value = "recipe-cook")
+	@JsonBackReference(value = "recipe-cook")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "cook")
 	private Cook cook;
 	
-	@JsonIgnoreProperties
-	@ManyToMany(mappedBy = "likedRecipes", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private Set<RegularUser> recipes = new HashSet<>();
+	
+	@JsonIgnore
+	@JsonBackReference(value = "recipe_likedRecipes")
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Set<LikedRecipes> recipes = new HashSet<>();
 	
 	@Version
 	@JsonIgnore
@@ -75,8 +77,12 @@ public class Recipe {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Recipe(Long id, String title, String description, String steps, Integer timeToPrepare, Integer amount,
-			List<RecipeIngredient> ingredients, Cook cook, Set<RegularUser> recipes, Integer version) {
+	public Recipe(Long id,
+			@NotBlank(message = "Recipe must have a title") @Size(min = 5, max = 100, message = "The title has to be between {min} and {max} characters long.") String title,
+			@NotBlank(message = "Recipe has to have a description.") String description,
+			@NotBlank(message = "You need to provide steps on how to prepare the meal.") String steps,
+			Integer timeToPrepare, Integer amount, List<RecipeIngredient> ingredients, Cook cook,
+			Set<LikedRecipes> recipes, Integer version) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -110,8 +116,8 @@ public class Recipe {
 		return description;
 	}
 
-	public void setDescription(String decription) {
-		this.description = decription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getSteps() {
@@ -154,11 +160,11 @@ public class Recipe {
 		this.cook = cook;
 	}
 
-	public Set<RegularUser> getRecipes() {
+	public Set<LikedRecipes> getRecipes() {
 		return recipes;
 	}
 
-	public void setRecipes(Set<RegularUser> recipes) {
+	public void setRecipes(Set<LikedRecipes> recipes) {
 		this.recipes = recipes;
 	}
 
@@ -170,6 +176,7 @@ public class Recipe {
 		this.version = version;
 	}
 
+	
 	
 	
 }

@@ -20,6 +20,7 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.opencsv.bean.CsvBindByName;
 
 @Entity
@@ -37,97 +38,72 @@ public class LimitingFactor {
 	private String name;
 	
 	
-	@JsonBackReference(value = "ingredient-LimitingFactor")
+	@JsonManagedReference(value = "ingredient-LimitingFactor")
 	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<LimitingIngredient> ingredients = new ArrayList<>(); 
 	
-	@JsonIgnoreProperties
-	@JsonBackReference(value = "user-limitingFactor")
-	@ManyToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private Set<RegularUser> affectedUser = new HashSet<>();
-
-
+	@JsonManagedReference(value = "affectedUser-limitingFactor")
+	@OneToMany(mappedBy = "limitingFactor", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private List<AffectedUsers> limitingFactors = new ArrayList<>();
 
 	public LimitingFactor() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-	public LimitingFactor(Long id, Integer version, String name, List<LimitingIngredient> ingredients,
-			Set<RegularUser> affectedUser) {
+	public LimitingFactor(Long id, Integer version,
+			@NotBlank(message = "Limiting/prohibiting factor in ingredients must have a name.") String name,
+			List<LimitingIngredient> ingredients, List<AffectedUsers> limitingFactors) {
 		super();
 		this.id = id;
 		this.version = version;
 		this.name = name;
 		this.ingredients = ingredients;
-		this.affectedUser = affectedUser;
+		this.limitingFactors = limitingFactors;
 	}
-
-
 
 	public Long getId() {
 		return id;
 	}
 
-
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	public Integer getVersion() {
 		return version;
 	}
 
-
-
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
-
-
 
 	public String getName() {
 		return name;
 	}
 
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 
 	public List<LimitingIngredient> getIngredients() {
 		return ingredients;
 	}
 
-
-
 	public void setIngredients(List<LimitingIngredient> ingredients) {
 		this.ingredients = ingredients;
 	}
 
+	public List<AffectedUsers> getLimitingFactors() {
+		return limitingFactors;
+	}
 
-
-	public Set<RegularUser> getAffectedUser() {
-		return affectedUser;
+	public void setLimitingFactors(List<AffectedUsers> limitingFactors) {
+		this.limitingFactors = limitingFactors;
 	}
 
 
 
-	public void setAffectedUser(Set<RegularUser> affectedUser) {
-		this.affectedUser = affectedUser;
-	}
-
-
-
-	
 
 	
 	

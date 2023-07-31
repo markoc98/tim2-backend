@@ -31,17 +31,19 @@ public class RegularUserServiceImpl implements RegularUserService {
 
 	@Override
 	public Set<LimitingFactor> getLimitingFactors(Long id) {
-		RegularUser user = (RegularUser) userRepository.findById(id).get();
-		return user.getLimitingFactor();
+//		RegularUser user = (RegularUser) userRepository.findById(id).get();
+//		return user.getLimitingFactor();
+		return null;
 	}
 
 	@Override
 	public LimitingFactor addLimitingFactor(Long userId, Long lfId) {
-		RegularUser user = (RegularUser) userRepository.findById(userId).get();
-		LimitingFactor lf = limFactorRepo.findById(lfId).get();
-		user.getLimitingFactor().add(lf);
-		userRepository.save(user);
-		return lf;
+//		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+//		LimitingFactor lf = limFactorRepo.findById(lfId).get();
+//		user.getLimitingFactor().add(lf);
+//		userRepository.save(user);
+//		return lf;
+		return null;
 	}
 
 	@Override

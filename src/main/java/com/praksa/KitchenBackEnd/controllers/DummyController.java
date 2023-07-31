@@ -1,5 +1,7 @@
 package com.praksa.KitchenBackEnd.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,16 +40,15 @@ public class DummyController {
 	
 	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
 	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
-	public ResponseEntity<?> createRecipe(@RequestBody Recipe recDTO, @PathVariable Long cookId) {
+	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = cookRepository.findById(cookId).get();
 		recipe.setAmount(recDTO.getAmount());
-		recipe.setCook(recDTO.getCook());
+		recipe.setCook(cook);
 		recipe.setSteps(recDTO.getSteps());
 		recipe.setTimeToPrepare(recDTO.getTimeToPrepare());
 		recipe.setTitle(recDTO.getTitle());
 		recipe.setDescription(recDTO.getDescription());
-		recipe.setIngredients(recDTO.getIngredients());
 		recipeRepository.save(recipe);
 		return new ResponseEntity<>(recipe, HttpStatus.CREATED);
 	}
@@ -67,7 +68,7 @@ public class DummyController {
 	public ResponseEntity<?> addLFtoUser(@PathVariable Long userId, @PathVariable Long lfId) {
 		RegularUser regUser = regUserRepository.findById(userId).get();
 		LimitingFactor lf = limiFactorRepository.findById(lfId).get();
-		regUser.getLimitingFactor().add(lf);
+//		regUser.getLimitingFactor().add(lf);
 		regUserRepository.save(regUser);
 		return new ResponseEntity<>(regUser, HttpStatus.CREATED);
 	}
@@ -77,7 +78,7 @@ public class DummyController {
 	public ResponseEntity<?> addRecipeToUser(@PathVariable Long userId, @PathVariable Long recId) {
 		RegularUser regUser = regUserRepository.findById(userId).get();
 		Recipe recipe = recipeRepository.findById(recId).get();
-		regUser.getLikedRecipes().add(recipe);
+//		regUser.getLikedRecipes().add(recipe);
 		regUserRepository.save(regUser);
 		
 		return new ResponseEntity<>(regUser, HttpStatus.OK);

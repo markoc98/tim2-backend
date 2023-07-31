@@ -22,17 +22,18 @@ public class RecipeIngredient {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@JsonBackReference(value = "recipe-recipeIngredient")
+	private Integer amount;
+
+	@JsonBackReference(value = "recipe-recipeIngredients")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipeId")
 	private Recipe recipeId;
 	
-	@JsonManagedReference(value = "recipeIngredient-ingredient")
+	@JsonBackReference(value = "recipeIngredient-ingredient")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ingredientId")
 	private Ingredient ingredientId;
 	
-	private Integer amount;
 
 	public RecipeIngredient() {
 		super();

@@ -47,11 +47,7 @@ public class RecipeController {
 	}
 	
 	
-	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
-	@PostMapping(path = "/recipes")
-	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
-		return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
-	}
+	
 	
 	@DeleteMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
@@ -64,7 +60,7 @@ public class RecipeController {
 	}
 	
 	@PostMapping(path = "/recipes/addRec/{cookId}")
-	public ResponseEntity<?> createRecipeTest(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
+	public ResponseEntity<?> createRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
 		return new ResponseEntity<>(recipeService.createRecipeWithIng(recipe, cookId), HttpStatus.OK);
 	}
 	

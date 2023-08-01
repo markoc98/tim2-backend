@@ -58,9 +58,10 @@ public class RecipeServiceImpl implements RecipeService {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
 	private CookRepository cookRepository;
 	
-	//IZLVACENJE ALERGENA
+	//IZLVACENJE ALERGENA - treba ispravka za novi model
 	private Set<LimitingFactor> extractLF(Recipe recipe) {
 		
 		List<Ingredient> ingredients = recipe.
@@ -77,7 +78,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return limits;
 	}
 	
-	//IZVLACENJE SASTOJAKA
+	//IZVLACENJE SASTOJAKA - treba ispravka za novi model
 	private List<Ingredient> extractIng(Recipe recipe) {
 
 		List<Ingredient> ingredients = recipe.
@@ -87,7 +88,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return ingredients;
 	}
 	
-	//RACUNANJE HRANLJIVOSTI SASTOJAKA
+	//RACUNANJE HRANLJIVOSTI SASTOJAKA 
 	private Map<String, Float> calculateNutrition(Recipe recipe) {
 		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
 		Integer amount = 0;
@@ -130,30 +131,10 @@ public class RecipeServiceImpl implements RecipeService {
 		return nutrition;
 	}
 	
-
-	
-	@Override
-	public RecipeDTO createRecipe(RecipeDTO newRecipe, Long cookId) {
-		Recipe recipe = new Recipe();
-		Cook cook = cookService.getCook(cookId);
-		List<Ingredient> ingredients = new ArrayList<Ingredient>();
-		recipe.setAmount(newRecipe.getAmount());
-		recipe.setCook(cook);
-		recipe.setSteps(newRecipe.getSteps());
-		recipe.setTimeToPrepare(newRecipe.getTimeToPrepare());
-		recipe.setTitle(newRecipe.getTitle());
-		recipe.setDescription(newRecipe.getDescription());
-		recipe.setIngredients(newRecipe.getIngredients());
-		recipe.setCategory(newRecipe.getCategory());
-		recipeRepository.save(recipe);
-		return newRecipe;
-	}
-	
-	
+	//=-=-==-=-==-=-=-=-==-=-==SERVICES-=-=-==-=-==-=-=-=-==-=-===-=-=-=-==-=-==-=-=//
 
 	@Override
 	public Iterable<Recipe> getRecipes() {
-		
 		return recipeRepository.findAll();
 	}
 
@@ -168,6 +149,8 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeRepository.delete(recipe);
 		return recipe;
 	}
+	
+
 
 	@Override
 	public Recipe updateRecipe(RecipeDTO updatedRecipe, Long id) {
@@ -229,7 +212,6 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public RecipeRegisterDTO createRecipeWithIng(RecipeRegisterDTO dto, Long cookId) {
-		
 		Recipe recipe = new Recipe();
 		Cook cook = (Cook) userRepo.findById(cookId).get();
 		List<RecipeIngredient> recIng = new ArrayList<>();
@@ -258,10 +240,12 @@ public class RecipeServiceImpl implements RecipeService {
 		//sacuvajrecept
 		recipeRepository.save(recipe);
 		
-		//sacuvaj recipeingredient
+		//sacuvaj recipeingredient - hvala Marko
 		recipeIngreRepo.saveAll(recIng);
 		return dto;
 		
+		
+		// u oba slucaja vraca null vrednost posto je RecipeIngredient entitet sam po sebi bogalj
 		
 //		int i = 0;
 //		for (RecipeIngredient ri : dto.getRecipeIngredient()) {			
@@ -269,10 +253,8 @@ public class RecipeServiceImpl implements RecipeService {
 //			Integer ingredientAmount = ri.getAmount();
 //			RecipeIngredient newIng = new RecipeIngredient(null, recipe, ing, ingredientAmount);
 //			recIng.add(newIng);
-//			amount =+ ingredientAmount;
+//			amount += ingredientAmount;
 //		}
-		
-		// u oba slucaja vraca null pointer 
 		
 //		for (RecipeIngredient ri : dto.getRecipeIngredient()) {
 //			recIng.add(i++, new RecipeIngredient(null, recipe,

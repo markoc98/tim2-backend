@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
@@ -39,27 +40,32 @@ public class RegularUser extends User {
 	private String lastName;
 	
 	@Column(nullable = false, unique = true)
-	@NotNull(message = "Email must be provided")
-	@Email(message = "Email is not valid")
+	@NotNull(message = "Email must be provided.")
+	@Email(message = "Email is not valid.")
 	private String email;
 	
 	
 	
+	//one to one 
 	@JsonManagedReference(value = "user-affectedUser")
 	@OneToMany(mappedBy = "regularUser", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<AffectedUsers> limitingFactor = new ArrayList<>();
 	
 	
+	
 	@JsonManagedReference(value = "regularUser-likedRecipes")
-	@OneToMany(mappedBy= "regularUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<LikedRecipes> likedRecipes = new HashSet<>();
-
+	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private LikedRecipes likedRecipes;
 
 	public RegularUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
+	
+	
+	
 
 	public RegularUser(Long id, String username, String password, EUserRole role, Integer version) {
 		super(id, username, password, role, version);
@@ -67,11 +73,15 @@ public class RegularUser extends User {
 	}
 
 
+
+
+
+
 	public RegularUser(
 			@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long") String firstName,
 			@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long") String lastName,
-			@NotNull(message = "Email must be provided") @Email(message = "Email is not valid") String email,
-			List<AffectedUsers> limitingFactor, Set<LikedRecipes> likedRecipes) {
+			@NotNull(message = "Email must be provided.") @Email(message = "Email is not valid.") String email,
+			List<AffectedUsers> limitingFactor, LikedRecipes likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -80,62 +90,48 @@ public class RegularUser extends User {
 		this.likedRecipes = likedRecipes;
 	}
 
-
 	public String getFirstName() {
 		return firstName;
 	}
-
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-
 	public String getLastName() {
 		return lastName;
 	}
-
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
-
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-
 	public List<AffectedUsers> getLimitingFactor() {
 		return limitingFactor;
 	}
-
 
 	public void setLimitingFactor(List<AffectedUsers> limitingFactor) {
 		this.limitingFactor = limitingFactor;
 	}
 
-
-	public Set<LikedRecipes> getLikedRecipes() {
+	public LikedRecipes getLikedRecipes() {
 		return likedRecipes;
 	}
 
-
-	public void setLikedRecipes(Set<LikedRecipes> likedRecipes) {
+	public void setLikedRecipes(LikedRecipes likedRecipes) {
 		this.likedRecipes = likedRecipes;
 	}
 
 
+	
 
 
-	
-	
-	
-	
-	
 }

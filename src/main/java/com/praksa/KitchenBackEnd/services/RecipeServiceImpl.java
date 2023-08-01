@@ -58,7 +58,7 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		Set<LimitingFactor> limits = new HashSet<>();
 		for(Ingredient ing : ingredients) { 
-			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
+			for(LimitingIngredient limIng : ing.getLimitingFactors()) {
 				limits.add(limIng.getLimitingFactor());
 			}
 		}
@@ -132,8 +132,15 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setTimeToPrepare(newRecipe.getTimeToPrepare());
 		recipe.setTitle(newRecipe.getTitle());
 		recipe.setDescription(newRecipe.getDescription());
-		
+		recipe.setIngredients(newRecipe.getIngredients());
 		return newRecipe;
+	}
+	
+	
+	@Override
+	public Recipe addRecipeToUser(Long userId, Long recipeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -184,7 +191,7 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		Set<LimitingFactor> limits = new HashSet<>();
 		for(Ingredient ing : ingredients) { 
-			for(LimitingIngredient limIng : ing.getLimitingFactor()) {
+			for(LimitingIngredient limIng : ing.getLimitingFactors()) {
 				limits.add(limIng.getLimitingFactor());
 			}
 		}
@@ -210,6 +217,8 @@ public class RecipeServiceImpl implements RecipeService {
 		// vrati recept i njegove alergene
 		return retVal;
 	}
+
+	
 	
 	
 	

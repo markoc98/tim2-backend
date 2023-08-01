@@ -16,8 +16,6 @@ public class RecipeDTO {
 	
 	@JsonIgnore
 	private Long id;
-	
-	
 	private String title;
 	private String description;
 	private String steps;

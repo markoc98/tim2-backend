@@ -34,9 +34,9 @@ public class RegularUserController {
 		return new ResponseEntity<>(regUserService.addLimitingFactor(userId, lFid), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, path = "/user/{userId}/removeLf/{lfId}")
-	public ResponseEntity<?> removeLimitingFactor(@PathVariable Long userId, @PathVariable Long lfId) {
-		return new ResponseEntity<>(regUserService.removeLimitingFactor(userId, lfId), HttpStatus.OK);
+	@RequestMapping(method = RequestMethod.DELETE, path = "/user/{userId}")
+	public ResponseEntity<?> removeLimitingFactor(@PathVariable Long userId) {
+		return new ResponseEntity<>(regUserService.removeLimitingFactor(userId), HttpStatus.OK);
 	}
 	
 }

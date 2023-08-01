@@ -33,7 +33,7 @@ public class LimitingFactor {
 	@Version
 	@JsonIgnore
 	private Integer version;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	@NotBlank(message = "Limiting/prohibiting factor in ingredients must have a name.")
 	@CsvBindByName(column = "Limiting Factors")
 	private String name;

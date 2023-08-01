@@ -96,7 +96,7 @@ public class IngredientServiceImpl implements IngredientService{
 	@Transactional
 	public Ingredient deleteIngredient(Long id) {
 		Ingredient ingredient = ingredientRepository.findById(id).orElseThrow();
-		List<LimitingIngredient> limits = ingredient.getLimitingFactor();
+		List<LimitingIngredient> limits = ingredient.getLimitingFactors();
 		List<RecipeIngredient> recipes = recipeIngredientRepository.findByIngredientId(ingredient);
 		recipeIngredientRepository.deleteAll(recipes);
 		limitingIngredientRepo.deleteAll(limits);

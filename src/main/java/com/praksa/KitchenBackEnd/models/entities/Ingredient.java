@@ -52,7 +52,7 @@ public class Ingredient {
 	
 	@JsonManagedReference(value = "ingredient-limitingFactor")
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<LimitingIngredient> limitingFactor = new ArrayList<>();
+	private List<LimitingIngredient> limitingFactors = new ArrayList<>();
 	
 	@JsonManagedReference(value ="recipeIngredient-ingredient")
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -64,7 +64,7 @@ public class Ingredient {
 	}
 
 	public Ingredient(Long id, Integer version, String name, String unit, Integer calories, Float carbs, Float sugars,
-			Float fats, Float saturatedFats, Float proteins, List<LimitingIngredient> limitingFactor,
+			Float fats, Float saturatedFats, Float proteins, List<LimitingIngredient> limitingFactors,
 			List<RecipeIngredient> recipes) {
 		super();
 		this.id = id;
@@ -77,7 +77,7 @@ public class Ingredient {
 		this.fats = fats;
 		this.saturatedFats = saturatedFats;
 		this.proteins = proteins;
-		this.limitingFactor = limitingFactor;
+		this.limitingFactors = limitingFactors;
 		this.recipes = recipes;
 	}
 
@@ -161,12 +161,12 @@ public class Ingredient {
 		this.proteins = proteins;
 	}
 
-	public List<LimitingIngredient> getLimitingFactor() {
-		return limitingFactor;
+	public List<LimitingIngredient> getLimitingFactors() {
+		return limitingFactors;
 	}
 
-	public void setLimitingFactor(List<LimitingIngredient> limitingFactor) {
-		this.limitingFactor = limitingFactor;
+	public void setLimitingFactor(List<LimitingIngredient> limitingFactors) {
+		this.limitingFactors = limitingFactors;
 	}
 
 	public List<RecipeIngredient> getRecipes() {

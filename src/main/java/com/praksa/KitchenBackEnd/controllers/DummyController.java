@@ -1,5 +1,11 @@
 package com.praksa.KitchenBackEnd.controllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +21,13 @@ import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.models.entities.LikedRecipes;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.LikedRecipesRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingFactorRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
@@ -38,6 +46,9 @@ public class DummyController {
 	@Autowired
 	RegularUserRepository regUserRepository;
 	
+	@Autowired
+	LikedRecipesRepository likedRecipesRepository;
+	
 	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
 	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
 	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
@@ -53,6 +64,35 @@ public class DummyController {
 		return new ResponseEntity<>(recipe, HttpStatus.CREATED);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/userRec/{id}")
+	public ResponseEntity<?> getUsersFav(@PathVariable Long id ) {
+		RegularUser user = regUserRepository.findById(id).get();
+		Set<LikedRecipes> likes = new HashSet<>();
+//		for (LikedRecipes likedRecipes : user.getLikedRecipes()) {
+//			likes.add(likedRecipes);
+//		}
+		return new ResponseEntity<>(likes, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/rec/{recId}")
+	public ResponseEntity<?> addRecToUser(@PathVariable Long userId, @PathVariable Long recId) {
+		RegularUser user = regUserRepository.findById(userId).get();
+		Recipe recipe = recipeRepository.findById(recId).get();
+		if(recipe.getLikedRecipes() == user.getLikedRecipes()) {
+			return new ResponseEntity<>("You already like this recipe", HttpStatus.CONFLICT);
+		}
+		Recipe rec = new Recipe(null, recipe.getTitle(), 
+				recipe.getDescription(), 
+				recipe.getSteps(), recipe.getTimeToPrepare(),
+				recipe.getCreatedOn(), recipe.getUpdatedOn(), 
+				recipe.getAmount(), recipe.getCategory(), 
+				recipe.getVersion(), recipe.getIngredients(), 
+				recipe.getCook(),user.getLikedRecipes());		
+		recipeRepository.save(rec);
+		
+		return new ResponseEntity<>(rec, HttpStatus.OK);
+		
+	}
 	
 	
 	

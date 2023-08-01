@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
+import com.praksa.KitchenBackEnd.models.dto.RecipeRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
@@ -27,6 +29,7 @@ import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
+import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
@@ -54,6 +57,8 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	private CookRepository cookRepository;
 	
 	//IZLVACENJE ALERGENA
 	private Set<LimitingFactor> extractLF(Recipe recipe) {
@@ -222,6 +227,60 @@ public class RecipeServiceImpl implements RecipeService {
 		return retVal;
 	}
 
+	@Override
+	public RecipeRegisterDTO createRecipeWithIng(RecipeRegisterDTO dto, Long cookId) {
+		Recipe recipe = new Recipe();
+		Cook cook = (Cook) userRepo.findById(cookId).get();
+		List<RecipeIngredient> recIng = new ArrayList<>();
+		Integer amount = 0;
+		recipe.setDescription(dto.getDescription());
+		recipe.setSteps(dto.getSteps());
+		recipe.setTitle(dto.getTitle());
+		recipe.setCategory(dto.getCategory());
+		recipe.setTimeToPrepare(dto.getTimeToPrepare());
+		recipe.setCook(cook);
+		
+		
+		for(Integer ing : dto.getIngredientAmount()) {
+			amount += ing;
+			for(Long ingId : dto.getIngredientId()) {
+				Ingredient findIng = ingredientRepository.findById(ingId).get();
+				RecipeIngredient ring = new RecipeIngredient();
+				ring.setAmount(ing);
+				ring.setIngredientId(findIng);
+				ring.setRecipeId(recipe);
+				recIng.add(ring);
+			}
+		}
+//		
+//		int i = 0;
+//		for (RecipeIngredient ri : dto.getRecipeIngredient()) {			
+//			Ingredient ing = ingredientRepository.findById(ri.getIngredientId().getId()).get();
+//			Integer ingredientAmount = ri.getAmount();
+//			RecipeIngredient newIng = new RecipeIngredient(null, recipe, ing, ingredientAmount);
+//			recIng.add(newIng);
+//			amount =+ ingredientAmount;
+//		}
+		
+		
+		
+//		for (RecipeIngredient ri : dto.getRecipeIngredient()) {
+//			recIng.add(i++, new RecipeIngredient(null, recipe,
+//							ingredientRepository.findById(ri.getIngredientId().getId()).get(),
+//							ri.getAmount()));
+//			amount += ri.getAmount();
+//		}
+		recipe.setAmount(amount);
+		recipe.setIngredients(recIng);
+		//sacuvajrecept
+		recipeRepository.save(recipe);
+		//sacuvaj recipeingredient
+		recipeIngreRepo.saveAll(recIng);
+		return dto;
+	}
+
+	
+	
 	
 	
 	

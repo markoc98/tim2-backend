@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
+import com.praksa.KitchenBackEnd.models.dto.RecipeRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.services.RecipeService;
@@ -60,6 +61,11 @@ public class RecipeController {
 	@PutMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
 		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
+	}
+	
+	@PostMapping(path = "/recipes/addRec/{cookId}")
+	public ResponseEntity<?> createRecipeTest(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
+		return new ResponseEntity<>(recipeService.createRecipeWithIng(recipe, cookId), HttpStatus.OK);
 	}
 	
 	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//

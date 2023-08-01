@@ -1,6 +1,8 @@
 package com.praksa.KitchenBackEnd.controllers;
 
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.praksa.KitchenBackEnd.controllers.util.RESTError;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
@@ -32,44 +35,108 @@ public class RecipeController {
 	// Test endpoint za "/home", za neulogovanog korisnika
 	@RequestMapping(method = RequestMethod.GET, path = "/")
 	public ResponseEntity<?> getAllRecipes() {
-		return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
+		try {
+	        Iterable<Recipe> recipes = recipeService.getRecipes();
+	        if (recipes !=null) {
+	            return new ResponseEntity<>(recipes, HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Recipes not found"), HttpStatus.NOT_FOUND);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/recipes")
 	public ResponseEntity<?> getRecipes() {
-		return new ResponseEntity<>(recipeService.getRecipes(), HttpStatus.OK);
+		try {
+	        Iterable<Recipe> recipes = recipeService.getRecipes();
+	        if (recipes !=null) {
+	            return new ResponseEntity<>(recipes, HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Recipes not found"), HttpStatus.NOT_FOUND);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>(new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@GetMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> getRecipe(@PathVariable Long id) {
-		return new ResponseEntity<>(recipeService.getRecipe(id), HttpStatus.OK);
+		  try {
+		        Recipe recipe = recipeService.getRecipe(id);
+		        if (recipe != null) {
+		            return new ResponseEntity<>(recipe, HttpStatus.OK);
+		        } else {
+		            return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Recipe not found"), HttpStatus.NOT_FOUND);
+		        }
+		    } catch (Exception e) {
+		        return new ResponseEntity<>(new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
 	}
 	
 	
 	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
 	@PostMapping(path = "/recipes")
 	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
-		return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
+		try {
+			return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
+		}catch (Exception e) {
+			return new ResponseEntity<RESTError>(
+					new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(),"BAD Request"), HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}	
 	}
 	
 	@DeleteMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
-		return new ResponseEntity<>(recipeService.deleteRecipe(id), HttpStatus.OK);
+	   
+	    try {
+	    	 recipeService.deleteRecipe(id);
+	 	    return new ResponseEntity<>("Recipe with ID " + id + " deleted successfully.", HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<RESTError>(
+					new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(),"No recipes with that ID"), HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
 	}
+
 	
 	@PutMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
-		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
+		 try {		
+		Recipe updateRecipe = recipeService.updateRecipe(recipe, id);
+		if(updateRecipe !=null ) {
+			return new ResponseEntity<>(updateRecipe, HttpStatus.OK);
+		}else {
+            return new ResponseEntity<>(new RESTError(HttpStatus.NOT_FOUND.value(), "Recipe not found"), HttpStatus.NOT_FOUND);
+			}
+		}catch(Exception e) {
+	        return new ResponseEntity<>(new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
 	}
-	
 	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//
 	
 	
 	@GetMapping(path = "/recipeLF/{recId}")
 	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
-		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLf(recId), HttpStatus.OK);
-	}
+		 try {
+		        RecipeDTO recipeDTO = recipeService.getRecipeLf(recId);
+		        return new ResponseEntity<>(recipeDTO, HttpStatus.OK);
+		    } catch (NoSuchElementException e) {
+		        return new ResponseEntity<RESTError>(
+		            new RESTError(HttpStatus.NOT_FOUND.value(), "Recipe with ID " + recId + " not found"),
+		            HttpStatus.NOT_FOUND
+		        );
+		    } catch (Exception e) {
+		        return new ResponseEntity<RESTError>(
+		            new RESTError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"),
+		            HttpStatus.INTERNAL_SERVER_ERROR
+		        );
+		    }
 	
+}
 	
 }
 

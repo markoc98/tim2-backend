@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,7 +141,13 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Recipe getRecipe(Long id) {
-		return recipeRepository.findById(id).get();
+		Optional<Recipe> recipeById = recipeRepository.findById(id);
+		if(recipeById.isPresent()) {
+			return recipeById.get();
+		}else {
+			return null;
+		}
+		
 	}
 
 	@Override

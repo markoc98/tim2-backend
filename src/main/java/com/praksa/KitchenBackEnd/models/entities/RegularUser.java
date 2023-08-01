@@ -46,10 +46,10 @@ public class RegularUser extends User {
 	
 	
 	
-	//one to one? 
+	
 	@JsonManagedReference(value = "user-affectedUser")
 	@OneToMany(mappedBy = "regularUser", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private List<AffectedUsers> limitingFactor = new ArrayList<>();
+	private List<AffectedUsers> limitingFactors = new ArrayList<>();
 	
 	
 	
@@ -66,12 +66,12 @@ public class RegularUser extends User {
 			@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long") String firstName,
 			@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long") String lastName,
 			@NotNull(message = "Email must be provided.") @Email(message = "Email is not valid.") String email,
-			List<AffectedUsers> limitingFactor, Set<LikedRecipes> likedRecipes) {
+			List<AffectedUsers> limitingFactors, Set<LikedRecipes> likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.limitingFactor = limitingFactor;
+		this.limitingFactors = limitingFactors;
 		this.likedRecipes = likedRecipes;
 	}
 
@@ -100,11 +100,11 @@ public class RegularUser extends User {
 	}
 
 	public List<AffectedUsers> getLimitingFactor() {
-		return limitingFactor;
+		return limitingFactors;
 	}
 
-	public void setLimitingFactor(List<AffectedUsers> limitingFactor) {
-		this.limitingFactor = limitingFactor;
+	public void setLimitingFactor(List<AffectedUsers> limitingFactors) {
+		this.limitingFactors = limitingFactors;
 	}
 
 	public Set<LikedRecipes> getLikedRecipes() {

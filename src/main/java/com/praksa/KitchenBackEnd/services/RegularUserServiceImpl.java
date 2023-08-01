@@ -81,13 +81,12 @@ public class RegularUserServiceImpl implements RegularUserService {
 //		Set<Recipe> recipes = recipeRepo.
 //				findAllByLikedRecipes(user.getLikedRecipes().getId());
 //		
+		
 		return null;
 	}
 
 	
-	//Posto je OneToOne od RegularUsera ka LikedRecipes, svi kljucevi moraju biti unikatni
-	//zbog toga moram da copiram recept u tabelu recepata i dajem mu strani kljuc LikedRecipe iliti "cookbook-a"
-	//ako neko zna bolje resenje...
+	
 	@Override
 	public Recipe addRecipeToUser(Long userId, Long recipeId) {
 //		RegularUser user = (RegularUser) userRepository.findById(userId).get();
@@ -109,9 +108,9 @@ public class RegularUserServiceImpl implements RegularUserService {
 
 	@Override
 	public Recipe removeRecipe(Long userId, Long recId) {
-		RegularUser user = (RegularUser) userRepository.findById(userId).get();
-		Recipe recipe = recipeRepo.findByLikedRecipes(recId);
-		recipeRepo.delete(recipe);
+//		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+//		Recipe recipe = recipeRepo.findByLikedRecipes(recId);
+//		recipeRepo.delete(recipe);
 		return null;
 	}
 

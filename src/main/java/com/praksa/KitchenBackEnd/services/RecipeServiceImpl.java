@@ -131,7 +131,7 @@ public class RecipeServiceImpl implements RecipeService {
 	public RecipeDTO createRecipe(RecipeDTO newRecipe, Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = cookService.getCook(cookId);
-		Ingredient ingredient = new Ingredient();
+		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		recipe.setAmount(newRecipe.getAmount());
 		recipe.setCook(cook);
 		recipe.setSteps(newRecipe.getSteps());
@@ -140,6 +140,7 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setDescription(newRecipe.getDescription());
 		recipe.setIngredients(newRecipe.getIngredients());
 		recipe.setCategory(newRecipe.getCategory());
+		recipeRepository.save(recipe);
 		return newRecipe;
 	}
 	

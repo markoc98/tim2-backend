@@ -85,10 +85,9 @@ public class Recipe {
 	private Cook cook;
 	
 	
-	@JsonBackReference(value = "likedRecipes-recipes")
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name= "cookbook_id")
-	private LikedRecipes likedRecipes;
+	@JsonManagedReference(value = "likedRecipes-recipes")
+	@OneToMany(mappedBy = "recipe", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private Set<LikedRecipes> likedRecipes = new HashSet<>();
 
 
 	public Recipe() {
@@ -103,7 +102,7 @@ public class Recipe {
 			@NotBlank(message = "You need to provide steps on how to prepare the meal.") String steps,
 			Integer timeToPrepare, LocalDateTime createdOn, LocalDateTime updatedOn, Integer amount,
 			ERecipeCategory category, Integer version, List<RecipeIngredient> ingredients, Cook cook,
-			LikedRecipes likedRecipes) {
+			Set<LikedRecipes> likedRecipes) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -241,12 +240,12 @@ public class Recipe {
 	}
 
 
-	public LikedRecipes getLikedRecipes() {
+	public Set<LikedRecipes> getLikedRecipes() {
 		return likedRecipes;
 	}
 
 
-	public void setLikedRecipes(LikedRecipes likedRecipes) {
+	public void setLikedRecipes(Set<LikedRecipes> likedRecipes) {
 		this.likedRecipes = likedRecipes;
 	}
 

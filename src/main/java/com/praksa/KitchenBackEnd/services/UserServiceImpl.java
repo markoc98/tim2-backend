@@ -62,14 +62,14 @@ public class UserServiceImpl implements UserService {
 	/*------------------POST-----------------*/
 	@Override
 	public RegularUser addUser(RegularUserRegisterDTO dto) {
-		RegularUser regUser = (RegularUser) UserFactory.createUser(dto);
-		LikedRecipes likes = new LikedRecipes();
-		likedRecipesRepository.save(likes);
-		regUser.setLikedRecipes(likes);
-		userRepository.save(regUser);
+//		RegularUser regUser = (RegularUser) UserFactory.createUser(dto);
+//		LikedRecipes likes = new LikedRecipes();
+//		likedRecipesRepository.save(likes);
+//		regUser.setLikedRecipes(likes);
+//		userRepository.save(regUser);
+//		
 		
-		
-		return regUser;
+		return null;
 		
 	}
 

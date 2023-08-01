@@ -54,34 +54,19 @@ public class RegularUser extends User {
 	
 	
 	@JsonManagedReference(value = "regularUser-likedRecipes")
-	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private LikedRecipes likedRecipes;
+	@OneToMany(mappedBy = "regularUser", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	private Set<LikedRecipes> likedRecipes = new HashSet<>();
 
 	public RegularUser() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
-	
-
-	public RegularUser(Long id, String username, String password, EUserRole role, Integer version) {
-		super(id, username, password, role, version);
-		// TODO Auto-generated constructor stub
-	}
-
-
-
-
-
 
 	public RegularUser(
 			@Size(min = 2, max = 30, message = "First name must be between {min} and {max} characters long") String firstName,
 			@Size(min = 2, max = 30, message = "Last name must be between {min} and {max} characters long") String lastName,
 			@NotNull(message = "Email must be provided.") @Email(message = "Email is not valid.") String email,
-			List<AffectedUsers> limitingFactor, LikedRecipes likedRecipes) {
+			List<AffectedUsers> limitingFactor, Set<LikedRecipes> likedRecipes) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -122,14 +107,17 @@ public class RegularUser extends User {
 		this.limitingFactor = limitingFactor;
 	}
 
-	public LikedRecipes getLikedRecipes() {
+	public Set<LikedRecipes> getLikedRecipes() {
 		return likedRecipes;
 	}
 
-	public void setLikedRecipes(LikedRecipes likedRecipes) {
+	public void setLikedRecipes(Set<LikedRecipes> likedRecipes) {
 		this.likedRecipes = likedRecipes;
 	}
-
+	
+	
+	
+	
 
 	
 

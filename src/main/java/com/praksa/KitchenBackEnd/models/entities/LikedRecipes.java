@@ -36,13 +36,13 @@ public class LikedRecipes {
 	
 	
 	@JsonBackReference(value = "regularUser-likedRecipes")
-	@OneToOne(mappedBy = "likedRecipes")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	public RegularUser regularUser;
 	
 	
-	@JsonManagedReference(value = "likedRecipes-recipes")
-	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	public Set<Recipe> recipe = new HashSet<>();
+	@JsonBackReference(value = "likedRecipes-recipes")
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	public Recipe recipe;
 
 
 	public LikedRecipes() {
@@ -51,7 +51,7 @@ public class LikedRecipes {
 	}
 
 
-	public LikedRecipes(Long id, RegularUser regularUser, Set<Recipe> recipe) {
+	public LikedRecipes(Long id, RegularUser regularUser, Recipe recipe) {
 		super();
 		this.id = id;
 		this.regularUser = regularUser;
@@ -79,14 +79,15 @@ public class LikedRecipes {
 	}
 
 
-	public Set<Recipe> getRecipe() {
+	public Recipe getRecipe() {
 		return recipe;
 	}
 
 
-	public void setRecipe(Set<Recipe> recipe) {
+	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
+
 
 
 

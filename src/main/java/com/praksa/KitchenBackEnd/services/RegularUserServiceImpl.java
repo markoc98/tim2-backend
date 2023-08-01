@@ -77,11 +77,11 @@ public class RegularUserServiceImpl implements RegularUserService {
 	
 	@Override
 	public Set<Recipe> getUserRecipes(Long userId) {
-		RegularUser user = (RegularUser) userRepository.findById(userId).get();
-		Set<Recipe> recipes = recipeRepo.
-				findAllByLikedRecipes(user.getLikedRecipes().getId());
-		
-		return recipes;
+//		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+//		Set<Recipe> recipes = recipeRepo.
+//				findAllByLikedRecipes(user.getLikedRecipes().getId());
+//		
+		return null;
 	}
 
 	
@@ -90,20 +90,21 @@ public class RegularUserServiceImpl implements RegularUserService {
 	//ako neko zna bolje resenje...
 	@Override
 	public Recipe addRecipeToUser(Long userId, Long recipeId) {
-		RegularUser user = (RegularUser) userRepository.findById(userId).get();
-		Recipe recipe = recipeRepo.findById(recipeId).get();
-		if(recipe.getLikedRecipes() == user.getLikedRecipes()) {
-			return null;
-		}
-		Recipe rec = new Recipe(null, recipe.getTitle(), 
-				recipe.getDescription(), 
-				recipe.getSteps(), recipe.getTimeToPrepare(),
-				recipe.getCreatedOn(), recipe.getUpdatedOn(), 
-				recipe.getAmount(), recipe.getCategory(), 
-				recipe.getVersion(), recipe.getIngredients(), 
-				recipe.getCook(),user.getLikedRecipes());		
-		recipeRepo.save(rec);
-		return recipe;
+//		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+//		Recipe recipe = recipeRepo.findById(recipeId).get();
+//		if(recipe.getLikedRecipes() == user.getLikedRecipes()) {
+//			return null;
+//		}
+//		Recipe rec = new Recipe(null, recipe.getTitle(), 
+//				recipe.getDescription(), 
+//				recipe.getSteps(), recipe.getTimeToPrepare(),
+//				recipe.getCreatedOn(), recipe.getUpdatedOn(), 
+//				recipe.getAmount(), recipe.getCategory(), 
+//				recipe.getVersion(), recipe.getIngredients(), 
+//				recipe.getCook(),user.getLikedRecipes());		
+//		recipeRepo.save(rec);
+//		return recipe;
+		return null;
 	}
 
 	@Override

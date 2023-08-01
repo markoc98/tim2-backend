@@ -229,10 +229,12 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public RecipeRegisterDTO createRecipeWithIng(RecipeRegisterDTO dto, Long cookId) {
+		
 		Recipe recipe = new Recipe();
 		Cook cook = (Cook) userRepo.findById(cookId).get();
 		List<RecipeIngredient> recIng = new ArrayList<>();
 		Integer amount = 0;
+		
 		recipe.setDescription(dto.getDescription());
 		recipe.setSteps(dto.getSteps());
 		recipe.setTitle(dto.getTitle());
@@ -240,19 +242,27 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setTimeToPrepare(dto.getTimeToPrepare());
 		recipe.setCook(cook);
 		
-		
-		for(Integer ing : dto.getIngredientAmount()) {
-			amount += ing;
-			for(Long ingId : dto.getIngredientId()) {
-				Ingredient findIng = ingredientRepository.findById(ingId).get();
-				RecipeIngredient ring = new RecipeIngredient();
-				ring.setAmount(ing);
-				ring.setIngredientId(findIng);
-				ring.setRecipeId(recipe);
-				recIng.add(ring);
-			}
+		for (Map.Entry<Long, Integer> entry : dto.getIngredientMap().entrySet()) {
+			RecipeIngredient ring = new RecipeIngredient();
+			ring.setIngredientId(ingredientRepository.findById(entry.getKey()).get());
+			ring.setAmount(entry.getValue());
+			ring.setRecipeId(recipe);
+			recIng.add(ring);
+			amount += entry.getValue();
 		}
-//		
+		
+		
+		recipe.setAmount(amount);
+		recipe.setIngredients(recIng);
+		
+		//sacuvajrecept
+		recipeRepository.save(recipe);
+		
+		//sacuvaj recipeingredient
+		recipeIngreRepo.saveAll(recIng);
+		return dto;
+		
+		
 //		int i = 0;
 //		for (RecipeIngredient ri : dto.getRecipeIngredient()) {			
 //			Ingredient ing = ingredientRepository.findById(ri.getIngredientId().getId()).get();
@@ -262,7 +272,7 @@ public class RecipeServiceImpl implements RecipeService {
 //			amount =+ ingredientAmount;
 //		}
 		
-		
+		// u oba slucaja vraca null pointer 
 		
 //		for (RecipeIngredient ri : dto.getRecipeIngredient()) {
 //			recIng.add(i++, new RecipeIngredient(null, recipe,
@@ -270,13 +280,7 @@ public class RecipeServiceImpl implements RecipeService {
 //							ri.getAmount()));
 //			amount += ri.getAmount();
 //		}
-		recipe.setAmount(amount);
-		recipe.setIngredients(recIng);
-		//sacuvajrecept
-		recipeRepository.save(recipe);
-		//sacuvaj recipeingredient
-		recipeIngreRepo.saveAll(recIng);
-		return dto;
+		
 	}
 
 	

@@ -29,6 +29,7 @@ import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LikedRecipesRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingFactorRepository;
+import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
 
@@ -48,10 +49,14 @@ public class DummyController {
 	
 	@Autowired
 	LikedRecipesRepository likedRecipesRepository;
+	@Autowired
+	RecipeIngredientRepository recIngRepo;
 	
 	
-	
-	
+	@RequestMapping(method = RequestMethod.GET, path="/getRec/{id}")
+	public ResponseEntity<?> getRecIng(@PathVariable Long id) {
+		return new ResponseEntity<>(recIngRepo.findById(id).get(), HttpStatus.OK);
+	}
 	
 	
 	

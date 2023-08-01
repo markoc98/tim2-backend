@@ -1,6 +1,8 @@
 package com.praksa.KitchenBackEnd.models.dto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.praksa.KitchenBackEnd.models.entities.ERecipeCategory;
@@ -17,6 +19,8 @@ public class RecipeRegisterDTO {
 	private Integer timeToPrepare;
 	private ERecipeCategory category;
 
+	private Map<Long, Integer> ingredientMap = new HashMap<>();
+	
 	private List<Integer> ingredientAmount;
 	private List<Long> ingredientId;
 	private List<RecipeIngredient> recipeIngredient;
@@ -27,8 +31,8 @@ public class RecipeRegisterDTO {
 	}
 
 	public RecipeRegisterDTO(Long id, String title, String description, String steps, Integer amount,
-			Integer timeToPrepare, ERecipeCategory category, List<Integer> ingredientAmount, List<Long> ingredientId,
-			List<RecipeIngredient> recipeIngredient) {
+			Integer timeToPrepare, ERecipeCategory category, Map<Long, Integer> ingredientMap,
+			List<Integer> ingredientAmount, List<Long> ingredientId, List<RecipeIngredient> recipeIngredient) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -37,6 +41,7 @@ public class RecipeRegisterDTO {
 		this.amount = amount;
 		this.timeToPrepare = timeToPrepare;
 		this.category = category;
+		this.ingredientMap = ingredientMap;
 		this.ingredientAmount = ingredientAmount;
 		this.ingredientId = ingredientId;
 		this.recipeIngredient = recipeIngredient;
@@ -98,6 +103,14 @@ public class RecipeRegisterDTO {
 		this.category = category;
 	}
 
+	public Map<Long, Integer> getIngredientMap() {
+		return ingredientMap;
+	}
+
+	public void setIngredientMap(Map<Long, Integer> ingredientMap) {
+		this.ingredientMap = ingredientMap;
+	}
+
 	public List<Integer> getIngredientAmount() {
 		return ingredientAmount;
 	}
@@ -121,8 +134,7 @@ public class RecipeRegisterDTO {
 	public void setRecipeIngredient(List<RecipeIngredient> recipeIngredient) {
 		this.recipeIngredient = recipeIngredient;
 	}
-	
-	
+
 	
 	
 	

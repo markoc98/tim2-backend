@@ -35,7 +35,13 @@ public class RegularUserServiceImpl implements RegularUserService {
 	
 	@Autowired
 	private AffectedUserRepository affectedUsersRepo;
-
+	
+	
+	
+	
+	
+	//=========================FOR LIMITING FACTORS=======================//
+	
 	@Override
 	public Set<LimitingFactor> getLimitingFactors(Long userId) {
 		RegularUser user = (RegularUser) userRepository.findById(userId).get();
@@ -64,22 +70,47 @@ public class RegularUserServiceImpl implements RegularUserService {
 		affectedUsersRepo.delete(af);
 		return af;
 	}
-
+	
+	
+	
+	//=========================FOR RECIPES=========================//
+	
 	@Override
-	public Set<Recipe> getRecipes(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Recipe> getUserRecipes(Long userId) {
+		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+		Set<Recipe> recipes = recipeRepo.
+				findAllByLikedRecipes(user.getLikedRecipes().getId());
+		
+		return recipes;
 	}
 
+	
+	//Posto je OneToOne od RegularUsera ka LikedRecipes, svi kljucevi moraju biti unikatni
+	//zbog toga moram da copiram recept u tabelu recepata i dajem mu strani kljuc LikedRecipe iliti "cookbook-a"
+	//ako neko zna bolje resenje...
 	@Override
-	public Recipe addRecipe(Long userId, Long recId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Recipe addRecipeToUser(Long userId, Long recipeId) {
+		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+		Recipe recipe = recipeRepo.findById(recipeId).get();
+		if(recipe.getLikedRecipes() == user.getLikedRecipes()) {
+			return null;
+		}
+		Recipe rec = new Recipe(null, recipe.getTitle(), 
+				recipe.getDescription(), 
+				recipe.getSteps(), recipe.getTimeToPrepare(),
+				recipe.getCreatedOn(), recipe.getUpdatedOn(), 
+				recipe.getAmount(), recipe.getCategory(), 
+				recipe.getVersion(), recipe.getIngredients(), 
+				recipe.getCook(),user.getLikedRecipes());		
+		recipeRepo.save(rec);
+		return recipe;
 	}
 
 	@Override
 	public Recipe removeRecipe(Long userId, Long recId) {
-		// TODO Auto-generated method stub
+		RegularUser user = (RegularUser) userRepository.findById(userId).get();
+		Recipe recipe = recipeRepo.findByLikedRecipes(recId);
+		recipeRepo.delete(recipe);
 		return null;
 	}
 

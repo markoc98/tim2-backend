@@ -46,7 +46,7 @@ public class RegularUser extends User {
 	
 	
 	
-	//one to one 
+	//one to one? 
 	@JsonManagedReference(value = "user-affectedUser")
 	@OneToMany(mappedBy = "regularUser", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<AffectedUsers> limitingFactor = new ArrayList<>();

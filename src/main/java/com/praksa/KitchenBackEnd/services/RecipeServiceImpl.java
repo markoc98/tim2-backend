@@ -26,10 +26,13 @@ import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
+import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
+import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
+import com.praksa.KitchenBackEnd.repositories.UserRepository;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -48,6 +51,9 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Autowired 
 	private CookService cookService;
+	
+	@Autowired
+	private UserRepository userRepo;
 	
 	//IZLVACENJE ALERGENA
 	private Set<LimitingFactor> extractLF(Recipe recipe) {
@@ -133,18 +139,15 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setTitle(newRecipe.getTitle());
 		recipe.setDescription(newRecipe.getDescription());
 		recipe.setIngredients(newRecipe.getIngredients());
+		recipe.setCategory(newRecipe.getCategory());
 		return newRecipe;
 	}
 	
 	
-	@Override
-	public Recipe addRecipeToUser(Long userId, Long recipeId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Iterable<Recipe> getRecipes() {
+		
 		return recipeRepository.findAll();
 	}
 
@@ -200,7 +203,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
-	public RecipeDTO getRecipeLf(Long id) {
+	public RecipeDTO getRecipeLfandNutrition(Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
 		Set<LimitingFactor> limits = new HashSet<>(extractLF(recipe));
 		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));

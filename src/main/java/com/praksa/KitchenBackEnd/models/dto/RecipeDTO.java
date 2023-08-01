@@ -7,6 +7,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
+import com.praksa.KitchenBackEnd.models.entities.ERecipeCategory;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
@@ -21,6 +22,7 @@ public class RecipeDTO {
 	private String steps;
 	private Integer amount;
 	private Integer timeToPrepare;
+	private ERecipeCategory category;
 	private Set<LimitingFactor> limitingFactors;
 	private List<RecipeIngredient> ingredients;
 	private Map<String, Float> nutrition;
@@ -31,7 +33,8 @@ public class RecipeDTO {
 	}
 
 	public RecipeDTO(Long id, String title, String description, String steps, Integer amount, Integer timeToPrepare,
-			Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients, Map<String, Float> nutrition) {
+			ERecipeCategory category, Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients,
+			Map<String, Float> nutrition) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -39,6 +42,7 @@ public class RecipeDTO {
 		this.steps = steps;
 		this.amount = amount;
 		this.timeToPrepare = timeToPrepare;
+		this.category = category;
 		this.limitingFactors = limitingFactors;
 		this.ingredients = ingredients;
 		this.nutrition = nutrition;
@@ -92,6 +96,14 @@ public class RecipeDTO {
 		this.timeToPrepare = timeToPrepare;
 	}
 
+	public ERecipeCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ERecipeCategory category) {
+		this.category = category;
+	}
+
 	public Set<LimitingFactor> getLimitingFactors() {
 		return limitingFactors;
 	}
@@ -115,6 +127,8 @@ public class RecipeDTO {
 	public void setNutrition(Map<String, Float> nutrition) {
 		this.nutrition = nutrition;
 	}
+
+	
 
 	
 

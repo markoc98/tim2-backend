@@ -12,7 +12,7 @@ public interface RegularUserService {
 	public AffectedUsers addLimitingFactor(Long userId, Long lfId);
 	public AffectedUsers removeLimitingFactor(Long lfId);
 	
-	public Set<Recipe> getRecipes(Long userId);
-	public Recipe addRecipe(Long userId, Long recId);
+	public Set<Recipe> getUserRecipes(Long userId);
+	public Recipe addRecipeToUser(Long userId, Long recId);
 	public Recipe removeRecipe(Long userId, Long recId);
 }

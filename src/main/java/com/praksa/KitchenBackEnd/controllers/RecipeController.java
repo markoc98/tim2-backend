@@ -67,7 +67,7 @@ public class RecipeController {
 	
 	@GetMapping(path = "/recipeLF/{recId}")
 	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
-		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLf(recId), HttpStatus.OK);
+		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLfandNutrition(recId), HttpStatus.OK);
 	}
 	
 	

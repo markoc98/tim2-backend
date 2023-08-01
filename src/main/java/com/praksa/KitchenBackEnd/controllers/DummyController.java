@@ -49,50 +49,10 @@ public class DummyController {
 	@Autowired
 	LikedRecipesRepository likedRecipesRepository;
 	
-	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
-	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
-	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
-		Recipe recipe = new Recipe();
-		Cook cook = cookRepository.findById(cookId).get();
-		recipe.setAmount(recDTO.getAmount());
-		recipe.setCook(cook);
-		recipe.setSteps(recDTO.getSteps());
-		recipe.setTimeToPrepare(recDTO.getTimeToPrepare());
-		recipe.setTitle(recDTO.getTitle());
-		recipe.setDescription(recDTO.getDescription());
-		recipeRepository.save(recipe);
-		return new ResponseEntity<>(recipe, HttpStatus.CREATED);
-	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/userRec/{id}")
-	public ResponseEntity<?> getUsersFav(@PathVariable Long id ) {
-		RegularUser user = regUserRepository.findById(id).get();
-		Set<LikedRecipes> likes = new HashSet<>();
-//		for (LikedRecipes likedRecipes : user.getLikedRecipes()) {
-//			likes.add(likedRecipes);
-//		}
-		return new ResponseEntity<>(likes, HttpStatus.OK);
-	}
 	
-	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/rec/{recId}")
-	public ResponseEntity<?> addRecToUser(@PathVariable Long userId, @PathVariable Long recId) {
-		RegularUser user = regUserRepository.findById(userId).get();
-		Recipe recipe = recipeRepository.findById(recId).get();
-		if(recipe.getLikedRecipes() == user.getLikedRecipes()) {
-			return new ResponseEntity<>("You already like this recipe", HttpStatus.CONFLICT);
-		}
-		Recipe rec = new Recipe(null, recipe.getTitle(), 
-				recipe.getDescription(), 
-				recipe.getSteps(), recipe.getTimeToPrepare(),
-				recipe.getCreatedOn(), recipe.getUpdatedOn(), 
-				recipe.getAmount(), recipe.getCategory(), 
-				recipe.getVersion(), recipe.getIngredients(), 
-				recipe.getCook(),user.getLikedRecipes());		
-		recipeRepository.save(rec);
-		
-		return new ResponseEntity<>(rec, HttpStatus.OK);
-		
-	}
+	
+	
 	
 	
 	
@@ -114,15 +74,7 @@ public class DummyController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/likes/{recId}")
-	public ResponseEntity<?> addRecipeToUser(@PathVariable Long userId, @PathVariable Long recId) {
-		RegularUser regUser = regUserRepository.findById(userId).get();
-		Recipe recipe = recipeRepository.findById(recId).get();
-//		regUser.getLikedRecipes().add(recipe);
-		regUserRepository.save(regUser);
-		
-		return new ResponseEntity<>(regUser, HttpStatus.OK);
-	}
+	
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/addIngredient")
 	public ResponseEntity<?> addIngredient(@RequestBody IngredientDTO ingredient) {

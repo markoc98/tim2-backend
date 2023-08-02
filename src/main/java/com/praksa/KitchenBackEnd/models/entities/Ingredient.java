@@ -50,10 +50,14 @@ public class Ingredient {
 //	@CsvBindByName(column = "Proteins")
 	private Float proteins;
 	
+	
+	@JsonIgnore
 	@JsonManagedReference(value = "ingredient-limitingFactor")
 	@OneToMany(mappedBy = "ingredients", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<LimitingIngredient> limitingFactors = new ArrayList<>();
 	
+	
+	@JsonIgnore
 	@JsonManagedReference(value ="recipeIngredient-ingredient")
 	@OneToMany(mappedBy = "ingredientId", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<RecipeIngredient> recipes = new ArrayList<>();

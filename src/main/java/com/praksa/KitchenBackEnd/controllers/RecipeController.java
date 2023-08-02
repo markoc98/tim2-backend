@@ -59,6 +59,8 @@ public class RecipeController {
 		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
 	}
 	
+	
+	
 	@PostMapping(path = "/recipes/addRec/{cookId}")
 	public ResponseEntity<?> createRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
 		return new ResponseEntity<>(recipeService.createRecipeWithIng(recipe, cookId), HttpStatus.OK);

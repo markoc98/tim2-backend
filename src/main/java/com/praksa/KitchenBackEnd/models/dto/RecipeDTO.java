@@ -15,11 +15,12 @@ import com.praksa.KitchenBackEnd.models.entities.RecipeIngredient;
 
 public class RecipeDTO {
 	
-	@JsonIgnore
+	
 	private Long id;
 	private String title;
 	private String description;
 	private String steps;
+	private String cook;
 	private Integer amount;
 	private Integer timeToPrepare;
 	private ERecipeCategory category;
@@ -32,14 +33,29 @@ public class RecipeDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RecipeDTO(Long id, String title, String description, String steps, Integer amount, Integer timeToPrepare,
-			ERecipeCategory category, Set<LimitingFactor> limitingFactors, List<RecipeIngredient> ingredients,
-			Map<String, Float> nutrition) {
+
+	public String getCook() {
+		return cook;
+	}
+
+
+	public void setCook(String cook) {
+		this.cook = cook;
+	}
+
+
+	
+
+
+	public RecipeDTO(Long id, String title, String description, String steps, String cook, Integer amount,
+			Integer timeToPrepare, ERecipeCategory category, Set<LimitingFactor> limitingFactors,
+			List<RecipeIngredient> ingredients, Map<String, Float> nutrition) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.steps = steps;
+		this.cook = cook;
 		this.amount = amount;
 		this.timeToPrepare = timeToPrepare;
 		this.category = category;
@@ -47,6 +63,7 @@ public class RecipeDTO {
 		this.ingredients = ingredients;
 		this.nutrition = nutrition;
 	}
+
 
 	public Long getId() {
 		return id;

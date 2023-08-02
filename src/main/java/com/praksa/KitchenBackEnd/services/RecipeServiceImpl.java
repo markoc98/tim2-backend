@@ -61,17 +61,22 @@ public class RecipeServiceImpl implements RecipeService {
 	@Autowired
 	private CookRepository cookRepository;
 	
+	
+	
+	
+	//=-=-=-=-=-=-=-=-=-=-=FUNKCIONALNA DEKONSTRUKCIJA=-=-=-=-=-=-=-=-=-=-=-///
 	//IZLVACENJE ALERGENA - treba ispravka za novi model
-	private Set<LimitingFactor> extractLF(Recipe recipe) {
+	private Set<String> extractLF(Recipe recipe) {
 		
 		List<Ingredient> ingredients = recipe.
 				getIngredients().stream().map(e -> 
 				e.getIngredientId()).toList();
 		
-		Set<LimitingFactor> limits = new HashSet<>();
+		Set<String> limits = new HashSet<>();
+		
 		for(Ingredient ing : ingredients) { 
 			for(LimitingIngredient limIng : ing.getLimitingFactors()) {
-				limits.add(limIng.getLimitingFactor());
+				limits.add(limIng.getLimitingFactor().getName());
 			}
 		}
 	
@@ -131,16 +136,57 @@ public class RecipeServiceImpl implements RecipeService {
 		return nutrition;
 	}
 	
+	
+	
+	//MAPIRANJE IMENA I KOLICINE SASTOJAKA
+	private Map<String, Integer> ingredientNamedMap(Recipe recipe) {
+		List<RecipeIngredient> recIng = recipe.getIngredients();
+		Map<String, Integer> namedIng = new HashMap<>();
+		//enact paradox
+		for (RecipeIngredient ri : recIng) {
+			namedIng.put(ingredientRepository.findById(ri.getIngredientId().getId()).get().getName(),
+					ri.getAmount());
+		}
+		return namedIng;
+	}
+	
+	
 	//=-=-==-=-==-=-=-=-==-=-==SERVICES-=-=-==-=-==-=-=-=-==-=-===-=-=-=-==-=-==-=-=//
-
+	
+	
 	@Override
 	public Iterable<Recipe> getRecipes() {
 		return recipeRepository.findAll();
 	}
-
+	
+	
 	@Override
-	public Recipe getRecipe(Long id) {
-		return recipeRepository.findById(id).get();
+	public RecipeRegisterDTO getRecipe(Long id) {
+		
+		Recipe recipe = recipeRepository.findById(id).get();
+		RecipeRegisterDTO dto = new RecipeRegisterDTO();
+		
+		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
+		Set<String> limits = new HashSet<>(extractLF(recipe));
+		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
+		
+		dto.setId(recipe.getId());
+		dto.setCategory(recipe.getCategory());
+		dto.setDescription(recipe.getDescription());
+		dto.setSteps(recipe.getSteps());
+		dto.setTitle(recipe.getTitle());
+		dto.setTimeToPrepare(recipe.getTimeToPrepare());
+		dto.setAmount(recipe.getAmount());
+		dto.setCook(recipe.getCook().getFirstName() + " " + recipe.getCook().getLastName());
+		dto.setNutrition(nutrition);
+		dto.setCreatedOn(recipe.getCreatedOn());
+		dto.setUpdatedOn(recipe.getUpdatedOn());
+		dto.setIngredients(ingredients);
+		dto.setIngredientAmount(ingredientNamedMap(recipe));
+		dto.setLimitingFactors(limits);
+		
+		
+		return dto;
 	}
 
 	@Override
@@ -155,6 +201,10 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Recipe updateRecipe(RecipeDTO updatedRecipe, Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
+		
+		//Problem - promena kolicine znaci promena kolicine svih sastojaka
+		//Resenje - povici svaki sastojak iz recepta i menjati njihove kolicine
+		//Primer: ingredientMapper
 		if(updatedRecipe.getAmount() != null) {
 			recipe.setAmount(updatedRecipe.getAmount());			
 		}
@@ -170,46 +220,13 @@ public class RecipeServiceImpl implements RecipeService {
 		if(updatedRecipe.getDescription() != null && !updatedRecipe.getDescription().equals(recipe.getDescription())) {
 			recipe.setDescription(updatedRecipe.getDescription());			
 		}
+		if(updatedRecipe.getCategory() != null && !updatedRecipe.getCategory().equals(recipe.getCategory())) {
+			recipe.setCategory(updatedRecipe.getCategory());
+		}
 		recipeRepository.save(recipe);
 		return recipe;
 	}
-
-	@Override
-	public Set<LimitingFactor> getLFfromRecipe(Long id) {
-		Recipe recipe = recipeRepository.findById(id).get();
-		List<Ingredient> ingredients = recipe.
-				getIngredients().stream().map(e -> 
-				e.getIngredientId()).toList();
-		
-		Set<LimitingFactor> limits = new HashSet<>();
-		for(Ingredient ing : ingredients) { 
-			for(LimitingIngredient limIng : ing.getLimitingFactors()) {
-				limits.add(limIng.getLimitingFactor());
-			}
-		}
 	
-		return limits;
-	}
-	
-	@Override
-	public RecipeDTO getRecipeLfandNutrition(Long id) {
-		Recipe recipe = recipeRepository.findById(id).get();
-		Set<LimitingFactor> limits = new HashSet<>(extractLF(recipe));
-		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
-		RecipeDTO retVal = new RecipeDTO();
-		retVal.setId(id);
-		retVal.setAmount(recipe.getAmount());
-		retVal.setDescription(recipe.getDescription());
-		retVal.setSteps(recipe.getSteps());
-		retVal.setTitle(recipe.getTitle());
-		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
-		retVal.setLimitingFactors(limits);
-		retVal.setIngredients(recipe.getIngredients());
-		retVal.setNutrition(nutrition);
-		// vrati recept i njegove alergene
-		return retVal;
-	}
-
 	@Override
 	public RecipeRegisterDTO createRecipeWithIng(RecipeRegisterDTO dto, Long cookId) {
 		Recipe recipe = new Recipe();
@@ -264,6 +281,49 @@ public class RecipeServiceImpl implements RecipeService {
 //		}
 		
 	}
+	
+	
+	
+
+	@Override
+	public Set<LimitingFactor> getLFfromRecipe(Long id) {
+		Recipe recipe = recipeRepository.findById(id).get();
+		List<Ingredient> ingredients = recipe.
+				getIngredients().stream().map(e -> 
+				e.getIngredientId()).toList();
+		
+		Set<LimitingFactor> limits = new HashSet<>();
+		for(Ingredient ing : ingredients) { 
+			for(LimitingIngredient limIng : ing.getLimitingFactors()) {
+				limits.add(limIng.getLimitingFactor());
+			}
+		}
+	
+		return limits;
+	}
+	
+	
+	//ostavicu za sada ali treba obrisati
+	@Override
+	public RecipeDTO getRecipeLfandNutrition(Long id) {
+		Recipe recipe = recipeRepository.findById(id).get();
+//		Set<LimitingFactor> limits = new HashSet<>(extractLF(recipe));
+		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
+		RecipeDTO retVal = new RecipeDTO();
+		retVal.setId(id);
+		retVal.setAmount(recipe.getAmount());
+		retVal.setDescription(recipe.getDescription());
+		retVal.setSteps(recipe.getSteps());
+		retVal.setTitle(recipe.getTitle());
+		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
+//		retVal.setLimitingFactors(limits);
+		retVal.setIngredients(recipe.getIngredients());
+		retVal.setNutrition(nutrition);
+		// vrati recept i njegove alergene
+		return null;
+	}
+
+	
 
 	
 	

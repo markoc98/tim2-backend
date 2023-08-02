@@ -13,7 +13,7 @@ public interface RecipeService {
 	
 	
 	public Iterable<Recipe> getRecipes();
-	public Recipe getRecipe(Long id);
+	public RecipeRegisterDTO getRecipe(Long id);
 	public Recipe deleteRecipe(Long id);
 	public Recipe updateRecipe(RecipeDTO recipe, Long id);
 	

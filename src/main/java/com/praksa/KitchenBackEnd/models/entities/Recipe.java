@@ -65,7 +65,7 @@ public class Recipe {
 
     @Column(name = "updated")
     @UpdateTimestamp
-    @JsonFormat(pattern = "dd-mm-yy")
+    @JsonFormat(pattern = "dd-mm-yyyy")
     private LocalDateTime updatedOn;
 	
 	private Integer amount;
@@ -87,7 +87,7 @@ public class Recipe {
 	@JoinColumn(name = "cook")
 	private Cook cook;
 	
-	
+	@JsonIgnore
 	@JsonManagedReference(value = "likedRecipes-recipes")
 	@OneToMany(mappedBy = "recipe", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private Set<LikedRecipes> likedRecipes = new HashSet<>();

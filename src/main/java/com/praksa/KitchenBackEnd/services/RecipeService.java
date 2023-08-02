@@ -5,19 +5,21 @@ import java.util.List;
 import java.util.Set;
 
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
+import com.praksa.KitchenBackEnd.models.dto.RecipeRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 
 public interface RecipeService {
 	
 	
-	public Recipe createRecipe(RecipeDTO dto, Long id);
 	public Iterable<Recipe> getRecipes();
-	public Recipe getRecipe(Long id);
-	public Recipe deleteRecipe(Long id);
-	public Recipe updateRecipe(RecipeDTO recipe, Long id);
 	
-	public RecipeDTO getRecipeLf(Long id);
+	public RecipeRegisterDTO getRecipe(Long id);
+	public RecipeRegisterDTO createRecipe(RecipeRegisterDTO dto, Long cookId);
+	public Recipe updateRecipe(RecipeRegisterDTO dto, Long id);
+	public Recipe deleteRecipe(Long id);
+	
+	public RecipeDTO getRecipeLfandNutrition(Long id);
 //	public RecipeDTO getRecipeCaloricValue(Long id);
 	
 	public Set<LimitingFactor> getLFfromRecipe(Long id);

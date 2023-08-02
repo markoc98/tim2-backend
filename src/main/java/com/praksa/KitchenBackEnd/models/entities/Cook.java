@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "cooks")
@@ -44,7 +45,7 @@ public class Cook extends User {
 	
 	
 	
-	@JsonBackReference
+	@JsonManagedReference(value = "recipe-cook")
 	@Column
 	@OneToMany(mappedBy = "cook", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<Recipe> recipes = new ArrayList<>();

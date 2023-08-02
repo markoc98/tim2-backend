@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.praksa.KitchenBackEnd.controllers.util.RESTError;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
+import com.praksa.KitchenBackEnd.models.dto.RecipeRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.services.RecipeService;
@@ -122,7 +123,7 @@ public class RecipeController {
 	
 	
 	@GetMapping(path = "/recipeLF/{recId}")
-	public ResponseEntity<?> getRecipeAndLF(@Valid @PathVariable Long recId) {
+	public ResponseEntity<?> getRecipeAndLF( @PathVariable Long recId) {
 		 try {
 		        RecipeDTO recipeDTO = recipeService.getRecipeLf(recId);
 		        return new ResponseEntity<>(recipeDTO, HttpStatus.OK);

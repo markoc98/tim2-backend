@@ -1,5 +1,11 @@
 package com.praksa.KitchenBackEnd.controllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +21,15 @@ import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
+import com.praksa.KitchenBackEnd.models.entities.LikedRecipes;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
+import com.praksa.KitchenBackEnd.repositories.LikedRecipesRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingFactorRepository;
+import com.praksa.KitchenBackEnd.repositories.RecipeIngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
 
@@ -38,20 +47,19 @@ public class DummyController {
 	@Autowired
 	RegularUserRepository regUserRepository;
 	
-	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
-	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
-	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
-		Recipe recipe = new Recipe();
-		Cook cook = cookRepository.findById(cookId).get();
-		recipe.setAmount(recDTO.getAmount());
-		recipe.setCook(cook);
-		recipe.setSteps(recDTO.getSteps());
-		recipe.setTimeToPrepare(recDTO.getTimeToPrepare());
-		recipe.setTitle(recDTO.getTitle());
-		recipe.setDescription(recDTO.getDescription());
-		recipeRepository.save(recipe);
-		return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+	@Autowired
+	LikedRecipesRepository likedRecipesRepository;
+	@Autowired
+	RecipeIngredientRepository recIngRepo;
+	
+	
+	@RequestMapping(method = RequestMethod.GET, path="/getRec/{id}")
+	public ResponseEntity<?> getRecIng(@PathVariable Long id) {
+		return new ResponseEntity<>(recIngRepo.findById(id).get(), HttpStatus.OK);
 	}
+	
+	
+	
 	
 	
 	@RequestMapping(method = RequestMethod.GET, path ="/findIng/{name}")
@@ -65,21 +73,13 @@ public class DummyController {
 	public ResponseEntity<?> addLFtoUser(@PathVariable Long userId, @PathVariable Long lfId) {
 		RegularUser regUser = regUserRepository.findById(userId).get();
 		LimitingFactor lf = limiFactorRepository.findById(lfId).get();
-		regUser.getLimitingFactor().add(lf);
+//		regUser.getLimitingFactor().add(lf);
 		regUserRepository.save(regUser);
 		return new ResponseEntity<>(regUser, HttpStatus.CREATED);
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.POST, path = "/user/{userId}/likes/{recId}")
-	public ResponseEntity<?> addRecipeToUser(@PathVariable Long userId, @PathVariable Long recId) {
-		RegularUser regUser = regUserRepository.findById(userId).get();
-		Recipe recipe = recipeRepository.findById(recId).get();
-		regUser.getLikedRecipes().add(recipe);
-		regUserRepository.save(regUser);
-		
-		return new ResponseEntity<>(regUser, HttpStatus.OK);
-	}
+	
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/addIngredient")
 	public ResponseEntity<?> addIngredient(@Valid @RequestBody IngredientDTO ingredient) {

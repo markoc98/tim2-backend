@@ -1,73 +1,97 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class LimitingIngredient {
+public class LikedRecipes {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@Column(name = "id")
+	public Long id;
 	
 	
-	@JsonBackReference(value = "ingredient-limitingFactor")
+	
+	@JsonBackReference(value = "regularUser-likedRecipes")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ingredientId")
-	private Ingredient ingredients;
+	public RegularUser regularUser;
 	
-	@JsonBackReference(value = "limitingIngredient-limitingFactor")
+	
+	@JsonBackReference(value = "likedRecipes-recipes")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "limitingFactorId")
-	private LimitingFactor limitingFactor;
+	public Recipe recipe;
 
-	public LimitingIngredient() {
+
+	public LikedRecipes() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public LimitingIngredient(Long id, Ingredient ingredients, LimitingFactor limitingFactor) {
+
+	public LikedRecipes(Long id, RegularUser regularUser, Recipe recipe) {
 		super();
 		this.id = id;
-		this.ingredients = ingredients;
-		this.limitingFactor = limitingFactor;
+		this.regularUser = regularUser;
+		this.recipe = recipe;
 	}
+
 
 	public Long getId() {
 		return id;
 	}
 
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Ingredient getIngredients() {
-		return ingredients;
+
+	public RegularUser getRegularUser() {
+		return regularUser;
 	}
 
-	public void setIngredients(Ingredient ingredients) {
-		this.ingredients = ingredients;
+
+	public void setRegularUser(RegularUser regularUser) {
+		this.regularUser = regularUser;
 	}
 
-	public LimitingFactor getLimitingFactor() {
-		return limitingFactor;
+
+	public Recipe getRecipe() {
+		return recipe;
 	}
 
-	public void setLimitingFactor(LimitingFactor limitingFactor) {
-		this.limitingFactor = limitingFactor;
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
 	}
 
+
+
+
+	
 	
 	
 }

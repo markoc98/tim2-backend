@@ -1,6 +1,5 @@
 package com.praksa.KitchenBackEnd.models.entities;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,38 +8,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class LimitingIngredient {
+public class AffectedUsers {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	
-	@JsonBackReference(value = "ingredient-limitingFactor")
+	@JsonBackReference(value = "user-affectedUser")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ingredientId")
-	private Ingredient ingredients;
+	@JoinColumn(name = "regular_user_id")
+	private RegularUser regularUser;
 	
-	@JsonBackReference(value = "limitingIngredient-limitingFactor")
+	@JsonBackReference(value = "affectedUser-limitingFactor")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "limitingFactorId")
+	@JoinColumn(name = "limiting_factor_id")
 	private LimitingFactor limitingFactor;
 
-	public LimitingIngredient() {
+	public AffectedUsers() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public LimitingIngredient(Long id, Ingredient ingredients, LimitingFactor limitingFactor) {
+	public AffectedUsers(Long id, RegularUser regularUser, LimitingFactor limitingFactor) {
 		super();
 		this.id = id;
-		this.ingredients = ingredients;
+		this.regularUser = regularUser;
 		this.limitingFactor = limitingFactor;
 	}
 
@@ -52,12 +49,12 @@ public class LimitingIngredient {
 		this.id = id;
 	}
 
-	public Ingredient getIngredients() {
-		return ingredients;
+	public RegularUser getRegularUser() {
+		return regularUser;
 	}
 
-	public void setIngredients(Ingredient ingredients) {
-		this.ingredients = ingredients;
+	public void setRegularUser(RegularUser regularUser) {
+		this.regularUser = regularUser;
 	}
 
 	public LimitingFactor getLimitingFactor() {
@@ -67,7 +64,9 @@ public class LimitingIngredient {
 	public void setLimitingFactor(LimitingFactor limitingFactor) {
 		this.limitingFactor = limitingFactor;
 	}
-
+	
+	
+	
 	
 	
 }

@@ -10,9 +10,11 @@ import com.praksa.KitchenBackEnd.models.dto.CookRegisterDTO;
 import com.praksa.KitchenBackEnd.models.dto.RegularUserRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Administrator;
 import com.praksa.KitchenBackEnd.models.entities.Cook;
+import com.praksa.KitchenBackEnd.models.entities.LikedRecipes;
 import com.praksa.KitchenBackEnd.models.entities.RegularUser;
 import com.praksa.KitchenBackEnd.models.entities.User;
 import com.praksa.KitchenBackEnd.repositories.CookRepository;
+import com.praksa.KitchenBackEnd.repositories.LikedRecipesRepository;
 import com.praksa.KitchenBackEnd.repositories.RegularUserRepository;
 import com.praksa.KitchenBackEnd.repositories.UserRepository;
 import com.praksa.KitchenBackEnd.runtimeException.UserNotFoundException;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	private RegularUserRepository regularUserRepository;
 	@Autowired
 	private CookRepository cookRepository;
+	@Autowired
+	private LikedRecipesRepository likedRecipesRepository;
+	
 	
 	/*----------------GET--------------------*/
 	@Override
@@ -51,17 +56,17 @@ public class UserServiceImpl implements UserService {
 	
 
 	
-	
-	
-
-
 
 	/*------------------POST-----------------*/
 	@Override
 	public RegularUser addUser(RegularUserRegisterDTO dto) {
 		RegularUser regUser = (RegularUser) UserFactory.createUser(dto);
+//		LikedRecipes likes = new LikedRecipes();
+//		likedRecipesRepository.save(likes);
+//		regUser.setLikedRecipes(likes);
 		userRepository.save(regUser);
 		return regUser;
+		
 	}
 
 	@Override

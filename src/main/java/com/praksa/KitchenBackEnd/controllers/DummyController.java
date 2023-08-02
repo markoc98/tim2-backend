@@ -1,5 +1,7 @@
 package com.praksa.KitchenBackEnd.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class DummyController {
 	
 	//recimo da se kuvar ulogovao i da mozemo da izvucemo njegov id iz tokena
 	@RequestMapping(method = RequestMethod.POST, path = "/createRecipe/{cookId}")
-	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
+	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO recDTO, @PathVariable Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = cookRepository.findById(cookId).get();
 		recipe.setAmount(recDTO.getAmount());
@@ -80,7 +82,7 @@ public class DummyController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, path = "/addIngredient")
-	public ResponseEntity<?> addIngredient(@RequestBody IngredientDTO ingredient) {
+	public ResponseEntity<?> addIngredient(@Valid @RequestBody IngredientDTO ingredient) {
 		Ingredient ingredients = new Ingredient();
 		ingredients.setCalories(ingredient.getCalories());
 		ingredients.setCarbs(ingredient.getCarbs());

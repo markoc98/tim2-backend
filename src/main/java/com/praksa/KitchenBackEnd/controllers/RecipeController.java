@@ -4,6 +4,8 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +64,7 @@ public class RecipeController {
 	}
 	
 	@GetMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> getRecipe(@PathVariable Long id) {
+	public ResponseEntity<?> getRecipe(@Valid @PathVariable Long id) {
 		  try {
 		        Recipe recipe = recipeService.getRecipe(id);
 		        if (recipe != null) {
@@ -78,7 +80,7 @@ public class RecipeController {
 	
 	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
 	@PostMapping(path = "/recipes")
-	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
+	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
 		try {
 			return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
 		}catch (Exception e) {
@@ -89,7 +91,7 @@ public class RecipeController {
 	}
 	
 	@DeleteMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
+	public ResponseEntity<?> deleteRecipe(@Valid @PathVariable Long id) {
 	   
 	    try {
 	    	 recipeService.deleteRecipe(id);
@@ -103,7 +105,7 @@ public class RecipeController {
 
 	
 	@PutMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
+	public ResponseEntity<?> updateRecipe(@Valid @RequestBody RecipeDTO recipe, @PathVariable Long id) {
 		 try {		
 		Recipe updateRecipe = recipeService.updateRecipe(recipe, id);
 		if(updateRecipe !=null ) {
@@ -120,7 +122,7 @@ public class RecipeController {
 	
 	
 	@GetMapping(path = "/recipeLF/{recId}")
-	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
+	public ResponseEntity<?> getRecipeAndLF(@Valid @PathVariable Long recId) {
 		 try {
 		        RecipeDTO recipeDTO = recipeService.getRecipeLf(recId);
 		        return new ResponseEntity<>(recipeDTO, HttpStatus.OK);

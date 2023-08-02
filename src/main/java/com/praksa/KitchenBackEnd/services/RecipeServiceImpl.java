@@ -65,7 +65,8 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	
 	//=-=-=-=-=-=-=-=-=-=-=FUNKCIONALNA DEKONSTRUKCIJA=-=-=-=-=-=-=-=-=-=-=-///
-	//IZLVACENJE ALERGENA - treba ispravka za novi model
+	
+	//IZLVACENJE ALERGENA
 	private Set<String> extractLF(Recipe recipe) {
 		
 		List<Ingredient> ingredients = recipe.
@@ -83,7 +84,7 @@ public class RecipeServiceImpl implements RecipeService {
 		return limits;
 	}
 	
-	//IZVLACENJE SASTOJAKA - treba ispravka za novi model
+	//IZVLACENJE SASTOJAKA 
 	private List<Ingredient> extractIng(Recipe recipe) {
 
 		List<Ingredient> ingredients = recipe.
@@ -142,10 +143,21 @@ public class RecipeServiceImpl implements RecipeService {
 	private Map<String, Integer> ingredientNamedMap(Recipe recipe) {
 		List<RecipeIngredient> recIng = recipe.getIngredients();
 		Map<String, Integer> namedIng = new HashMap<>();
-		//enact paradox
 		for (RecipeIngredient ri : recIng) {
 			namedIng.put(ingredientRepository.findById(ri.getIngredientId().getId()).get().getName(),
 					ri.getAmount());
+		}
+		return namedIng;
+	}
+	
+	//MAPIRANJE IMENA I KOLICINE SASTOJAKA SA DODATOM JEDINICOM MERE
+	private Map<String, String> ingredientNamedMapString(Recipe recipe) {
+		List<RecipeIngredient> recIng = recipe.getIngredients();
+		Map<String, String> namedIng = new HashMap<>();
+		//ENACT PARADOX
+		for (RecipeIngredient ri : recIng) {
+			namedIng.put(ingredientRepository.findById(ri.getIngredientId().getId()).get().getName(), //<-key
+					ri.getAmount().toString() + ingredientRepository.findById(ri.getIngredientId().getId()).get().getUnit()); //<-value
 		}
 		return namedIng;
 	}
@@ -154,6 +166,9 @@ public class RecipeServiceImpl implements RecipeService {
 	//=-=-==-=-==-=-=-=-==-=-==SERVICES-=-=-==-=-==-=-=-=-==-=-===-=-=-=-==-=-==-=-=//
 	
 	
+	
+	//da li promenuti iterator da vrati recepte formatirane kao dto u getRecipe
+	//i da li je to dobra ideja?
 	@Override
 	public Iterable<Recipe> getRecipes() {
 		return recipeRepository.findAll();
@@ -166,10 +181,6 @@ public class RecipeServiceImpl implements RecipeService {
 		Recipe recipe = recipeRepository.findById(id).get();
 		RecipeRegisterDTO dto = new RecipeRegisterDTO();
 		
-		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
-		Set<String> limits = new HashSet<>(extractLF(recipe));
-		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
-		
 		dto.setId(recipe.getId());
 		dto.setCategory(recipe.getCategory());
 		dto.setDescription(recipe.getDescription());
@@ -178,13 +189,12 @@ public class RecipeServiceImpl implements RecipeService {
 		dto.setTimeToPrepare(recipe.getTimeToPrepare());
 		dto.setAmount(recipe.getAmount());
 		dto.setCook(recipe.getCook().getFirstName() + " " + recipe.getCook().getLastName());
-		dto.setNutrition(nutrition);
+		dto.setNutrition(calculateNutrition(recipe));
 		dto.setCreatedOn(recipe.getCreatedOn());
 		dto.setUpdatedOn(recipe.getUpdatedOn());
-		dto.setIngredients(ingredients);
-		dto.setIngredientAmount(ingredientNamedMap(recipe));
-		dto.setLimitingFactors(limits);
-		
+//		dto.setIngredients(extractIng(recipe);
+		dto.setIngredientAmount(ingredientNamedMapString(recipe));
+		dto.setLimitingFactors(extractLF(recipe));
 		
 		return dto;
 	}
@@ -199,15 +209,14 @@ public class RecipeServiceImpl implements RecipeService {
 
 
 	@Override
-	public Recipe updateRecipe(RecipeDTO updatedRecipe, Long id) {
+	public Recipe updateRecipe(RecipeRegisterDTO updatedRecipe, Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
+		List<RecipeIngredient> recIng = recipeIngreRepo.findAllByRecipeId(recipe);
+		Integer amount = 0;
 		
 		//Problem - promena kolicine znaci promena kolicine svih sastojaka
-		//Resenje - povici svaki sastojak iz recepta i menjati njihove kolicine
-		//Primer: ingredientMapper
-		if(updatedRecipe.getAmount() != null) {
-			recipe.setAmount(updatedRecipe.getAmount());			
-		}
+		//Resenje - mozda ingredientMapper za svaki sastojak zasebno?
+		
 		if(updatedRecipe.getSteps() != null && !updatedRecipe.getSteps().equals(recipe.getSteps())) {
 			recipe.setSteps(updatedRecipe.getSteps());			
 		}
@@ -223,12 +232,30 @@ public class RecipeServiceImpl implements RecipeService {
 		if(updatedRecipe.getCategory() != null && !updatedRecipe.getCategory().equals(recipe.getCategory())) {
 			recipe.setCategory(updatedRecipe.getCategory());
 		}
+		for (Map.Entry<Long, Integer> entry : updatedRecipe.getIngredientMap().entrySet()) {
+			for (RecipeIngredient ring : recIng) {
+				if(entry.getValue() != null && !ring.getAmount().equals(entry.getValue())) {
+					if(entry.getValue() < ring.getAmount()) {
+						recipe.setAmount(recipe.getAmount() - entry.getValue());
+					}
+					ring.setAmount(entry.getValue());
+					recipe.setAmount(recipe.getAmount() + entry.getValue());
+				}
+				
+			}
+			
+		}
+		
+		
+		
+		
 		recipeRepository.save(recipe);
+		recipeIngreRepo.saveAll(recIng);
 		return recipe;
 	}
 	
 	@Override
-	public RecipeRegisterDTO createRecipeWithIng(RecipeRegisterDTO dto, Long cookId) {
+	public RecipeRegisterDTO createRecipe(RecipeRegisterDTO dto, Long cookId) {
 		Recipe recipe = new Recipe();
 		Cook cook = (Cook) userRepo.findById(cookId).get();
 		List<RecipeIngredient> recIng = new ArrayList<>();
@@ -254,16 +281,14 @@ public class RecipeServiceImpl implements RecipeService {
 		recipe.setAmount(amount);
 		recipe.setIngredients(recIng);
 		
-		//sacuvajrecept
-		recipeRepository.save(recipe);
 		
-		//sacuvaj recipeingredient - hvala Marko
+		recipeRepository.save(recipe);
 		recipeIngreRepo.saveAll(recIng);
 		return dto;
 		
 		
 		// u oba slucaja vraca null vrednost posto je RecipeIngredient entitet sam po sebi bogalj
-		
+		// sacuvano da proucim 
 //		int i = 0;
 //		for (RecipeIngredient ri : dto.getRecipeIngredient()) {			
 //			Ingredient ing = ingredientRepository.findById(ri.getIngredientId().getId()).get();
@@ -284,7 +309,7 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	
 	
-
+	//mozda zatreba
 	@Override
 	public Set<LimitingFactor> getLFfromRecipe(Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();

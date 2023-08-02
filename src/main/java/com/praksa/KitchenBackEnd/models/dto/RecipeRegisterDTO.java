@@ -39,7 +39,7 @@ public class RecipeRegisterDTO {
 	private Set<String> limitingFactors = new HashSet<>();
 	private Map<String, Float> nutrition = new HashMap<>();
 	private List<Ingredient> ingredients = new ArrayList<>(); //test
-	private Map<String, Integer> ingredientAmount = new HashMap<>();
+	private Map<String, String> ingredientAmount = new HashMap<>();
 	
 	
 	public RecipeRegisterDTO() {
@@ -51,7 +51,7 @@ public class RecipeRegisterDTO {
 	public RecipeRegisterDTO(Long id, String title, String description, String steps, String cook, Integer amount,
 			Integer timeToPrepare, LocalDateTime createdOn, LocalDateTime updatedOn, ERecipeCategory category,
 			Map<Long, Integer> ingredientMap, Set<String> limitingFactors, Map<String, Float> nutrition,
-			List<Ingredient> ingredients, Map<String, Integer> ingredientAmount) {
+			List<Ingredient> ingredients, Map<String, String> ingredientAmount) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -211,14 +211,15 @@ public class RecipeRegisterDTO {
 	}
 
 
-	public Map<String, Integer> getIngredientAmount() {
+	public Map<String, String> getIngredientAmount() {
 		return ingredientAmount;
 	}
 
 
-	public void setIngredientAmount(Map<String, Integer> ingredientAmount) {
+	public void setIngredientAmount(Map<String, String> ingredientAmount) {
 		this.ingredientAmount = ingredientAmount;
 	}
+
 
 
 	

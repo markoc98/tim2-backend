@@ -60,7 +60,7 @@ public class Recipe {
 	
 	@Column(name = "created")
     @CreationTimestamp
-    @JsonFormat(pattern = "dd-mm-yy")
+    @JsonFormat(pattern = "dd-mm-yyyy")
     private LocalDateTime createdOn;
 
     @Column(name = "updated")

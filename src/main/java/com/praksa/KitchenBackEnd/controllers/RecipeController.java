@@ -55,7 +55,7 @@ public class RecipeController {
 	}
 	
 	@PutMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
+	public ResponseEntity<?> updateRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long id) {
 		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
 	}
 	
@@ -63,7 +63,7 @@ public class RecipeController {
 	
 	@PostMapping(path = "/recipes/addRec/{cookId}")
 	public ResponseEntity<?> createRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
-		return new ResponseEntity<>(recipeService.createRecipeWithIng(recipe, cookId), HttpStatus.OK);
+		return new ResponseEntity<>(recipeService.createRecipe(recipe, cookId), HttpStatus.OK);
 	}
 	
 	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//

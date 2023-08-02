@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.praksa.KitchenBackEnd.models.dto.RecipeDTO;
+import com.praksa.KitchenBackEnd.models.dto.RecipeRegisterDTO;
 import com.praksa.KitchenBackEnd.models.entities.Recipe;
 import com.praksa.KitchenBackEnd.repositories.RecipeRepository;
 import com.praksa.KitchenBackEnd.services.RecipeService;
@@ -46,11 +47,7 @@ public class RecipeController {
 	}
 	
 	
-	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
-	@PostMapping(path = "/recipes")
-	public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
-		return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
-	}
+	
 	
 	@DeleteMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> deleteRecipe(@PathVariable Long id) {
@@ -58,8 +55,15 @@ public class RecipeController {
 	}
 	
 	@PutMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> updateRecipe(@RequestBody RecipeDTO recipe, @PathVariable Long id) {
+	public ResponseEntity<?> updateRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long id) {
 		return new ResponseEntity<>(recipeService.updateRecipe(recipe, id), HttpStatus.OK);
+	}
+	
+	
+	
+	@PostMapping(path = "/recipes/addRec/{cookId}")
+	public ResponseEntity<?> createRecipe(@RequestBody RecipeRegisterDTO recipe, @PathVariable Long cookId) {
+		return new ResponseEntity<>(recipeService.createRecipe(recipe, cookId), HttpStatus.OK);
 	}
 	
 	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//
@@ -67,7 +71,7 @@ public class RecipeController {
 	
 	@GetMapping(path = "/recipeLF/{recId}")
 	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
-		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLf(recId), HttpStatus.OK);
+		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLfandNutrition(recId), HttpStatus.OK);
 	}
 	
 	

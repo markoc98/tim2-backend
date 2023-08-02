@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,18 +23,18 @@ public class RecipeIngredient {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@JsonBackReference
+	private Integer amount;
+
+	@JsonBackReference(value = "recipe-recipeIngredients")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipeId")
 	private Recipe recipeId;
 	
-	@JsonManagedReference
+	@JsonBackReference(value = "recipeIngredient-ingredient")
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ingredientId")
 	private Ingredient ingredientId;
 	
-	@JsonPropertyOrder({"id", "amount"})
-	private Integer amount;
 
 	public RecipeIngredient() {
 		super();

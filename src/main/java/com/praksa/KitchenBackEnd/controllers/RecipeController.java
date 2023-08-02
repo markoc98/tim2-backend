@@ -67,7 +67,7 @@ public class RecipeController {
 	@GetMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> getRecipe(@Valid @PathVariable Long id) {
 		  try {
-		        Recipe recipe = recipeService.getRecipe(id);
+		        RecipeRegisterDTO recipe = recipeService.getRecipe(id);
 		        if (recipe != null) {
 		            return new ResponseEntity<>(recipe, HttpStatus.OK);
 		        } else {
@@ -81,7 +81,7 @@ public class RecipeController {
 	
 	// Bio bi isti metod kao i na updejtu, sa istim endpointom "/recipes/{id}, 
 	@PostMapping(path = "/recipes")
-	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeDTO newRecipe, @RequestParam Long cookId) {
+	public ResponseEntity<?> createRecipe(@Valid @RequestBody RecipeRegisterDTO newRecipe, @RequestParam Long cookId) {
 		try {
 			return new ResponseEntity<>(recipeService.createRecipe(newRecipe, cookId), HttpStatus.CREATED);
 		}catch (Exception e) {
@@ -106,7 +106,7 @@ public class RecipeController {
 
 	
 	@PutMapping(path = "/recipes/{id}")
-	public ResponseEntity<?> updateRecipe(@Valid @RequestBody RecipeDTO recipe, @PathVariable Long id) {
+	public ResponseEntity<?> updateRecipe(@Valid @RequestBody RecipeRegisterDTO recipe, @PathVariable Long id) {
 		 try {		
 		Recipe updateRecipe = recipeService.updateRecipe(recipe, id);
 		if(updateRecipe !=null ) {
@@ -125,7 +125,7 @@ public class RecipeController {
 	@GetMapping(path = "/recipeLF/{recId}")
 	public ResponseEntity<?> getRecipeAndLF( @PathVariable Long recId) {
 		 try {
-		        RecipeDTO recipeDTO = recipeService.getRecipeLf(recId);
+		        RecipeRegisterDTO recipeDTO = recipeService.getRecipe(recId);
 		        return new ResponseEntity<>(recipeDTO, HttpStatus.OK);
 		    } catch (NoSuchElementException e) {
 		        return new ResponseEntity<RESTError>(

@@ -133,26 +133,6 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		
 		
-		
-		
-//		for(RecipeIngredient ring : recipeIngreRepo.findAllByRecipeId(recipe))
-//		for (Ingredient ingredient : ring.getIngredientId()amount.) {
-//			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
-//				if(entry.getKey() == "proteins") {
-//				entry.setValue(entry.getValue() + ingredient.getProteins());
-//				} else if(entry.getKey() == "carbs") {
-//				entry.setValue(entry.getValue() + ingredient.getCarbs());
-//				} else if(entry.getKey() == "fats") {
-//				entry.setValue(entry.getValue() + ingredient.getFats());
-//				}else if(entry.getKey() == "saturatedFats") {
-//				entry.setValue(entry.getValue() + ingredient.getSaturatedFats());
-//				} else if(entry.getKey() == "sugars") {
-//				entry.setValue(entry.getValue() + ingredient.getSugars());
-//				} else if(entry.getKey() == "calories") {
-//				entry.setValue(entry.getValue() + ingredient.getCalories());
-//				}
-//			}
-//		}
 			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
 				entry.setValue(entry.getValue() / amount);
 			}
@@ -190,8 +170,7 @@ public class RecipeServiceImpl implements RecipeService {
 	
 	
 	
-	//da li promenuti iterator da vrati recepte formatirane kao dto u getRecipe
-	//i da li je to dobra ideja?
+	
 	@Override
 	public Iterable<Recipe> getRecipes() {
 		return recipeRepository.findAll();
@@ -299,26 +278,6 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeRepository.save(recipe);
 		recipeIngreRepo.saveAll(recIng);
 		return dto;
-		
-		
-		// u oba slucaja vraca null vrednost posto je RecipeIngredient entitet sam po sebi bogalj
-		// sacuvano da proucim 
-//		int i = 0;
-//		for (RecipeIngredient ri : dto.getRecipeIngredient()) {			
-//			Ingredient ing = ingredientRepository.findById(ri.getIngredientId().getId()).get();
-//			Integer ingredientAmount = ri.getAmount();
-//			RecipeIngredient newIng = new RecipeIngredient(null, recipe, ing, ingredientAmount);
-//			recIng.add(newIng);
-//			amount += ingredientAmount;
-//		}
-		
-//		for (RecipeIngredient ri : dto.getRecipeIngredient()) {
-//			recIng.add(i++, new RecipeIngredient(null, recipe,
-//							ingredientRepository.findById(ri.getIngredientId().getId()).get(),
-//							ri.getAmount()));
-//			amount += ri.getAmount();
-//		}
-		
 	}
 	
 	
@@ -342,25 +301,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	
-	//ostavicu za sada ali treba obrisati
-	@Override
-	public RecipeDTO getRecipeLfandNutrition(Long id) {
-		Recipe recipe = recipeRepository.findById(id).get();
-//		Set<LimitingFactor> limits = new HashSet<>(extractLF(recipe));
-		Map<String, Float> nutrition = new HashMap<>(calculateNutrition(recipe));
-		RecipeDTO retVal = new RecipeDTO();
-		retVal.setId(id);
-		retVal.setAmount(recipe.getAmount());
-		retVal.setDescription(recipe.getDescription());
-		retVal.setSteps(recipe.getSteps());
-		retVal.setTitle(recipe.getTitle());
-		retVal.setTimeToPrepare(recipe.getTimeToPrepare());
-//		retVal.setLimitingFactors(limits);
-		retVal.setIngredients(recipe.getIngredients());
-		retVal.setNutrition(nutrition);
-		// vrati recept i njegove alergene
-		return null;
-	}
+	
 
 	
 

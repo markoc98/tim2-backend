@@ -19,7 +19,6 @@ public interface RecipeService {
 	public RecipeRegisterDTO updateRecipe(RecipeRegisterDTO dto, Long id);
 	public Recipe deleteRecipe(Long id);
 	
-	public RecipeDTO getRecipeLfandNutrition(Long id);
 //	public RecipeDTO getRecipeCaloricValue(Long id);
 	
 	public Set<LimitingFactor> getLFfromRecipe(Long id);

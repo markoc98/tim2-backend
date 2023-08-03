@@ -66,13 +66,7 @@ public class RecipeController {
 		return new ResponseEntity<>(recipeService.createRecipe(recipe, cookId), HttpStatus.OK);
 	}
 	
-	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//
 	
-	
-	@GetMapping(path = "/recipeLF/{recId}")
-	public ResponseEntity<?> getRecipeAndLF(@PathVariable Long recId) {
-		return new ResponseEntity<RecipeDTO>(recipeService.getRecipeLfandNutrition(recId), HttpStatus.OK);
-	}
 	
 	
 }

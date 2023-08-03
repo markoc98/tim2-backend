@@ -4,6 +4,16 @@ package com.praksa.KitchenBackEnd.models.dto;
 
 public class LimFactorDTO {
 	
+	private Long ingredientId;
+	public Long getIngredientId() {
+		return ingredientId;
+	}
+
+
+	public void setIngredientId(Long ingredientId) {
+		this.ingredientId = ingredientId;
+	}
+
 	private String name;
 
 	public LimFactorDTO() {

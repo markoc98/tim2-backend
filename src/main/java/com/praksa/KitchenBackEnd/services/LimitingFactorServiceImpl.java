@@ -53,9 +53,10 @@ public class LimitingFactorServiceImpl implements LimitingFactorService{
 
 	@Override
 	public LimitingFactor addLimitingFactor(LimFactorDTO limDTO, Long ingredientId) {
-	    LimitingFactor newLimitingFactor = new LimitingFactor();
+		
+		LimitingFactor newLimitingFactor = new LimitingFactor();
 	    newLimitingFactor.setName(limDTO.getName());
-	    LimitingFactor savedLimitingFactor = limitingFactorRepository.save(newLimitingFactor); // Save the LimitingFactor first
+	    limitingFactorRepository.save(newLimitingFactor); // Save the LimitingFactor first
 	    
 	    Optional<Ingredient> ingredientsId = ingredientRepository.findById(ingredientId);
 	    if (ingredientsId.isPresent()) {
@@ -76,7 +77,6 @@ public class LimitingFactorServiceImpl implements LimitingFactorService{
 	        return null;
 	    }
 	}
-	
 	
 	
 	

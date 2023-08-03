@@ -1,3 +1,4 @@
+
 package com.praksa.KitchenBackEnd.controllers;
 
 import javax.validation.Valid;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.praksa.KitchenBackEnd.controllers.util.RESTError;
-import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.dto.LimFactorDTO;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.services.LimitingFactorService;
@@ -39,16 +39,7 @@ public class LimitingFactorController {
 		}	
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<?> getLimitingFactorbyId(@PathVariable Long id) {

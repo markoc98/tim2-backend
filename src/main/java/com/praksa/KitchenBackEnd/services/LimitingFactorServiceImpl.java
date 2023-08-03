@@ -14,6 +14,7 @@ import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
 import com.praksa.KitchenBackEnd.models.entities.LimitingIngredient;
 import com.praksa.KitchenBackEnd.repositories.IngredientRepository;
 import com.praksa.KitchenBackEnd.repositories.LimitingFactorRepository;
+import com.praksa.KitchenBackEnd.repositories.LimitingIngredientRepository;
 
 
 
@@ -24,6 +25,8 @@ public class LimitingFactorServiceImpl implements LimitingFactorService{
 	private LimitingFactorRepository limitingFactorRepository;
 	@Autowired 
 	private IngredientRepository ingredientRepository;
+	@Autowired
+	private LimitingIngredientRepository limitingIngredientRepository;
 	
 	
 	@Override
@@ -49,23 +52,30 @@ public class LimitingFactorServiceImpl implements LimitingFactorService{
 	}
 
 	@Override
-	public LimitingFactor addLimitingFactor(LimFactorDTO limDTO,  Long ingredientId) {
-		LimitingFactor newLimitingFactor = new LimitingFactor();
-		newLimitingFactor.setName(limDTO.getName());
-		Optional<Ingredient> ingredientsId = ingredientRepository.findById(ingredientId);
-		if(ingredientsId.isPresent()){
-			Ingredient ingredient = ingredientsId.get();
+	public LimitingFactor addLimitingFactor(LimFactorDTO limDTO, Long ingredientId) {
+	    LimitingFactor newLimitingFactor = new LimitingFactor();
+	    newLimitingFactor.setName(limDTO.getName());
+	    LimitingFactor savedLimitingFactor = limitingFactorRepository.save(newLimitingFactor); // Save the LimitingFactor first
+	    
+	    Optional<Ingredient> ingredientsId = ingredientRepository.findById(ingredientId);
+	    if (ingredientsId.isPresent()) {
+	        Ingredient ingredient = ingredientsId.get();
 	        LimitingIngredient newLimitingIngredient = new LimitingIngredient();
-	        
+
 	        newLimitingIngredient.setIngredients(ingredient);
-	        newLimitingIngredient.setLimitingFactor(newLimitingFactor);
+	        newLimitingIngredient.setLimitingFactor(savedLimitingFactor);
 	        
 	        
-	        newLimitingFactor.getIngredients().add(newLimitingIngredient);
-			LimitingFactor savedLimitingFactor = limitingFactorRepository.save(newLimitingFactor);
-			return savedLimitingFactor;
-		}else {	
-			return null;
-		}
+	        
+	        limitingIngredientRepository.save(newLimitingIngredient);
+	        
+	        LimitingIngredient savedLimitingIngredient = limitingIngredientRepository.save(newLimitingIngredient);
+	      
+	        return savedLimitingFactor;
+	    } else {
+	        return null;
+	    }
 	}
+	
 }
+

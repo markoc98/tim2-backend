@@ -134,9 +134,7 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		
 		
-			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
-				entry.setValue(entry.getValue() / amount);
-			}
+		
 		
 		return nutrition;
 	}
@@ -195,7 +193,7 @@ public class RecipeServiceImpl implements RecipeService {
 		dto.setNutrition(calculateNutrition(recipe));
 		dto.setCreatedOn(recipe.getCreatedOn());
 		dto.setUpdatedOn(recipe.getUpdatedOn());
-//		dto.setIngredients(extractIng(recipe);
+		dto.setIngredients(extractIng(recipe));
 		dto.setIngredientAmount(ingredientNamedMapString(recipe));
 		dto.setLimitingFactors(extractLF(recipe));
 		

@@ -9,5 +9,5 @@ public interface LimitingFactorService {
 	public LimitingFactor getLimitingFactorbyId(Long id);
 	public Iterable<LimitingFactor> getAllLimitingFactors();
 	public LimitingFactor  addLimitingFactor(LimFactorDTO limDTO, Long ingredientId);
-	
+	public LimitingFactor updateLimitingFactor( Long id,  LimFactorDTO limDTO);
 }

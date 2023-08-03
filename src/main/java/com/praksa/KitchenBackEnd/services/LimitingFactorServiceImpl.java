@@ -1,13 +1,7 @@
 package com.praksa.KitchenBackEnd.services;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.praksa.KitchenBackEnd.models.dto.IngredientDTO;
 import com.praksa.KitchenBackEnd.models.dto.LimFactorDTO;
 import com.praksa.KitchenBackEnd.models.entities.Ingredient;
 import com.praksa.KitchenBackEnd.models.entities.LimitingFactor;
@@ -77,10 +71,22 @@ public class LimitingFactorServiceImpl implements LimitingFactorService{
 	        return null;
 	    }
 	}
+
+	@Override
+	public LimitingFactor updateLimitingFactor(Long id, LimFactorDTO limDTO) {
+        Optional<LimitingFactor> updateLimitingFactor = limitingFactorRepository.findById(id);
+        if (updateLimitingFactor.isPresent()) {
+            LimitingFactor existingLimitingFactor = updateLimitingFactor.get();
+            existingLimitingFactor.setName(limDTO.getName());
+            LimitingFactor updatedLimitingFactor = limitingFactorRepository.save(existingLimitingFactor);
+            return updatedLimitingFactor;
+        }else {
+		return null;
+	}
 	
 	
 	
-	
+	}
 	
 	
 	

@@ -164,7 +164,17 @@ public class UserRegisterController {
 		    }
 	}
 	
-
+	@RequestMapping(method = RequestMethod.GET, value="/allbyUserName")	
+	public ResponseEntity<?> getAllbyUserName(){
+		try {
+			Iterable<String> getAll = userService.getUsernames();
+			return new ResponseEntity<>(getAll , HttpStatus.OK);
+		  } catch (UserNotFoundException e) {
+		        return new ResponseEntity<>("Users not found", HttpStatus.NOT_FOUND);
+		    } catch (Exception e) {
+		        return new ResponseEntity<>("An error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+	}
 	
 	
 }

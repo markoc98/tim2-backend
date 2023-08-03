@@ -108,7 +108,7 @@ public class RecipeController {
 	@PutMapping(path = "/recipes/{id}")
 	public ResponseEntity<?> updateRecipe(@Valid @RequestBody RecipeRegisterDTO recipe, @PathVariable Long id) {
 		 try {		
-		Recipe updateRecipe = recipeService.updateRecipe(recipe, id);
+		RecipeRegisterDTO updateRecipe = recipeService.updateRecipe(recipe, id);
 		if(updateRecipe !=null ) {
 			return new ResponseEntity<>(updateRecipe, HttpStatus.OK);
 		}else {
@@ -119,6 +119,11 @@ public class RecipeController {
 
 		}
 	}
+
+	
+	
+	
+
 	//------------------DINAMICKA PRETRAGA ALERGENA I HRANLJIVOSTI-------------------------------//
 	
 	
@@ -140,6 +145,7 @@ public class RecipeController {
 		    }
 	
 }
+
 	
 }
 

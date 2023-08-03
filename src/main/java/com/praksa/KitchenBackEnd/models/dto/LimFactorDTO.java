@@ -2,7 +2,7 @@ package com.praksa.KitchenBackEnd.models.dto;
 
 public class LimFactorDTO {
 	
-	String name;
+	private String name;
 
 	public LimFactorDTO() {
 		super();

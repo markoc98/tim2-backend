@@ -113,31 +113,48 @@ public class RecipeServiceImpl implements RecipeService {
 				}
 			}
 		
-		
-		
-		
-		
-		
-		
-		for (Ingredient ingredient : ingredients) {
-			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
-				if(entry.getKey() == "proteins") {
-				entry.setValue(entry.getValue() + ingredient.getProteins());
-				} else if(entry.getKey() == "carbs") {
-				entry.setValue(entry.getValue() + ingredient.getCarbs());
-				} else if(entry.getKey() == "fats") {
-				entry.setValue(entry.getValue() + ingredient.getFats());
-				}else if(entry.getKey() == "saturatedFats") {
-				entry.setValue(entry.getValue() + ingredient.getSaturatedFats());
-				} else if(entry.getKey() == "sugars") {
-				entry.setValue(entry.getValue() + ingredient.getSugars());
-				} else if(entry.getKey() == "calories") {
-				entry.setValue(entry.getValue() + ingredient.getCalories());
+		for(RecipeIngredient ring : recipeIngreRepo.findAllByRecipeId(recipe)) {
+				for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
+					if(entry.getKey() == "proteins") {
+					entry.setValue(entry.getValue() + (ring.getIngredientId().getProteins() * (ring.getAmount()/100)));
+					} else if(entry.getKey() == "carbs") {
+					entry.setValue(entry.getValue() + ring.getIngredientId().getCarbs() * (ring.getAmount()/100));
+					} else if(entry.getKey() == "fats") {
+					entry.setValue(entry.getValue() + ring.getIngredientId().getFats() * (ring.getAmount()/100));
+					}else if(entry.getKey() == "saturatedFats") {
+					entry.setValue(entry.getValue() + ring.getIngredientId().getSaturatedFats() * (ring.getAmount()/100));
+					} else if(entry.getKey() == "sugars") {
+					entry.setValue(entry.getValue() + ring.getIngredientId().getSugars() * (ring.getAmount()/100));
+					} else if(entry.getKey() == "calories") {
+					entry.setValue(entry.getValue() + ring.getIngredientId().getCalories() * (ring.getAmount()/100));
+					}
 				}
 			}
-		}
+		
+		
+		
+		
+		
+//		for(RecipeIngredient ring : recipeIngreRepo.findAllByRecipeId(recipe))
+//		for (Ingredient ingredient : ring.getIngredientId()amount.) {
+//			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
+//				if(entry.getKey() == "proteins") {
+//				entry.setValue(entry.getValue() + ingredient.getProteins());
+//				} else if(entry.getKey() == "carbs") {
+//				entry.setValue(entry.getValue() + ingredient.getCarbs());
+//				} else if(entry.getKey() == "fats") {
+//				entry.setValue(entry.getValue() + ingredient.getFats());
+//				}else if(entry.getKey() == "saturatedFats") {
+//				entry.setValue(entry.getValue() + ingredient.getSaturatedFats());
+//				} else if(entry.getKey() == "sugars") {
+//				entry.setValue(entry.getValue() + ingredient.getSugars());
+//				} else if(entry.getKey() == "calories") {
+//				entry.setValue(entry.getValue() + ingredient.getCalories());
+//				}
+//			}
+//		}
 			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
-				entry.setValue(entry.getValue() * amount/100);
+				entry.setValue(entry.getValue() / amount);
 			}
 		
 		return nutrition;
@@ -208,7 +225,9 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public Recipe deleteRecipe(Long id) {
 		Recipe recipe = recipeRepository.findById(id).get();
-		recipeRepository.delete(recipe);
+		List<RecipeIngredient> rings = recipeIngreRepo.findAllByRecipeId(recipe);
+		recipeIngreRepo.deleteAll(rings);
+		recipeRepository.deleteById(id);
 		return recipe;
 	}
 	
@@ -217,14 +236,10 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public RecipeRegisterDTO updateRecipe(RecipeRegisterDTO updatedRecipe, Long id) {
 		
-		//nadji recept
 		Recipe recipe = recipeRepository.findById(id).get();
-		
-		//inicializaciuj povratnu informaciju za RecipeIngredient tabelu
 		List<RecipeIngredient> updateRing = new ArrayList<>();
 		
 		
-		//Update za recipe tabelu
 		if(updatedRecipe.getAmount() != null && !updatedRecipe.getAmount().equals(recipe.getAmount())) {
 			recipe.setAmount(updatedRecipe.getAmount());
 		}
@@ -243,20 +258,14 @@ public class RecipeServiceImpl implements RecipeService {
 		if(updatedRecipe.getCategory() != null && !updatedRecipe.getCategory().equals(recipe.getCategory())) {
 			recipe.setCategory(updatedRecipe.getCategory());
 		}
-		
-		//update za RecipeIngredient tabelu
+		//gadjaj id iz RecipeIngredient tabele za ovo i menjaj kolicinu 
 		for (Map.Entry<Long, Integer> entry : updatedRecipe.getIngredientMap().entrySet()) {
 			RecipeIngredient ring = recipeIngreRepo.findById(entry.getKey()).get(); 
-			
-			ring.setAmount(entry.getValue());
-			//ubaci promenjenu kolicinu u inicializovanu listu
-			updateRing.add(ring);
-			
-			
+				ring.setAmount(entry.getValue());
+				updateRing.add(ring);
 		}
 		
 		recipe.setIngredients(updateRing);
-		
 		
 		recipeRepository.save(recipe);
 		recipeIngreRepo.saveAll(updateRing);

@@ -99,12 +99,6 @@ public class RecipeServiceImpl implements RecipeService {
 		List<Ingredient> ingredients = new ArrayList<>(extractIng(recipe));
 		Integer amount = 0;
 		
-		for (RecipeIngredient recIng : recipe.getIngredients()) {
-			if(ingredients.contains(recIng.getIngredientId())) {
-					amount += recIng.getAmount();
-				}
-			}
-		
 		Map<String, Float> nutrition = new HashMap<>();
 		nutrition.put("proteins", 0.00f);
 		nutrition.put("carbs", 0.00f);
@@ -112,6 +106,18 @@ public class RecipeServiceImpl implements RecipeService {
 		nutrition.put("saturatedFats", 0.00f); 
 		nutrition.put("sugars", 0.00f);
 		nutrition.put("calories", 0.00f);
+		
+		for (RecipeIngredient recIng : recipe.getIngredients()) {
+			if(ingredients.contains(recIng.getIngredientId())) {
+					amount += recIng.getAmount();
+				}
+			}
+		
+		
+		
+		
+		
+		
 		
 		for (Ingredient ingredient : ingredients) {
 			for (Map.Entry<String, Float> entry : nutrition.entrySet()) {
@@ -154,7 +160,7 @@ public class RecipeServiceImpl implements RecipeService {
 	private Map<String, String> ingredientNamedMapString(Recipe recipe) {
 		List<RecipeIngredient> recIng = recipe.getIngredients();
 		Map<String, String> namedIng = new HashMap<>();
-		//ENACT PARADOX
+	
 		for (RecipeIngredient ri : recIng) {
 			namedIng.put(ingredientRepository.findById(ri.getIngredientId().getId()).get().getName(), //<-key
 					ri.getAmount().toString() + ingredientRepository.findById(ri.getIngredientId().getId()).get().getUnit()); //<-value
@@ -209,14 +215,19 @@ public class RecipeServiceImpl implements RecipeService {
 
 
 	@Override
-	public Recipe updateRecipe(RecipeRegisterDTO updatedRecipe, Long id) {
+	public RecipeRegisterDTO updateRecipe(RecipeRegisterDTO updatedRecipe, Long id) {
+		
+		//nadji recept
 		Recipe recipe = recipeRepository.findById(id).get();
-		List<RecipeIngredient> recIng = recipeIngreRepo.findAllByRecipeId(recipe);
-		Integer amount = 0;
 		
-		//Problem - promena kolicine znaci promena kolicine svih sastojaka
-		//Resenje - mozda ingredientMapper za svaki sastojak zasebno?
+		//inicializaciuj povratnu informaciju za RecipeIngredient tabelu
+		List<RecipeIngredient> updateRing = new ArrayList<>();
 		
+		
+		//Update za recipe tabelu
+		if(updatedRecipe.getAmount() != null && !updatedRecipe.getAmount().equals(recipe.getAmount())) {
+			recipe.setAmount(updatedRecipe.getAmount());
+		}
 		if(updatedRecipe.getSteps() != null && !updatedRecipe.getSteps().equals(recipe.getSteps())) {
 			recipe.setSteps(updatedRecipe.getSteps());			
 		}
@@ -232,26 +243,24 @@ public class RecipeServiceImpl implements RecipeService {
 		if(updatedRecipe.getCategory() != null && !updatedRecipe.getCategory().equals(recipe.getCategory())) {
 			recipe.setCategory(updatedRecipe.getCategory());
 		}
+		
+		//update za RecipeIngredient tabelu
 		for (Map.Entry<Long, Integer> entry : updatedRecipe.getIngredientMap().entrySet()) {
-			for (RecipeIngredient ring : recIng) {
-				if(entry.getValue() != null && !ring.getAmount().equals(entry.getValue())) {
-					if(entry.getValue() < ring.getAmount()) {
-						recipe.setAmount(recipe.getAmount() - entry.getValue());
-					}
-					ring.setAmount(entry.getValue());
-					recipe.setAmount(recipe.getAmount() + entry.getValue());
-				}
-				
-			}
+			RecipeIngredient ring = recipeIngreRepo.findById(entry.getKey()).get(); 
+			
+			ring.setAmount(entry.getValue());
+			//ubaci promenjenu kolicinu u inicializovanu listu
+			updateRing.add(ring);
+			
 			
 		}
 		
-		
+		recipe.setIngredients(updateRing);
 		
 		
 		recipeRepository.save(recipe);
-		recipeIngreRepo.saveAll(recIng);
-		return recipe;
+		recipeIngreRepo.saveAll(updateRing);
+		return updatedRecipe;
 	}
 	
 	@Override
@@ -259,7 +268,7 @@ public class RecipeServiceImpl implements RecipeService {
 		Recipe recipe = new Recipe();
 		Cook cook = (Cook) userRepo.findById(cookId).get();
 		List<RecipeIngredient> recIng = new ArrayList<>();
-		Integer amount = 0;
+		
 		
 		recipe.setDescription(dto.getDescription());
 		recipe.setSteps(dto.getSteps());
@@ -271,14 +280,10 @@ public class RecipeServiceImpl implements RecipeService {
 		for (Map.Entry<Long, Integer> entry : dto.getIngredientMap().entrySet()) {
 			RecipeIngredient ring = new RecipeIngredient();
 			ring.setIngredientId(ingredientRepository.findById(entry.getKey()).get());
-			ring.setAmount(entry.getValue());
 			ring.setRecipeId(recipe);
+			ring.setAmount(entry.getValue());
 			recIng.add(ring);
-			amount += entry.getValue();
 		}
-		
-		
-		recipe.setAmount(amount);
 		recipe.setIngredients(recIng);
 		
 		

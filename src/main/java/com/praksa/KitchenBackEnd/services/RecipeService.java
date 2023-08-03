@@ -16,7 +16,7 @@ public interface RecipeService {
 	
 	public RecipeRegisterDTO getRecipe(Long id);
 	public RecipeRegisterDTO createRecipe(RecipeRegisterDTO dto, Long cookId);
-	public Recipe updateRecipe(RecipeRegisterDTO dto, Long id);
+	public RecipeRegisterDTO updateRecipe(RecipeRegisterDTO dto, Long id);
 	public Recipe deleteRecipe(Long id);
 	
 	public RecipeDTO getRecipeLfandNutrition(Long id);
